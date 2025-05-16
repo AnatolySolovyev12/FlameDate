@@ -39,14 +39,14 @@ void ProcessObject::classTimerIsDone()
 
 void ProcessObject::check()
 {
-	QString textDate = "12.05.2025";
+	QString textDate = "12.07.2025";
 
 	QDate testDate = QDate::fromString(textDate, "dd.MM.yyyy");
 
-	qDebug() << testDate.toString("dd.MM.yyyy");
-	qDebug() << QDate::currentDate().toString("dd.MM.yyyy");
+	qDebug() << "TestDate " << testDate.toString("dd.MM.yyyy");
+	qDebug() << "CurrDate " << QDate::currentDate().toString("dd.MM.yyyy");
 
-	if (QDate::currentDate().daysTo(testDate) < 30)
+	if (QDate::currentDate().daysTo(testDate) < m_deadlineDays.toInt())
 		qDebug() << "ALARM!";
 	else
 		qDebug() << "NORMAL";

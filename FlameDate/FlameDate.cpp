@@ -507,9 +507,9 @@ void FlameDate::initializationPoolFunc()
 
 	for (int count = 0; count < countOfTopItems; count++)
 	{
-		if (ui.treeWidget->topLevelItem(count)->text(2).toInt() < 10000) // красим если что-то написано в серийнике
+		if (ui.treeWidget->topLevelItem(count)->text(2).toInt() < 30) // красим если что-то написано в серийнике
 		{
-			ui.treeWidget->topLevelItem(count)->setText(2, QString::number(10000));
+			ui.treeWidget->topLevelItem(count)->setText(2, QString::number(30));
 		}
 
 		poolParse.append(QSharedPointer<ProcessObject>::create());
