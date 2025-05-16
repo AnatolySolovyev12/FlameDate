@@ -8,6 +8,13 @@
 #include <tlhelp32.h>
 
 
+#include <QAxWidget>
+#include <QAxObject>
+
+#include <QSharedPointer.h>
+
+
+
 class ProcessObject : public QObject
 {
 	Q_OBJECT

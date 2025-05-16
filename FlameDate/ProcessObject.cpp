@@ -1,5 +1,4 @@
 ﻿#include "ProcessObject.h"
-#include <chrono>
 
 ProcessObject::ProcessObject(QObject* parent)
 	: QObject(parent), classTimer(new QTimer())
@@ -22,7 +21,6 @@ void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bo
 	m_timeForCheck = timeForCheck;
 	m_column = column;
 	m_row = row;
-
 
 	if (m_checkParse || m_checkSend)
 		classTimer->start(2000); // каждые 10 минут 600000
@@ -50,6 +48,25 @@ void ProcessObject::check()
 		qDebug() << "ALARM!";
 	else
 		qDebug() << "NORMAL";
+
+	QSharedPointer<QAxObject>excelDonor(new QAxObject("Excel.Application", 0));
+	QSharedPointer<QAxObject>workbooksDonor(excelDonor->querySubObject("Workbooks"));
+	QSharedPointer<QAxObject>workbookDonor(workbooksDonor->querySubObject("Open(const QString&)", m_URL));
+	QSharedPointer<QAxObject>sheetsDonor(workbookDonor->querySubObject("Worksheets"));
+	QSharedPointer<QAxObject>sheetDonor(sheetsDonor->querySubObject("Item(int)", 1));
+
+	QSharedPointer<QAxObject>dateInFile(sheetDonor->querySubObject("Cells(&int,&int)", m_column, m_row));
+
+
+	//qDebug() << dateInFile->property("Value").toString();
+
+
+	//workbookDonor->dynamicCall("Close()");
+	//excelDonor->dynamicCall("Quit()");
+
+
+	return;
+
 
 
 
