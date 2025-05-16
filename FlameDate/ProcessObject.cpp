@@ -1,4 +1,5 @@
 #include "ProcessObject.h"
+#include <chrono>
 
 ProcessObject::ProcessObject(QObject* parent)
 	: QObject(parent), classTimer(new QTimer())
@@ -24,7 +25,7 @@ void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bo
 
 
 	if (m_checkParse || m_checkSend)
-		classTimer->start(600000); // каждые 10 минут
+		classTimer->start(2000); // каждые 10 минут 600000
 	else
 		classTimer->stop();
 }
@@ -38,33 +39,28 @@ void ProcessObject::classTimerIsDone()
 
 void ProcessObject::check()
 {
-	// Принимает snapshot указанных процессов, а также кучи, модули и потоки, используемые этими процессами. 
-	// TH32CS_SNAPPROCESS - Включает все процессы в системе в snapshot.
-	// Если функция завершается успешно, она возвращает открытый дескриптор указанной snapshot.
+	QString textDate = "12.05.2025";
 
-	HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+	QDate testDate = QDate::fromString(textDate, "dd.MM.yyyy");
 
-	// Если функция завершается сбоем, она возвращает INVALID_HANDLE_VALUE.Дополнительные сведения об ошибке можно получить, вызвав GetLastError.Возможные коды ошибок включают ERROR_BAD_LENGTH.
+	qDebug() << testDate.toString("dd.MM.yyyy");
+	qDebug() << QDate::currentDate().toString("dd.MM.yyyy");
 
-	if (hSnapshot == INVALID_HANDLE_VALUE)
+	if (QDate::currentDate().daysTo(testDate) < 30)
+		qDebug() << "ALARM!";
+	else
+		qDebug() << "NORMAL";
+
+
+
+
+	/*
+	if (false) ////////
 	{
-		qDebug() << GetLastError();
+		qDebug() << QDateTime::currentDateTime() << ": " << m_name << "OK";
+		return;
 	}
 
-	PROCESSENTRY32 pe; // Структура PROCESSENTRY32 (tlhelp32.h) описывает запись из списка процессов, находящихся в системном адресном пространстве при snapshot.
-
-	pe.dwSize = sizeof(PROCESSENTRY32); // Размер структуры в байтах. Перед вызовом функции Process32First задайте для этого элемента значение sizeof(PROCESSENTRY32). Если не инициализировать dwSize, process32First завершается сбоем.
-
-	Process32First(hSnapshot, &pe); // Извлекает сведения о первом процессе, обнаруженном в системном snapshot. Обычно это дежурный процесс системы, не нужный в анализе.
-
-	while (Process32Next(hSnapshot, &pe)) // false в случае отсутствия отсутствия модулей процесса т.е. дошли до конца или вообще snapshot пустой
-	{
-		if (QString::fromWCharArray(pe.szExeFile) == m_name)
-		{
-			qDebug() << QDateTime::currentDateTime() << ": " << m_name << "OK";
-			return;
-		}
-	}
 
 	qDebug() << QDateTime::currentDateTime() << ": " << m_name << " NOT WORK";
 
@@ -79,26 +75,12 @@ void ProcessObject::check()
 		system(temporary.toUtf8().constData());
 
 			});
+
+			*/
 }
 
 
 QString ProcessObject::getStartString(QString any)
 {
-	QString temporary = "start \"\" \""; // start - для того чтобы system() не блокировала выполнение запускающей программы.
-	//Параметр "" используется для указания заголовка окна (можно оставить пустым).
-
-	for (auto& val : any)
-	{
-		if (val == '\\')
-		{
-			temporary += "\\";
-			continue;
-		};
-		temporary += val;
-	}
-
-	temporary += "\\";
-	temporary += m_name + "\"";
-
-	return temporary;
+	return 0;
 }
