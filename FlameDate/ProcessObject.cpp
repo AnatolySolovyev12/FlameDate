@@ -58,24 +58,17 @@ void ProcessObject::check()
 	qDebug() << "CurrDate " << QDate::currentDate().toString("dd.MM.yyyy");
 
 	if (QDate::currentDate().daysTo(testDate) < m_deadlineDays.toInt())
-		qDebug() << "ALARM!";
+	{
+		QString messegeString = QString::number(QDate::currentDate().daysTo(testDate)) + " дней осталось до сдачи заказчику " + m_name;
+		if (m_checkSend)
+		{
+			emit messageReceived(messegeString);
+
+		}
+	}
 	else
 		qDebug() << "NORMAL";
-	
 
-
-
-
-
-
-
-
-
-		/*
-		if (m_checkSend)
-			emit messageReceived("Не работает " + m_name);
-
-				*/
 }
 
 
