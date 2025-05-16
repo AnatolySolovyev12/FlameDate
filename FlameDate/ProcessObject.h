@@ -13,6 +13,8 @@
 
 #include <QSharedPointer.h>
 
+#include <QRegularExpression>
+
 
 
 class ProcessObject : public QObject
@@ -43,4 +45,6 @@ private:
 	QString m_row;
 
 	QTimer* classTimer = nullptr;
+
+	QString pattern = "[\u200E\u200F\u202A\u202B\u202C\u202D\u202E]";
 };

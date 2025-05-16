@@ -13,7 +13,10 @@ ProcessObject::ProcessObject(QObject* parent)
 void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bool checkParse, bool checkSend, QString timeForCheck, QString column, QString row)
 {
 	m_name = name;
+
 	m_URL = URL;
+	m_URL.replace(QRegularExpression(pattern), ""); // избавляемся от управляющих символов путём замены через регулярку. Тогда спокойно можно вписывать адрес файла как есть из свойств файла.
+
 	m_deadlineDays = deadlineDays;
 	m_checkParse = checkParse;
 	m_checkSend = checkSend;
@@ -23,7 +26,7 @@ void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bo
 	m_row = row;
 
 	if (m_checkParse || m_checkSend)
-		classTimer->start(2000); // каждые 10 минут 600000
+		classTimer->start(5000); // каждые 10 минут 600000
 	else
 		classTimer->stop();
 }
@@ -37,9 +40,19 @@ void ProcessObject::classTimerIsDone()
 
 void ProcessObject::check()
 {
-	QString textDate = "12.07.2025";
+	QSharedPointer<QAxObject>excelDonor(new QAxObject("Excel.Application", 0));
+	QSharedPointer<QAxObject>workbooksDonor(excelDonor.data()->querySubObject("Workbooks"));
+	QSharedPointer<QAxObject>workbookDonor(workbooksDonor.data()->querySubObject("Open(const QString&)", m_URL));
+	QSharedPointer<QAxObject>sheetsDonor(workbookDonor.data()->querySubObject("Worksheets"));
+	QSharedPointer<QAxObject>sheetDonor(sheetsDonor.data()->querySubObject("Item(int)", 1));
+	QSharedPointer<QAxObject>dateInFilePtr(sheetDonor.data()->querySubObject("Cells(int,int)", m_column, m_row));
 
-	QDate testDate = QDate::fromString(textDate, "dd.MM.yyyy");
+	QString dateInFileString = dateInFilePtr.data()->property("Value").toString();
+
+	workbookDonor.data()->dynamicCall("Close()");
+	excelDonor.data()->dynamicCall("Quit()");
+
+	QDate testDate = QDate::fromString(dateInFileString, "dd.MM.yyyy");
 
 	qDebug() << "TestDate " << testDate.toString("dd.MM.yyyy");
 	qDebug() << "CurrDate " << QDate::currentDate().toString("dd.MM.yyyy");
@@ -48,52 +61,21 @@ void ProcessObject::check()
 		qDebug() << "ALARM!";
 	else
 		qDebug() << "NORMAL";
-
-	QSharedPointer<QAxObject>excelDonor(new QAxObject("Excel.Application", 0));
-	QSharedPointer<QAxObject>workbooksDonor(excelDonor->querySubObject("Workbooks"));
-	QSharedPointer<QAxObject>workbookDonor(workbooksDonor->querySubObject("Open(const QString&)", m_URL));
-	QSharedPointer<QAxObject>sheetsDonor(workbookDonor->querySubObject("Worksheets"));
-	QSharedPointer<QAxObject>sheetDonor(sheetsDonor->querySubObject("Item(int)", 1));
-
-	QSharedPointer<QAxObject>dateInFile(sheetDonor->querySubObject("Cells(&int,&int)", m_column, m_row));
-
-
-	//qDebug() << dateInFile->property("Value").toString();
-
-
-	//workbookDonor->dynamicCall("Close()");
-	//excelDonor->dynamicCall("Quit()");
-
-
-	return;
+	
 
 
 
 
 
-	/*
-	if (false) ////////
-	{
-		qDebug() << QDateTime::currentDateTime() << ": " << m_name << "OK";
-		return;
-	}
 
 
-	qDebug() << QDateTime::currentDateTime() << ": " << m_name << " NOT WORK";
 
-	if (m_checkSend)
-		emit messageReceived("Не работает " + m_name);
 
-	QString temporary = getStartString(m_URL);
+		/*
+		if (m_checkSend)
+			emit messageReceived("Не работает " + m_name);
 
-	if (m_checkParse)
-		QTimer::singleShot(5000, [temporary]() {
-
-		system(temporary.toUtf8().constData());
-
-			});
-
-			*/
+				*/
 }
 
 
