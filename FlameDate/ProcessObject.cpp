@@ -1,4 +1,4 @@
-#include "ProcessObject.h"
+ï»¿#include "ProcessObject.h"
 #include <chrono>
 
 ProcessObject::ProcessObject(QObject* parent)
@@ -25,7 +25,7 @@ void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bo
 
 
 	if (m_checkParse || m_checkSend)
-		classTimer->start(2000); // êàæäûå 10 ìèíóò 600000
+		classTimer->start(2000); // ÐºÐ°Ð¶Ð´Ñ‹Ðµ 10 Ð¼Ð¸Ð½ÑƒÑ‚ 600000
 	else
 		classTimer->stop();
 }
@@ -65,7 +65,7 @@ void ProcessObject::check()
 	qDebug() << QDateTime::currentDateTime() << ": " << m_name << " NOT WORK";
 
 	if (m_checkSend)
-		emit messageReceived("Íå ðàáîòàåò " + m_name);
+		emit messageReceived("ÐÐµ Ñ€Ð°Ð±Ð¾Ñ‚Ð°ÐµÑ‚ " + m_name);
 
 	QString temporary = getStartString(m_URL);
 

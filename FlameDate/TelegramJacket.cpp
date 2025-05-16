@@ -1,4 +1,4 @@
-#include "TelegramJacket.h"
+п»ї#include "TelegramJacket.h"
 
 TelegramJacket::TelegramJacket(QObject* parent)
 	: QObject(parent), manager(new QNetworkAccessManager)
@@ -15,7 +15,7 @@ TelegramJacket::~TelegramJacket()
 void TelegramJacket::getUpdates()
 {
 	/*
-	QString urlString = QString("https://api.telegram.org/bot%1/deleteWebhook") // метод удаления перехватичков. Защиа от захвата бота и не только.
+	QString urlString = QString("https://api.telegram.org/bot%1/deleteWebhook") // РјРµС‚РѕРґ СѓРґР°Р»РµРЅРёСЏ РїРµСЂРµС…РІР°С‚РёС‡РєРѕРІ. Р—Р°С‰РёР° РѕС‚ Р·Р°С…РІР°С‚Р° Р±РѕС‚Р° Рё РЅРµ С‚РѕР»СЊРєРѕ.
 		.arg(token);
 	QNetworkRequest request(urlString);
 	QNetworkReply* reply = manager->get(request);
@@ -24,7 +24,7 @@ void TelegramJacket::getUpdates()
 
 
 	/*
-	// добавлен таймаут для LongPoll (при 0 ShortPoll) в секундах. Также добавлен offset для подтверждения получения сообщдения в Telegram (чтобы повторно не поулчать старые сообщения)
+	// РґРѕР±Р°РІР»РµРЅ С‚Р°Р№РјР°СѓС‚ РґР»СЏ LongPoll (РїСЂРё 0 ShortPoll) РІ СЃРµРєСѓРЅРґР°С…. РўР°РєР¶Рµ РґРѕР±Р°РІР»РµРЅ offset РґР»СЏ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ РїРѕР»СѓС‡РµРЅРёСЏ СЃРѕРѕР±С‰РґРµРЅРёСЏ РІ Telegram (С‡С‚РѕР±С‹ РїРѕРІС‚РѕСЂРЅРѕ РЅРµ РїРѕСѓР»С‡Р°С‚СЊ СЃС‚Р°СЂС‹Рµ СЃРѕРѕР±С‰РµРЅРёСЏ)
 	QString urlString = QString("https://api.telegram.org/bot%1/getUpdates?offset=%2?timeout=12")
 		.arg(token)
 		.arg(iD);
@@ -91,27 +91,27 @@ void TelegramJacket::sendMessage(const QString message)
 		return;
 	}
 
-	// Формирование URL запроса
+	// Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ URL Р·Р°РїСЂРѕСЃР°
 	QString urlString = QString("https://api.telegram.org/bot%1/sendMessage").arg(token);
 
 	QUrl url(urlString);
 
-	// Настройка параметров сообщения
+	// РќР°СЃС‚СЂРѕР№РєР° РїР°СЂР°РјРµС‚СЂРѕРІ СЃРѕРѕР±С‰РµРЅРёСЏ
 	QUrlQuery query;
 	query.addQueryItem("chat_id", chatId);
 	query.addQueryItem("text", message);
 
 	//qDebug() << query.toString() << "\n";
 
-	// Создание запроса
+	// РЎРѕР·РґР°РЅРёРµ Р·Р°РїСЂРѕСЃР°
 	QNetworkRequest request(url);
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
-	// Отправка запроса
+	// РћС‚РїСЂР°РІРєР° Р·Р°РїСЂРѕСЃР°
 	manager->post(request, query.toString(QUrl::FullyEncoded).toUtf8());
 
 	/*
-	// Обработчик ответа (если необходимо). Пригодится.
+	// РћР±СЂР°Р±РѕС‚С‡РёРє РѕС‚РІРµС‚Р° (РµСЃР»Рё РЅРµРѕР±С…РѕРґРёРјРѕ). РџСЂРёРіРѕРґРёС‚СЃСЏ.
 	QObject::connect(manager, &QNetworkAccessManager::finished, [](QNetworkReply* reply) {
 
 		if (reply->error() == QNetworkReply::NoError)

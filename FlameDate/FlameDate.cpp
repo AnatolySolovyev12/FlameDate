@@ -1,4 +1,4 @@
-#include "FlameDate.h"
+п»ї#include "FlameDate.h"
 
 FlameDate::FlameDate(QWidget* parent)
 	: QMainWindow(parent), sBar(new QStatusBar()), tgObject(new TelegramJacket)
@@ -109,43 +109,43 @@ void FlameDate::deleteItemInList()
 }
 
 
-void FlameDate::setData() // в случае двойного клика в ячейку открываем редактор
+void FlameDate::setData() // РІ СЃР»СѓС‡Р°Рµ РґРІРѕР№РЅРѕРіРѕ РєР»РёРєР° РІ СЏС‡РµР№РєСѓ РѕС‚РєСЂС‹РІР°РµРј СЂРµРґР°РєС‚РѕСЂ
 {
-	QTreeWidgetItem* any = ui.treeWidget->currentItem(); // присваиваем указателю выбранную ячейку
-	int column = ui.treeWidget->currentColumn(); // присваиваем переменной номер текущего столбца (отсчёт начинается с 0-ого)
+	QTreeWidgetItem* any = ui.treeWidget->currentItem(); // РїСЂРёСЃРІР°РёРІР°РµРј СѓРєР°Р·Р°С‚РµР»СЋ РІС‹Р±СЂР°РЅРЅСѓСЋ СЏС‡РµР№РєСѓ
+	int column = ui.treeWidget->currentColumn(); // РїСЂРёСЃРІР°РёРІР°РµРј РїРµСЂРµРјРµРЅРЅРѕР№ РЅРѕРјРµСЂ С‚РµРєСѓС‰РµРіРѕ СЃС‚РѕР»Р±С†Р° (РѕС‚СЃС‡С‘С‚ РЅР°С‡РёРЅР°РµС‚СЃСЏ СЃ 0-РѕРіРѕ)
 
-	if (column == 3 || column == 4) return; // не даём редактировать дальше третьего столбца            
+	if (column == 3 || column == 4) return; // РЅРµ РґР°С‘Рј СЂРµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РґР°Р»СЊС€Рµ С‚СЂРµС‚СЊРµРіРѕ СЃС‚РѕР»Р±С†Р°            
 
 	//qDebug() << "OPEN EDITOR";
 
 	middleColumn = column;
 	middleItem = any;
 
-	ui.treeWidget->openPersistentEditor(any, column); // разрешаем редактирование ячейки
-	ui.treeWidget->editItem(any, column); // открываем редактор
+	ui.treeWidget->openPersistentEditor(any, column); // СЂР°Р·СЂРµС€Р°РµРј СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ СЏС‡РµР№РєРё
+	ui.treeWidget->editItem(any, column); // РѕС‚РєСЂС‹РІР°РµРј СЂРµРґР°РєС‚РѕСЂ
 }
 
 
-void FlameDate::closeEditor(QTreeWidgetItem* any) // слот закрытия редактора в случае внесения изменений (после нажатия Enter)
+void FlameDate::closeEditor(QTreeWidgetItem* any) // СЃР»РѕС‚ Р·Р°РєСЂС‹С‚РёСЏ СЂРµРґР°РєС‚РѕСЂР° РІ СЃР»СѓС‡Р°Рµ РІРЅРµСЃРµРЅРёСЏ РёР·РјРµРЅРµРЅРёР№ (РїРѕСЃР»Рµ РЅР°Р¶Р°С‚РёСЏ Enter)
 {
-	if (offChanger) return; // препятствуем многократному исполнению этой функции при изменении цветов
+	if (offChanger) return; // РїСЂРµРїСЏС‚СЃС‚РІСѓРµРј РјРЅРѕРіРѕРєСЂР°С‚РЅРѕРјСѓ РёСЃРїРѕР»РЅРµРЅРёСЋ СЌС‚РѕР№ С„СѓРЅРєС†РёРё РїСЂРё РёР·РјРµРЅРµРЅРёРё С†РІРµС‚РѕРІ
 
-	QString temporary = any->text(0).trimmed(); // убираем пробелы
+	QString temporary = any->text(0).trimmed(); // СѓР±РёСЂР°РµРј РїСЂРѕР±РµР»С‹
 	any->setText(0, temporary);
 
-	temporary = any->text(1).trimmed(); // убираем пробелы
+	temporary = any->text(1).trimmed(); // СѓР±РёСЂР°РµРј РїСЂРѕР±РµР»С‹
 	any->setText(1, temporary);
 
-	temporary = any->text(2).trimmed(); // убираем пробелы
+	temporary = any->text(2).trimmed(); // СѓР±РёСЂР°РµРј РїСЂРѕР±РµР»С‹
 	any->setText(2, temporary);
 
-	temporary = any->text(5).trimmed(); // убираем пробелы
+	temporary = any->text(5).trimmed(); // СѓР±РёСЂР°РµРј РїСЂРѕР±РµР»С‹
 	any->setText(5, temporary);
 
-	temporary = any->text(6).trimmed(); // убираем пробелы
+	temporary = any->text(6).trimmed(); // СѓР±РёСЂР°РµРј РїСЂРѕР±РµР»С‹
 	any->setText(6, temporary);
 
-	temporary = any->text(7).trimmed(); // убираем пробелы
+	temporary = any->text(7).trimmed(); // СѓР±РёСЂР°РµРј РїСЂРѕР±РµР»С‹
 	any->setText(7, temporary);
 
 	offChanger = true;
@@ -153,12 +153,12 @@ void FlameDate::closeEditor(QTreeWidgetItem* any) // слот закрытия редактора в с
 	any->setCheckState(3, any->checkState(3));
 	any->setCheckState(4, any->checkState(4));
 
-	if (any->text(2).toInt() < 30) // красим если что-то написано в серийнике
+	if (any->text(2).toInt() < 30) // РєСЂР°СЃРёРј РµСЃР»Рё С‡С‚Рѕ-С‚Рѕ РЅР°РїРёСЃР°РЅРѕ РІ СЃРµСЂРёР№РЅРёРєРµ
 	{
 		any->setText(2, QString::number(30));
 	}
 
-	if (any->checkState(3) == Qt::Unchecked) // красим если что-то написано в серийнике
+	if (any->checkState(3) == Qt::Unchecked) // РєСЂР°СЃРёРј РµСЃР»Рё С‡С‚Рѕ-С‚Рѕ РЅР°РїРёСЃР°РЅРѕ РІ СЃРµСЂРёР№РЅРёРєРµ
 	{
 		any->setBackground(3, QColor("white"));
 	}
@@ -167,7 +167,7 @@ void FlameDate::closeEditor(QTreeWidgetItem* any) // слот закрытия редактора в с
 		any->setBackground(3, QColor(128, 243, 150, 255));
 	}
 
-	if (any->checkState(4) == Qt::Unchecked) // красим если что-то написано в серийнике
+	if (any->checkState(4) == Qt::Unchecked) // РєСЂР°СЃРёРј РµСЃР»Рё С‡С‚Рѕ-С‚Рѕ РЅР°РїРёСЃР°РЅРѕ РІ СЃРµСЂРёР№РЅРёРєРµ
 	{
 		any->setBackground(4, QColor("white"));
 	}
@@ -178,11 +178,11 @@ void FlameDate::closeEditor(QTreeWidgetItem* any) // слот закрытия редактора в с
 
 	offChanger = false;
 
-	ui.treeWidget->closePersistentEditor(middleItem, middleColumn); // закрываем редактор
+	ui.treeWidget->closePersistentEditor(middleItem, middleColumn); // Р·Р°РєСЂС‹РІР°РµРј СЂРµРґР°РєС‚РѕСЂ
 }
 
 
-void FlameDate::otherItemWasChecked(QTreeWidgetItem* any) // закрываем открытый редактор в случае переключения на другой элемент
+void FlameDate::otherItemWasChecked(QTreeWidgetItem* any) // Р·Р°РєСЂС‹РІР°РµРј РѕС‚РєСЂС‹С‚С‹Р№ СЂРµРґР°РєС‚РѕСЂ РІ СЃР»СѓС‡Р°Рµ РїРµСЂРµРєР»СЋС‡РµРЅРёСЏ РЅР° РґСЂСѓРіРѕР№ СЌР»РµРјРµРЅС‚
 {
 	if (offChanger) return;
 
@@ -192,22 +192,22 @@ void FlameDate::otherItemWasChecked(QTreeWidgetItem* any) // закрываем открытый 
 	if (any == middleItem && column == middleColumn)
 		return;
 
-	QString temporary = any->text(0).trimmed(); // убираем пробелы
+	QString temporary = any->text(0).trimmed(); // СѓР±РёСЂР°РµРј РїСЂРѕР±РµР»С‹
 	any->setText(0, temporary);
 
-	temporary = any->text(1).trimmed(); // убираем пробелы
+	temporary = any->text(1).trimmed(); // СѓР±РёСЂР°РµРј РїСЂРѕР±РµР»С‹
 	any->setText(1, temporary);
 
-	temporary = any->text(2).trimmed(); // убираем пробелы
+	temporary = any->text(2).trimmed(); // СѓР±РёСЂР°РµРј РїСЂРѕР±РµР»С‹
 	any->setText(2, temporary);
 
-	temporary = any->text(5).trimmed(); // убираем пробелы
+	temporary = any->text(5).trimmed(); // СѓР±РёСЂР°РµРј РїСЂРѕР±РµР»С‹
 	any->setText(5, temporary);
 
-	temporary = any->text(6).trimmed(); // убираем пробелы
+	temporary = any->text(6).trimmed(); // СѓР±РёСЂР°РµРј РїСЂРѕР±РµР»С‹
 	any->setText(6, temporary);
 
-	temporary = any->text(7).trimmed(); // убираем пробелы
+	temporary = any->text(7).trimmed(); // СѓР±РёСЂР°РµРј РїСЂРѕР±РµР»С‹
 	any->setText(7, temporary);
 
 	ui.treeWidget->closePersistentEditor(middleItem, middleColumn);
@@ -221,12 +221,12 @@ void FlameDate::exportXml()
 	QFile file(savedFile);
 	file.open(QIODevice::WriteOnly);
 
-	QXmlStreamWriter xmlWriter(&file); // инициализируем объект QXmlStreamWriter ссылкой на объект с которым будем работать
+	QXmlStreamWriter xmlWriter(&file); // РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РѕР±СЉРµРєС‚ QXmlStreamWriter СЃСЃС‹Р»РєРѕР№ РЅР° РѕР±СЉРµРєС‚ СЃ РєРѕС‚РѕСЂС‹Рј Р±СѓРґРµРј СЂР°Р±РѕС‚Р°С‚СЊ
 
 	xmlWriter.setDevice(&file);
-	xmlWriter.setAutoFormatting(true); // необходимо для автоматического перехода на новую строку
-	xmlWriter.setAutoFormattingIndent(2); // задаём количество пробелов в отступе (по умолчанию 4)
-	xmlWriter.writeStartDocument(); // пишет в шапке кодировку документа
+	xmlWriter.setAutoFormatting(true); // РЅРµРѕР±С…РѕРґРёРјРѕ РґР»СЏ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРѕРіРѕ РїРµСЂРµС…РѕРґР° РЅР° РЅРѕРІСѓСЋ СЃС‚СЂРѕРєСѓ
+	xmlWriter.setAutoFormattingIndent(2); // Р·Р°РґР°С‘Рј РєРѕР»РёС‡РµСЃС‚РІРѕ РїСЂРѕР±РµР»РѕРІ РІ РѕС‚СЃС‚СѓРїРµ (РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ 4)
+	xmlWriter.writeStartDocument(); // РїРёС€РµС‚ РІ С€Р°РїРєРµ РєРѕРґРёСЂРѕРІРєСѓ РґРѕРєСѓРјРµРЅС‚Р°
 
 	int countOfTopItems = ui.treeWidget->topLevelItemCount();
 
@@ -254,9 +254,9 @@ void FlameDate::recursionXmlWriter(QTreeWidgetItem* some, QXmlStreamWriter& some
 {
 	if (some->childCount())
 	{
-		someXmlWriter.writeStartElement("Point"); // отркывает начальный элемент "лестницы" xml
+		someXmlWriter.writeStartElement("Point"); // РѕС‚СЂРєС‹РІР°РµС‚ РЅР°С‡Р°Р»СЊРЅС‹Р№ СЌР»РµРјРµРЅС‚ "Р»РµСЃС‚РЅРёС†С‹" xml
 
-		someXmlWriter.writeAttribute("Name", some->text(0)); // присваиваем атрибуты внутри открытого первого элемента  
+		someXmlWriter.writeAttribute("Name", some->text(0)); // РїСЂРёСЃРІР°РёРІР°РµРј Р°С‚СЂРёР±СѓС‚С‹ РІРЅСѓС‚СЂРё РѕС‚РєСЂС‹С‚РѕРіРѕ РїРµСЂРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р°  
 
 		someXmlWriter.writeAttribute("Directory", some->text(1));
 
@@ -293,9 +293,9 @@ void FlameDate::recursionXmlWriter(QTreeWidgetItem* some, QXmlStreamWriter& some
 	}
 	else
 	{
-		someXmlWriter.writeStartElement("Point"); // отркывает начальный элемент "лестницы" xml  
+		someXmlWriter.writeStartElement("Point"); // РѕС‚СЂРєС‹РІР°РµС‚ РЅР°С‡Р°Р»СЊРЅС‹Р№ СЌР»РµРјРµРЅС‚ "Р»РµСЃС‚РЅРёС†С‹" xml  
 
-		someXmlWriter.writeAttribute("Name", some->text(0)); // присваиваем атрибуты внутри открытого первого элемента   
+		someXmlWriter.writeAttribute("Name", some->text(0)); // РїСЂРёСЃРІР°РёРІР°РµРј Р°С‚СЂРёР±СѓС‚С‹ РІРЅСѓС‚СЂРё РѕС‚РєСЂС‹С‚РѕРіРѕ РїРµСЂРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р°   
 
 		someXmlWriter.writeAttribute("Directory", some->text(1)); //
 
@@ -329,7 +329,7 @@ void FlameDate::recursionXmlWriter(QTreeWidgetItem* some, QXmlStreamWriter& some
 
 void FlameDate::importXml()
 {
-	/* Открываем файл для Чтения с помощью пути, указанного в lineEditWrite */
+	/* РћС‚РєСЂС‹РІР°РµРј С„Р°Р№Р» РґР»СЏ Р§С‚РµРЅРёСЏ СЃ РїРѕРјРѕС‰СЊСЋ РїСѓС‚Рё, СѓРєР°Р·Р°РЅРЅРѕРіРѕ РІ lineEditWrite */
 
 	QString addFileDonor = QFileDialog::getOpenFileName(0, "Choose XML for import", "", "*.xml");
 
@@ -349,7 +349,7 @@ void FlameDate::importXml()
 
 	QFile txtFile("tree.txt");
 
-	if (!(txtFile.open(QIODevice::WriteOnly | QIODevice::Truncate))) // Truncate - для очистки содержимого файла
+	if (!(txtFile.open(QIODevice::WriteOnly | QIODevice::Truncate))) // Truncate - РґР»СЏ РѕС‡РёСЃС‚РєРё СЃРѕРґРµСЂР¶РёРјРѕРіРѕ С„Р°Р№Р»Р°
 	{
 		// qDebug() << "Don't find browse file. Add a directory with a tree.";
 		sBar->showMessage("Don't find browse file. Add a directory with a tree.", 10000);
@@ -375,7 +375,7 @@ void FlameDate::loopXmlReader(QXmlStreamReader& xmlReader)
 
 	QTreeWidgetItem* some = nullptr;;
 
-	ui.treeWidget->clear(); // очищаем дерево перед загрузкой новых данных
+	ui.treeWidget->clear(); // РѕС‡РёС‰Р°РµРј РґРµСЂРµРІРѕ РїРµСЂРµРґ Р·Р°РіСЂСѓР·РєРѕР№ РЅРѕРІС‹С… РґР°РЅРЅС‹С…
 
 	while (!xmlReader.atEnd())
 	{
@@ -450,7 +450,7 @@ void FlameDate::loopXmlReader(QXmlStreamReader& xmlReader)
 
 void FlameDate::startingImportXml()
 {
-	/* Открываем файл для Чтения с помощью пути, указанного в lineEditWrite */
+	/* РћС‚РєСЂС‹РІР°РµРј С„Р°Р№Р» РґР»СЏ Р§С‚РµРЅРёСЏ СЃ РїРѕРјРѕС‰СЊСЋ РїСѓС‚Рё, СѓРєР°Р·Р°РЅРЅРѕРіРѕ РІ lineEditWrite */
 
 	QFile file("tree.txt");
 
@@ -462,7 +462,7 @@ void FlameDate::startingImportXml()
 
 	QTextStream out(&file);
 
-	QString myLine = out.readLine(); // метод readLine() считывает одну строку из потока
+	QString myLine = out.readLine(); // РјРµС‚РѕРґ readLine() СЃС‡РёС‚С‹РІР°РµС‚ РѕРґРЅСѓ СЃС‚СЂРѕРєСѓ РёР· РїРѕС‚РѕРєР°
 
 	if (myLine == "")
 	{
@@ -507,7 +507,7 @@ void FlameDate::initializationPoolFunc()
 
 	for (int count = 0; count < countOfTopItems; count++)
 	{
-		if (ui.treeWidget->topLevelItem(count)->text(2).toInt() < 30) // красим если что-то написано в серийнике
+		if (ui.treeWidget->topLevelItem(count)->text(2).toInt() < 30) // РєСЂР°СЃРёРј РµСЃР»Рё С‡С‚Рѕ-С‚Рѕ РЅР°РїРёСЃР°РЅРѕ РІ СЃРµСЂРёР№РЅРёРєРµ
 		{
 			ui.treeWidget->topLevelItem(count)->setText(2, QString::number(30));
 		}
@@ -549,10 +549,10 @@ void FlameDate::iconActivated(QSystemTrayIcon::ActivationReason reason)
 
 void FlameDate::cmdOpen()
 {
-	AllocConsole(); // Создаем консоль и присоединяем к ней текущий процесс
+	AllocConsole(); // РЎРѕР·РґР°РµРј РєРѕРЅСЃРѕР»СЊ Рё РїСЂРёСЃРѕРµРґРёРЅСЏРµРј Рє РЅРµР№ С‚РµРєСѓС‰РёР№ РїСЂРѕС†РµСЃСЃ
 	FILE* stream;
-	freopen_s(&stream, "CONOUT$", "w", stdout); // Перенаправляем стандартный вывод
-	freopen_s(&stream, "CONOUT$", "w", stderr); // Перенаправляем стандартный вывод ошибок
+	freopen_s(&stream, "CONOUT$", "w", stdout); // РџРµСЂРµРЅР°РїСЂР°РІР»СЏРµРј СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№ РІС‹РІРѕРґ
+	freopen_s(&stream, "CONOUT$", "w", stderr); // РџРµСЂРµРЅР°РїСЂР°РІР»СЏРµРј СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№ РІС‹РІРѕРґ РѕС€РёР±РѕРє
 
 	printf("\nOpen console for logout\n\n");
 }
@@ -562,5 +562,5 @@ void FlameDate::cmdClose()
 {
 	qDebug() << "\nProgramm disconnect from console.";
 
-	FreeConsole(); // Отделяем процесс от cmd. После cmd закрываем руками.
+	FreeConsole(); // РћС‚РґРµР»СЏРµРј РїСЂРѕС†РµСЃСЃ РѕС‚ cmd. РџРѕСЃР»Рµ cmd Р·Р°РєСЂС‹РІР°РµРј СЂСѓРєР°РјРё.
 }
