@@ -155,6 +155,11 @@
       <string>Row</string>
      </property>
     </column>
+    <column>
+     <property name="text">
+      <string>Telegram Id</string>
+     </property>
+    </column>
    </widget>
    <widget class="QPushButton" name="pushButtonAdd">
     <property name="geometry">

@@ -41,15 +41,14 @@ void ProcessObject::classTimerIsDone()
 void ProcessObject::check()
 {
 	QTime testTime = QTime::fromString(m_timeForCheck, "hh:mm:ss");
-	qDebug() << testTime.toString();
-	qDebug() << QTime::currentTime().toString();
-	qDebug() << QTime::currentTime().secsTo(testTime);
+
+	qDebug() << m_name << " " << testTime.toString() << " " << QTime::currentTime().toString() << " " << QTime::currentTime().secsTo(testTime);
 
 	if (QTime::currentTime().secsTo(testTime) > 0)
 	{
 		if (QTime::currentTime().secsTo(testTime) < 180)
 		{
-			qDebug() << "Less then 3 min";
+			qDebug() << m_name << " " << "less then 3 min";
 
 			QSharedPointer<QAxObject>excelDonor(new QAxObject("Excel.Application", 0));
 			QSharedPointer<QAxObject>workbooksDonor(excelDonor.data()->querySubObject("Workbooks"));
@@ -65,12 +64,13 @@ void ProcessObject::check()
 
 			QDate testDate = QDate::fromString(dateInFileString, "dd.MM.yyyy");
 
-			qDebug() << "TestDate " << testDate.toString("dd.MM.yyyy");
-			qDebug() << "CurrDate " << QDate::currentDate().toString("dd.MM.yyyy");
+			qDebug() << m_name << " " << "CurrDate " << QDate::currentDate().toString("dd.MM.yyyy") << " " << "TestDate " << testDate.toString("dd.MM.yyyy");
 
 			if (QDate::currentDate().daysTo(testDate) < m_deadlineDays.toInt())
 			{
 				QString messegeString = QString::number(QDate::currentDate().daysTo(testDate)) + " дней осталось до сдачи заказчику " + m_name;
+
+				qDebug() << messegeString << "\n";
 
 				if (m_checkSend && canMessegeSend)
 				{
@@ -80,16 +80,9 @@ void ProcessObject::check()
 				}
 			}
 			else
-				qDebug() << "more then " << m_deadlineDays.toInt();
+				qDebug() << m_name << " more then " << m_deadlineDays.toInt() << "\n";
 		}
 		else
-			qDebug() << "more then 3 min";
+			qDebug() << m_name << "more then 3 min\n";
 	}
-
-}
-
-
-QString ProcessObject::getStartString(QString any)
-{
-	return 0;
 }

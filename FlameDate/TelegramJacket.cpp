@@ -84,7 +84,7 @@ void TelegramJacket::getUpdates()
 
 void TelegramJacket::sendMessage(const QString message)
 {
-	qDebug() << message;
+	//qDebug() << message;
 	/*
 	if (message.isEmpty()) {
 		qWarning() << "Attempt to send empty message";
