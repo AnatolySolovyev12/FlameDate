@@ -1,5 +1,7 @@
 ﻿#include "FlameDate.h"
 
+
+
 FlameDate::FlameDate(QWidget* parent)
 	: QMainWindow(parent), sBar(new QStatusBar()), tgObject(new TelegramJacket)
 {

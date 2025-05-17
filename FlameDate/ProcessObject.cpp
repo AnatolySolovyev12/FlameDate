@@ -27,7 +27,7 @@ void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bo
 	m_tgIds = tgIds;
 
 	if (m_checkParse || m_checkSend)
-		classTimer->start(5000); // каждую минуту 60000
+		classTimer->start(60000); // каждую минуту 60000
 	else
 		classTimer->stop();
 }
@@ -77,7 +77,7 @@ void ProcessObject::check()
 				{
 					emit messageReceived(m_tgIds + "@" + messegeString);
 					canMessegeSend = false;
-					QTimer::singleShot(15000, [this]() {canMessegeSend = true;});
+					QTimer::singleShot(180000, [this]() {canMessegeSend = true;});
 				}
 			}
 			else
