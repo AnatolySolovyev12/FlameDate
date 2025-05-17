@@ -59,7 +59,8 @@ void TelegramJacket::getUpdates()
 
 						if (text == "/start")
 						{
-							sendMessage(chatId);
+							QString tempt = fromObj["id"].toString();
+							sendMessage(tempt + "@" + tempt);
 						}
 					}
 					else
@@ -156,10 +157,4 @@ void TelegramJacket::sendMessage(const QString message)
 
 	idMassive.clear();
 	
-}
-
-
-const QString TelegramJacket::getChatId()
-{
-	return chatId;
 }

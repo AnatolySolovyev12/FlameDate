@@ -69,6 +69,8 @@ private:
     QDateTime fullTimeWork;
 
     bool windowShow = false;
+
+    QTimer* timerUpdate = nullptr;
 };
 
 

@@ -3,7 +3,7 @@
 
 
 FlameDate::FlameDate(QWidget* parent)
-	: QMainWindow(parent), sBar(new QStatusBar()), tgObject(new TelegramJacket)
+	: QMainWindow(parent), sBar(new QStatusBar()), tgObject(new TelegramJacket), timerUpdate(new QTimer)
 {
 	ui.setupUi(this);
 
@@ -36,6 +36,9 @@ FlameDate::FlameDate(QWidget* parent)
 	connect(ui.pushButtonRefresh, &QPushButton::clicked, this, &FlameDate::initializationPoolFunc);
 
 	QMainWindow::setStatusBar(sBar);
+
+	connect(timerUpdate, &QTimer::timeout, tgObject, &TelegramJacket::getUpdates);
+	timerUpdate->start(12000);
 
 	startingImportXml();
 	initializationPoolFunc();
