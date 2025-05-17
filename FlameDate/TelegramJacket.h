@@ -31,7 +31,7 @@ public slots:
 	void sendMessage(const QString message);
 
 public:
-	QString token = "7748592578:AAGNOEFHGfkuIayxU9fEB7NV_X56ZkpiYiQ";
+	QString token = "";
 	qint64 iD;
 	const QString chatId = "1443295378";
 
