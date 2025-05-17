@@ -77,6 +77,7 @@ void FlameDate::addItemInList()
 	any->setBackground(5, QColor(98, 244, 249, 255));
 	any->setBackground(6, QColor(125, 198, 210, 255));
 	any->setBackground(7, QColor(119, 168, 142, 255));
+	any->setBackground(8, QColor(79, 168, 142, 255));
 
 	offChanger = false;
 
@@ -90,7 +91,8 @@ void FlameDate::addItemInList()
 		ui.treeWidget->topLevelItem(poolParse.length() - 1)->checkState(4), 
 		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(5), 
 		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(6), 
-		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(7)
+		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(7),
+		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(8)
 	);
 
 	connect(poolParse.last().data(), &ProcessObject::messageReceived, tgObject, &TelegramJacket::sendMessage);
@@ -148,14 +150,17 @@ void FlameDate::closeEditor(QTreeWidgetItem* any) // слот закрытия �
 	temporary = any->text(7).trimmed(); // убираем пробелы
 	any->setText(7, temporary);
 
+	temporary = any->text(8).trimmed(); // убираем пробелы
+	any->setText(8, temporary);
+
 	offChanger = true;
 
 	any->setCheckState(3, any->checkState(3));
 	any->setCheckState(4, any->checkState(4));
 
-	if (any->text(2).toInt() < 30) // красим если что-то написано в серийнике
+	if (any->text(2).toInt() < 15) // красим если что-то написано в серийнике
 	{
-		any->setText(2, QString::number(30));
+		any->setText(2, QString::number(15));
 	}
 
 	if (any->checkState(3) == Qt::Unchecked) // красим если что-то написано в серийнике
@@ -209,6 +214,9 @@ void FlameDate::otherItemWasChecked(QTreeWidgetItem* any) // закрываем 
 
 	temporary = any->text(7).trimmed(); // убираем пробелы
 	any->setText(7, temporary);
+
+	temporary = any->text(8).trimmed(); // убираем пробелы
+	any->setText(8, temporary);
 
 	ui.treeWidget->closePersistentEditor(middleItem, middleColumn);
 	middleItem = nullptr;
@@ -281,6 +289,8 @@ void FlameDate::recursionXmlWriter(QTreeWidgetItem* some, QXmlStreamWriter& some
 
 		someXmlWriter.writeAttribute("Row", some->text(7));
 
+		someXmlWriter.writeAttribute("Id", some->text(8));
+
 
 		int count = some->childCount();
 
@@ -319,6 +329,8 @@ void FlameDate::recursionXmlWriter(QTreeWidgetItem* some, QXmlStreamWriter& some
 		someXmlWriter.writeAttribute("Column", some->text(6));
 
 		someXmlWriter.writeAttribute("Row", some->text(7));
+
+		someXmlWriter.writeAttribute("Id", some->text(8));
 
 		someXmlWriter.writeEndElement();
 
@@ -401,6 +413,8 @@ void FlameDate::loopXmlReader(QXmlStreamReader& xmlReader)
 			some->setBackground(5, QColor(98, 244, 249, 255));
 			some->setBackground(6, QColor(125, 198, 210, 255));
 			some->setBackground(7, QColor(119, 168, 142, 255));
+			some->setBackground(8, QColor(79, 168, 142, 255));
+
 
 			some->setText(0, xmlReader.name().toString());
 
@@ -433,6 +447,9 @@ void FlameDate::loopXmlReader(QXmlStreamReader& xmlReader)
 				if (val.name().toString() == "Column") some->setText(6, val.value().toString());
 
 				if (val.name().toString() == "Row") some->setText(7, val.value().toString());
+
+				if (val.name().toString() == "Id") some->setText(8, val.value().toString());
+
 			}
 
 			offChanger = false;
@@ -507,9 +524,9 @@ void FlameDate::initializationPoolFunc()
 
 	for (int count = 0; count < countOfTopItems; count++)
 	{
-		if (ui.treeWidget->topLevelItem(count)->text(2).toInt() < 30) // красим если что-то написано в серийнике
+		if (ui.treeWidget->topLevelItem(count)->text(2).toInt() < 15) // красим если что-то написано в серийнике
 		{
-			ui.treeWidget->topLevelItem(count)->setText(2, QString::number(30));
+			ui.treeWidget->topLevelItem(count)->setText(2, QString::number(15));
 		}
 
 		poolParse.append(QSharedPointer<ProcessObject>::create());
@@ -522,7 +539,9 @@ void FlameDate::initializationPoolFunc()
 			ui.treeWidget->topLevelItem(poolParse.length() - 1)->checkState(4),
 			ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(5),
 			ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(6),
-			ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(7)
+			ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(7),
+			ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(8)
+
 		);
 
 		connect(poolParse.last().data(), &ProcessObject::messageReceived, tgObject, &TelegramJacket::sendMessage);

@@ -84,7 +84,34 @@ void TelegramJacket::getUpdates()
 
 void TelegramJacket::sendMessage(const QString message)
 {
-	//qDebug() << message;
+	QString temporary;
+
+	for (auto& val : message)
+	{
+		
+		if (val.isSpace())
+		{
+			idMassive.push_back(temporary);
+			temporary.clear();
+			continue;
+		}
+		
+		if (val == '@')
+		{
+			idMassive.push_back(temporary);
+			temporary = message;
+			temporary = temporary.sliced(message.indexOf('@') + 1);
+			break;
+		}
+		
+		temporary += val;
+	}
+	
+	qDebug() << temporary;
+	qDebug() << idMassive;
+
+	idMassive.clear();
+	
 	/*
 	if (message.isEmpty()) {
 		qWarning() << "Attempt to send empty message";

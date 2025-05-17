@@ -10,7 +10,7 @@ ProcessObject::ProcessObject(QObject* parent)
 }
 
 
-void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bool checkParse, bool checkSend, QString timeForCheck, QString column, QString row)
+void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bool checkParse, bool checkSend, QString timeForCheck, QString column, QString row, QString tgIds)
 {
 	m_name = name;
 
@@ -24,6 +24,7 @@ void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bo
 	m_timeForCheck = timeForCheck;
 	m_column = column;
 	m_row = row;
+	m_tgIds = tgIds;
 
 	if (m_checkParse || m_checkSend)
 		classTimer->start(5000); // каждую минуту 60000
@@ -74,7 +75,7 @@ void ProcessObject::check()
 
 				if (m_checkSend && canMessegeSend)
 				{
-					emit messageReceived(messegeString);
+					emit messageReceived(m_tgIds + "@" + messegeString);
 					canMessegeSend = false;
 					QTimer::singleShot(15000, [this]() {canMessegeSend = true;});
 				}

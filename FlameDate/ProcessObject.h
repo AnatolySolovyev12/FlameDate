@@ -22,7 +22,7 @@ class ProcessObject : public QObject
 public:
 	ProcessObject(QObject* parent = nullptr);
 
-	void setParam(QString name, QString URL, QString deadlineDays, bool checkParse, bool checkSend, QString timeForCheck, QString column, QString row);
+	void setParam(QString name, QString URL, QString deadlineDays, bool checkParse, bool checkSend, QString timeForCheck, QString column, QString row, QString m_tgIds);
 	void check();
 
 signals:
@@ -40,6 +40,7 @@ private:
 	QString m_timeForCheck;
 	QString m_column;
 	QString m_row;
+	QString m_tgIds;
 
 	QTimer* classTimer = nullptr;
 
