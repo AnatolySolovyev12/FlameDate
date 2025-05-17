@@ -21,9 +21,6 @@ void TelegramJacket::getUpdates()
 	QNetworkReply* reply = manager->get(request);
 	*/
 
-
-
-	
 	// добавлен таймаут для LongPoll (при 0 ShortPoll) в секундах. Также добавлен offset для подтверждения получения сообщдения в Telegram (чтобы повторно не поулчать старые сообщения)
 	QString urlString = QString("https://api.telegram.org/bot%1/getUpdates?offset=%2?timeout=12")
 		.arg(token)
@@ -59,8 +56,8 @@ void TelegramJacket::getUpdates()
 
 						if (text == "/start")
 						{
-							QString tempt = fromObj["id"].toString();
-							sendMessage(tempt + "@" + tempt);
+							const QString tempt = QString::number(fromObj["id"].toInteger()) + "@" + QString::number(fromObj["id"].toInteger());
+							sendMessage(tempt);
 						}
 					}
 					else
@@ -77,9 +74,7 @@ void TelegramJacket::getUpdates()
 
 		//reply->deleteLater();
 
-		});
-
-		
+		});	
 }
 
 
@@ -89,7 +84,7 @@ void TelegramJacket::sendMessage(const QString message)
 		qWarning() << "Attempt to send empty message";
 		return;
 	}
-
+	
 	QString temporary;
 
 	for (auto& val : message)
@@ -112,10 +107,10 @@ void TelegramJacket::sendMessage(const QString message)
 		
 		temporary += val;
 	}
-
+	
 	for (auto& val : idMassive)
 	{
-
+		const QString tempId = val;
 		// Формирование URL запроса
 		QString urlString = QString("https://api.telegram.org/bot%1/sendMessage").arg(token);
 
@@ -123,8 +118,8 @@ void TelegramJacket::sendMessage(const QString message)
 
 		// Настройка параметров сообщения
 		QUrlQuery query;
-		query.addQueryItem("chat_id", val);
-		query.addQueryItem("text", message);
+		query.addQueryItem("chat_id", tempId);
+		query.addQueryItem("text", temporary);
 
 		//qDebug() << query.toString() << "\n";
 
@@ -156,5 +151,4 @@ void TelegramJacket::sendMessage(const QString message)
 	}
 
 	idMassive.clear();
-	
 }

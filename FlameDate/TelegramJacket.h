@@ -32,6 +32,8 @@ public:
 	QString token = "";
 	qint64 iD;
 	
+	const QString chatId = "1443295378";
+
 	QList<QString>idMassive;
 
 private:
