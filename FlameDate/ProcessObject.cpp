@@ -27,7 +27,7 @@ void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bo
 	m_tgIds = tgIds;
 
 	if (m_checkParse || m_checkSend)
-		classTimer->start(10000); // каждую минуту 60000
+		classTimer->start(60000); // каждую минуту 60000
 	else
 		classTimer->stop();
 }
