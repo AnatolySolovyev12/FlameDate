@@ -70,7 +70,7 @@ void FlameDate::addItemInList()
 
 	any->setText(0, "new");
 
-	any->setText(2, QString::number(30));
+	any->setText(2, QString::number(15));
 
 	any->setBackground(0, QColor(221, 221, 221, 255));
 	any->setBackground(1, QColor(245, 216, 183, 255));
@@ -78,6 +78,7 @@ void FlameDate::addItemInList()
 	any->setCheckState(3, any->checkState(3));
 	any->setCheckState(4, any->checkState(4));
 
+	any->setText(5, "07:00:00");
 
 	any->setBackground(5, QColor(98, 244, 249, 255));
 	any->setBackground(6, QColor(125, 198, 210, 255));
@@ -163,9 +164,34 @@ void FlameDate::closeEditor(QTreeWidgetItem* any) // слот закрытия �
 	any->setCheckState(3, any->checkState(3));
 	any->setCheckState(4, any->checkState(4));
 
-	if (any->text(2).toInt() < 15) // красим если что-то написано в серийнике
+	if (any->text(0).toStdString().length() > 500) // красим если что-то написано в серийнике
+	{
+		any->setText(0, "Not more then 500 signs");
+	}
+
+	if (any->text(1).toStdString().length() > 500) // красим если что-то написано в серийнике
+	{
+		any->setText(1, "Not more then 500 signs");
+	}
+
+	if (any->text(2).toInt() < 15 || any->text(2).toInt() > 120) // красим если что-то написано в серийнике
 	{
 		any->setText(2, QString::number(15));
+	}
+
+	if (any->text(2).toInt() < 15 || any->text(2).toInt() > 120) // красим если что-то написано в серийнике
+	{
+		any->setText(2, QString::number(15));
+	}
+
+	if (any->text(5).isEmpty()) // красим если что-то написано в серийнике
+	{
+		any->setText(5, "07:00:00");
+	}
+
+	if (!any->text(5).isEmpty())
+	{
+		validDate(any);
 	}
 
 	if (any->checkState(3) == Qt::Unchecked) // красим если что-то написано в серийнике
@@ -184,6 +210,21 @@ void FlameDate::closeEditor(QTreeWidgetItem* any) // слот закрытия �
 	else
 	{
 		any->setBackground(4, QColor(128, 243, 150, 255));
+	}
+
+	if (any->text(6).toInt() < 1 || any->text(6).toInt() > 300) // красим если что-то написано в серийнике
+	{
+		any->setText(6, QString::number(1));
+	}
+
+	if (any->text(7).toInt() < 1 || any->text(7).toInt() > 300) // красим если что-то написано в серийнике
+	{
+		any->setText(7, QString::number(1));
+	}
+
+	if (any->text(8).toStdString().length() > 150) // красим если что-то написано в серийнике
+	{
+		any->setText(8, "Not more then 150 signs");
 	}
 
 	offChanger = false;
@@ -529,9 +570,44 @@ void FlameDate::initializationPoolFunc()
 
 	for (int count = 0; count < countOfTopItems; count++)
 	{
-		if (ui.treeWidget->topLevelItem(count)->text(2).toInt() < 15) // красим если что-то написано в серийнике
+		if (ui.treeWidget->topLevelItem(count)->text(0).toStdString().length() > 500) // красим если что-то написано в серийнике
+		{
+			ui.treeWidget->topLevelItem(count)->setText(0, "Not more then 500 signs");
+		}
+
+		if (ui.treeWidget->topLevelItem(count)->text(1).toStdString().length() > 500) // красим если что-то написано в серийнике
+		{
+			ui.treeWidget->topLevelItem(count)->setText(1, "Not more then 500 signs");
+		}
+
+		if (ui.treeWidget->topLevelItem(count)->text(2).toInt() < 15 || ui.treeWidget->topLevelItem(count)->text(2).toInt() > 120) // красим если что-то написано в серийнике
 		{
 			ui.treeWidget->topLevelItem(count)->setText(2, QString::number(15));
+		}
+
+		if (ui.treeWidget->topLevelItem(count)->text(5).isEmpty()) // красим если что-то написано в серийнике
+		{
+			ui.treeWidget->topLevelItem(count)->setText(5, "07:00:00");
+		}
+		
+		if(!ui.treeWidget->topLevelItem(count)->text(5).isEmpty())
+		{
+			validDate(ui.treeWidget->topLevelItem(count));
+		}
+
+		if (ui.treeWidget->topLevelItem(count)->text(6).toStdString().length() > 300) // красим если что-то написано в серийнике
+		{
+			ui.treeWidget->topLevelItem(count)->setText(6, QString::number(1));
+		}
+
+		if (ui.treeWidget->topLevelItem(count)->text(7).toStdString().length() > 300) // красим если что-то написано в серийнике
+		{
+			ui.treeWidget->topLevelItem(count)->setText(7, QString::number(1));
+		}
+
+		if (ui.treeWidget->topLevelItem(count)->text(8).toStdString().length() > 150) // красим если что-то написано в серийнике
+		{
+			ui.treeWidget->topLevelItem(count)->setText(8, "Not more then 150 signs");
 		}
 
 		poolParse.append(QSharedPointer<ProcessObject>::create());
@@ -582,9 +658,25 @@ void FlameDate::cmdOpen()
 }
 
 
+
 void FlameDate::cmdClose()
 {
 	qDebug() << "\nProgramm disconnect from console.";
 
 	FreeConsole(); // Отделяем процесс от cmd. После cmd закрываем руками.
+}
+
+void FlameDate::validDate(QTreeWidgetItem* str)
+{
+	if (str->text(5).length() != 8)
+	{
+		str->setText(5, "07:00:00");
+		return;
+	}
+
+	if (QTime::fromString(str->text(5), "hh:mm:ss").toString().isEmpty())
+	{
+		str->setText(5, "07:00:00");
+		return;
+	}
 }

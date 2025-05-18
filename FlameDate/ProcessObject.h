@@ -14,6 +14,8 @@
 
 #include <QRegularExpression>
 
+#include <QFileInfo>
+
 
 class ProcessObject : public QObject
 {

@@ -37,6 +37,7 @@ public:
     void startingImportXml();
     void mousePressEvent(QMouseEvent* event);
     void initializationPoolFunc();
+    void validDate(QTreeWidgetItem* val);
 
     void setData();
     void closeEditor(QTreeWidgetItem* any);

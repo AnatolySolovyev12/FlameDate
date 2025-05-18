@@ -27,7 +27,7 @@ void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bo
 	m_tgIds = tgIds;
 
 	if (m_checkParse || m_checkSend)
-		classTimer->start(60000); // каждую минуту 60000
+		classTimer->start(10000); // каждую минуту 60000
 	else
 		classTimer->stop();
 }
@@ -50,6 +50,13 @@ void ProcessObject::check()
 		if (QTime::currentTime().secsTo(testTime) < 180)
 		{
 			qDebug() << m_name << " " << "less then 3 min";
+
+			QFileInfo directoryFile(m_URL);
+			if (!directoryFile.exists() || !directoryFile.isFile()) {
+
+				qDebug() << "Error: for " << m_name << " can't find file from Directory!";
+				return;
+			}
 
 			QSharedPointer<QAxObject>excelDonor(new QAxObject("Excel.Application", 0));
 			QSharedPointer<QAxObject>workbooksDonor(excelDonor.data()->querySubObject("Workbooks"));
