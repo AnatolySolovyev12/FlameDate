@@ -37,11 +37,14 @@ FlameDate::FlameDate(QWidget* parent)
 
 	QMainWindow::setStatusBar(sBar);
 
+	
 	connect(timerUpdate, &QTimer::timeout, tgObject, &TelegramJacket::getUpdates);
 	timerUpdate->start(12000);
 
 	startingImportXml();
 	initializationPoolFunc();
+
+	getTokenFromFile();
 }
 
 
@@ -679,4 +682,30 @@ void FlameDate::validDate(QTreeWidgetItem* str)
 		str->setText(5, "07:00:00");
 		return;
 	}
+}
+
+void FlameDate::getTokenFromFile()
+{
+	QFile file("token.txt");
+
+	if (!file.open(QIODevice::ReadOnly))
+	{
+		sBar->showMessage("Don't find browse file. Add a directory with a token (token.txt).", 10000);
+		return;
+	}
+
+	QTextStream out(&file);
+
+	QString myLine = out.readLine(); // метод readLine() считывает одну строку из потока
+
+	if (myLine == "")
+	{
+		sBar->showMessage("Don't find browse file. Add a directory with a token (token.txt).", 10000);
+		file.close();
+		return;
+	}
+
+	tgObject->setToken(myLine);
+
+	file.close();
 }

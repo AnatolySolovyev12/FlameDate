@@ -47,6 +47,8 @@ public:
     void cmdOpen();
     void cmdClose();
 
+    void getTokenFromFile();
+
 private:
     Ui::FlameDateClass ui;
     bool offChanger = false;

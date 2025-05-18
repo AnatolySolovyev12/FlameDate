@@ -11,6 +11,7 @@
 #include <QTimer>
 #include <QUrlQuery>
 #include <windows.h>
+#include <QFile.h>
 
 
 class TelegramJacket : public QObject
@@ -22,6 +23,7 @@ public:
 	~TelegramJacket();
 
 	void getUpdates();
+	void setToken(QString val);
 
 public slots:
 	//void sendMessage(const QString chatId, const QString message);

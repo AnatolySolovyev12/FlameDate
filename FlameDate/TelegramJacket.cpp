@@ -152,3 +152,9 @@ void TelegramJacket::sendMessage(const QString message)
 
 	idMassive.clear();
 }
+
+void TelegramJacket::setToken(QString val)
+{
+	token = val;
+}
+
