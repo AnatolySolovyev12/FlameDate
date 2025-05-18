@@ -67,6 +67,11 @@ void ProcessObject::check()
 
 			QString dateInFileString = dateInFilePtr.data()->property("Value").toString();
 
+			if (dateInFileString.length() > 10)
+			{
+				dateInFileString = QDateTime::fromString(dateInFileString, Qt::ISODate).date().toString("dd.MM.yyyy");
+			}
+
 			workbookDonor.data()->dynamicCall("Close()");
 			excelDonor.data()->dynamicCall("Quit()");
 
