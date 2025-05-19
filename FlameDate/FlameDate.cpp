@@ -37,7 +37,7 @@ FlameDate::FlameDate(QWidget* parent)
 
 	QMainWindow::setStatusBar(sBar);
 
-	
+
 	connect(timerUpdate, &QTimer::timeout, tgObject, &TelegramJacket::getUpdates);
 	timerUpdate->start(12000);
 
@@ -55,15 +55,9 @@ FlameDate::~FlameDate()
 
 void FlameDate::addItemInList()
 {
-	QTreeWidgetItem* any = nullptr;
+	QTreeWidgetItem* any = new QTreeWidgetItem();
 
-	if (ui.treeWidget->currentItem() == nullptr)
-	{
-		any = new QTreeWidgetItem();
-		ui.treeWidget->addTopLevelItem(any);
-	}
-	else
-		return;
+	ui.treeWidget->addTopLevelItem(any);
 
 	countOfTopItems = ui.treeWidget->topLevelItemCount();
 
@@ -93,13 +87,13 @@ void FlameDate::addItemInList()
 	poolParse.append(QSharedPointer<ProcessObject>::create());
 	//poolParse.push_back(QSharedPointer<uniqueParseObject>(new uniqueParseObject));
 	poolParse.last().data()->setParam(
-		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(0), 
-		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(1), 
-		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(2), 
+		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(0),
+		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(1),
+		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(2),
 		ui.treeWidget->topLevelItem(poolParse.length() - 1)->checkState(3),
-		ui.treeWidget->topLevelItem(poolParse.length() - 1)->checkState(4), 
-		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(5), 
-		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(6), 
+		ui.treeWidget->topLevelItem(poolParse.length() - 1)->checkState(4),
+		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(5),
+		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(6),
 		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(7),
 		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(8)
 	);
@@ -592,8 +586,8 @@ void FlameDate::initializationPoolFunc()
 		{
 			ui.treeWidget->topLevelItem(count)->setText(5, "07:00:00");
 		}
-		
-		if(!ui.treeWidget->topLevelItem(count)->text(5).isEmpty())
+
+		if (!ui.treeWidget->topLevelItem(count)->text(5).isEmpty())
 		{
 			validDate(ui.treeWidget->topLevelItem(count));
 		}
