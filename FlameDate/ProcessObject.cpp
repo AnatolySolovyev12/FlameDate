@@ -52,6 +52,7 @@ void ProcessObject::check()
 			qDebug() << m_name << " " << "less then 3 min";
 
 			QFileInfo directoryFile(m_URL);
+
 			if (!directoryFile.exists() || !directoryFile.isFile()) {
 
 				qDebug() << "Error: for " << m_name << " can't find file from Directory!";
