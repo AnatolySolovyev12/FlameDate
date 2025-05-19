@@ -16,6 +16,8 @@
 
 #include <QFileInfo>
 
+#include <QtMath>
+
 
 class ProcessObject : public QObject
 {

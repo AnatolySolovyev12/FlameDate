@@ -47,7 +47,7 @@ void ProcessObject::check()
 
 	if (QTime::currentTime().secsTo(testTime) > 0)
 	{
-		if (QTime::currentTime().secsTo(testTime) < 180)
+		if (QTime::currentTime().secsTo(testTime) < 300)
 		{
 			qDebug() << m_name << " " << "less then 3 min";
 
@@ -81,7 +81,7 @@ void ProcessObject::check()
 
 			if (QDate::currentDate().daysTo(testDate) < m_deadlineDays.toInt())
 			{
-				QString messegeString = QString::number(QDate::currentDate().daysTo(testDate)) + " дней осталось до сдачи заказчику " + m_name;
+				QString messegeString = (QDate::currentDate().daysTo(testDate) < 0) ? (QString::number(qFabs(QDate::currentDate().daysTo(testDate))) + " дней сдачи просрочилось по проекту " + m_name) : (QString::number(QDate::currentDate().daysTo(testDate)) + " дней осталось до сдачи заказчику " + m_name);
 
 				qDebug() << messegeString << "\n";
 
@@ -89,7 +89,7 @@ void ProcessObject::check()
 				{
 					emit messageReceived(m_tgIds + "@" + messegeString);
 					canMessegeSend = false;
-					QTimer::singleShot(180000, [this]() {canMessegeSend = true;});
+					QTimer::singleShot(240000, [this]() {canMessegeSend = true;});
 				}
 			}
 			else

@@ -147,12 +147,12 @@
     </column>
     <column>
      <property name="text">
-      <string>Column</string>
+      <string>Row</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Row</string>
+      <string>Column</string>
      </property>
     </column>
     <column>
