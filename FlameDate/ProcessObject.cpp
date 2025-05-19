@@ -10,7 +10,7 @@ ProcessObject::ProcessObject(QObject* parent)
 }
 
 
-void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bool checkParse, bool checkSend, QString timeForCheck, QString column, QString row, QString tgIds)
+void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bool checkParse, bool checkSend, QString timeForCheck, QString rows, QString columns, QString tgIds)
 {
 	m_name = name;
 
@@ -22,11 +22,11 @@ void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bo
 	m_checkSend = checkSend;
 
 	m_timeForCheck = timeForCheck;
-	m_column = column;
-	m_row = row;
+	m_rows = rows;
+	m_columns = columns;
 	m_tgIds = tgIds;
 
-	if (m_checkParse || m_checkSend)
+	if (m_checkParse)
 		classTimer->start(60000); // каждую минуту 60000
 	else
 		classTimer->stop();
@@ -62,38 +62,81 @@ void ProcessObject::check()
 			QSharedPointer<QAxObject>workbooksDonor(excelDonor.data()->querySubObject("Workbooks"));
 			QSharedPointer<QAxObject>workbookDonor(workbooksDonor.data()->querySubObject("Open(const QString&)", m_URL));
 			QSharedPointer<QAxObject>sheetsDonor(workbookDonor.data()->querySubObject("Worksheets"));
-			QSharedPointer<QAxObject>sheetDonor(sheetsDonor.data()->querySubObject("Item(int)", 1));
-			QSharedPointer<QAxObject>dateInFilePtr(sheetDonor.data()->querySubObject("Cells(int,int)", m_column, m_row));
+			QSharedPointer<QAxObject>sheetDonor(sheetsDonor.data()->querySubObject("Item(int)", 1)); // лист с которым будем работать
 
-			QString dateInFileString = dateInFilePtr.data()->property("Value").toString();
+			QSharedPointer<QAxObject>usedRangeColDonor(sheetDonor->querySubObject("UsedRange")); // свойоство листа
+			QSharedPointer<QAxObject>columnsDonor(usedRangeColDonor->querySubObject("Columns")); // столбец
+			int countColsDonor = columnsDonor->property("Count").toInt(); // переводим в int
 
-			if (dateInFileString.length() > 10)
+			QList<QString>dateMassiveFromFile;
+
+			for (int startingCol = m_columns.toInt(); startingCol < countColsDonor; startingCol++)
 			{
-				dateInFileString = QDateTime::fromString(dateInFileString, Qt::ISODate).date().toString("dd.MM.yyyy");
+
+				QSharedPointer<QAxObject>dateInFilePtr(sheetDonor.data()->querySubObject("Cells(int,int)", m_rows, startingCol));
+				QString dateInFileString = dateInFilePtr.data()->property("Value").toString();
+
+				if (dateInFileString == "")
+					continue;
+
+				QSharedPointer<QAxObject>headText(sheetDonor.data()->querySubObject("Cells(int,int)", 2, startingCol)); // нужно добавить выбор строки с шапкой
+				QString headTextInFileString = headText.data()->property("Value").toString();
+
+				qDebug() << dateInFileString;
+
+				if (dateInFileString.length() > 10)
+				{
+					dateInFileString = QDateTime::fromString(dateInFileString, Qt::ISODate).date().toString("dd.MM.yyyy");
+				}
+
+				QDate testDate = QDate::fromString(dateInFileString, "dd.MM.yyyy");
+
+				qDebug() << m_name << " " << "CurrDate " << QDate::currentDate().toString("dd.MM.yyyy") << " " << "TestDate " << testDate.toString("dd.MM.yyyy");
+
+				if (testDate.toString("dd.MM.yyyy") == "")
+					continue;
+
+				if (QDate::currentDate().daysTo(testDate) < m_deadlineDays.toInt())
+				{
+					QString messegeString = (QDate::currentDate().daysTo(testDate) < 0) ? (QString::number(qFabs(QDate::currentDate().daysTo(testDate))) + " дней сдачи просрочилось по " + headTextInFileString) : (QString::number(QDate::currentDate().daysTo(testDate)) + " дней осталось до оформления " + headTextInFileString);
+
+					qDebug() << messegeString << "\n";
+
+					dateMassiveFromFile.append(messegeString);
+				}
+				else
+					qDebug() << m_name << " more then " << m_deadlineDays.toInt() << "\n";
+			}
+
+			QString finalMessegeString;
+
+			for (int firstColumnInFile = 1; firstColumnInFile < m_columns.toInt(); firstColumnInFile++)
+			{
+				QSharedPointer<QAxObject>headText(sheetDonor.data()->querySubObject("Cells(int,int)", m_rows, firstColumnInFile)); // нужно добавить выбор строки с шапкой
+				QString headTextInFileString = headText.data()->property("Value").toString();
+				finalMessegeString += headTextInFileString + "\n";
+			}
+
+			QSharedPointer<QAxObject>headText(sheetDonor.data()->querySubObject("Cells(int,int)", m_rows, 2)); // нужно добавить выбор строки с шапкой
+			QString headTextInFileString = headText.data()->property("Value").toString();
+
+			for (auto& val : dateMassiveFromFile)
+			{
+				finalMessegeString += val + "\n";
+			}
+
+			if (m_checkSend && canMessegeSend && dateMassiveFromFile.length())
+			{
+				qDebug() << finalMessegeString;
+				
+				emit messageReceived(m_tgIds + "@" + finalMessegeString);
+				canMessegeSend = false;
+				
+				QTimer::singleShot(240000, [this]() {canMessegeSend = true; });
 			}
 
 			workbookDonor.data()->dynamicCall("Close()");
 			excelDonor.data()->dynamicCall("Quit()");
-
-			QDate testDate = QDate::fromString(dateInFileString, "dd.MM.yyyy");
-
-			qDebug() << m_name << " " << "CurrDate " << QDate::currentDate().toString("dd.MM.yyyy") << " " << "TestDate " << testDate.toString("dd.MM.yyyy");
-
-			if (QDate::currentDate().daysTo(testDate) < m_deadlineDays.toInt())
-			{
-				QString messegeString = (QDate::currentDate().daysTo(testDate) < 0) ? (QString::number(qFabs(QDate::currentDate().daysTo(testDate))) + " дней сдачи просрочилось по проекту " + m_name) : (QString::number(QDate::currentDate().daysTo(testDate)) + " дней осталось до сдачи заказчику " + m_name);
-
-				qDebug() << messegeString << "\n";
-
-				if (m_checkSend && canMessegeSend)
-				{
-					emit messageReceived(m_tgIds + "@" + messegeString);
-					canMessegeSend = false;
-					QTimer::singleShot(240000, [this]() {canMessegeSend = true;});
-				}
-			}
-			else
-				qDebug() << m_name << " more then " << m_deadlineDays.toInt() << "\n";
 		}
 		else
 			qDebug() << m_name << "more then 3 min\n";
