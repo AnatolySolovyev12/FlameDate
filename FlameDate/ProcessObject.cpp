@@ -99,7 +99,7 @@ void ProcessObject::check()
 
 				if (QDate::currentDate().daysTo(testDate) < m_deadlineDays.toInt())
 				{
-					QString messegeString = (QDate::currentDate().daysTo(testDate) < 0) ? (QString::number(qFabs(QDate::currentDate().daysTo(testDate))) + " дней сдачи просрочилось по " + headTextInFileString) : (QString::number(QDate::currentDate().daysTo(testDate)) + " дней осталось до оформления " + headTextInFileString);
+					QString messegeString = (QDate::currentDate().daysTo(testDate) < 0) ? (QString::number(qFabs(QDate::currentDate().daysTo(testDate))) + " дней оформления просрочилось по " + headTextInFileString) : (QString::number(QDate::currentDate().daysTo(testDate)) + " дней осталось до оформления " + headTextInFileString);
 
 					qDebug() << messegeString << "\n";
 
