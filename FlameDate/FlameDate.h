@@ -5,7 +5,6 @@
 
 #include <ProcessObject.h>
 
-
 #include <QFileDialog>
 #include <QFile>
 #include <QXmlStreamWriter>
@@ -18,6 +17,8 @@
 
 #include <windows.h>
 #include <TelegramJacket.h>
+
+#include "GeneralParam.h"
 
 class FlameDate : public QMainWindow
 {
@@ -49,7 +50,7 @@ public:
 
     void getTokenFromFile();
 
-   // void showGeneralParam();
+    void showGeneralParam();
 
 private:
     Ui::FlameDateClass ui;
@@ -76,6 +77,9 @@ private:
     bool windowShow = false;
 
     QTimer* timerUpdate = nullptr;
+
+
+    GeneralParam* myGenParam = nullptr;
 };
 
 

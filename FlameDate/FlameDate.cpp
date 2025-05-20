@@ -3,11 +3,11 @@
 
 
 FlameDate::FlameDate(QWidget* parent)
-	: QMainWindow(parent), sBar(new QStatusBar()), tgObject(new TelegramJacket), timerUpdate(new QTimer)
+	: QMainWindow(parent), sBar(new QStatusBar()), tgObject(new TelegramJacket), timerUpdate(new QTimer), myGenParam(new GeneralParam)
 {
 	ui.setupUi(this);
 
-	//connect(ui.pushButtonSetting, &QPushButton::clicked, this, &FlameDate::showGeneralParam);
+	connect(ui.pushButtonSetting, &QPushButton::clicked, this, &FlameDate::showGeneralParam);
 
 	trayIcon = new QSystemTrayIcon(this);
 	trayIcon->setIcon(QIcon("icon.png"));
@@ -707,9 +707,8 @@ void FlameDate::getTokenFromFile()
 	file.close();
 }
 
-/*
+
 void FlameDate::showGeneralParam()
 {
-	myGeneralParam->show();
+	myGenParam->show();
 }
-*/

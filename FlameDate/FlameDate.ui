@@ -117,7 +117,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Name Project</string>
+      <string>Name</string>
      </property>
     </column>
     <column>
@@ -127,7 +127,7 @@
     </column>
     <column>
      <property name="text">
-      <string>Days to start DeadLine</string>
+      <string>DeadLine</string>
      </property>
     </column>
     <column>
@@ -216,7 +216,7 @@
      </rect>
     </property>
     <property name="toolTip">
-     <string>Refresh control parameters for control object</string>
+     <string>Set general default parameters.</string>
     </property>
     <property name="text">
      <string>St</string>
