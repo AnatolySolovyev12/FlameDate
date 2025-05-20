@@ -7,6 +7,8 @@ FlameDate::FlameDate(QWidget* parent)
 {
 	ui.setupUi(this);
 
+	//connect(ui.pushButtonSetting, &QPushButton::clicked, this, &FlameDate::showGeneralParam);
+
 	trayIcon = new QSystemTrayIcon(this);
 	trayIcon->setIcon(QIcon("icon.png"));
 
@@ -36,7 +38,6 @@ FlameDate::FlameDate(QWidget* parent)
 	connect(ui.pushButtonRefresh, &QPushButton::clicked, this, &FlameDate::initializationPoolFunc);
 
 	QMainWindow::setStatusBar(sBar);
-
 
 	connect(timerUpdate, &QTimer::timeout, tgObject, &TelegramJacket::getUpdates);
 	timerUpdate->start(12000);
@@ -76,6 +77,8 @@ void FlameDate::addItemInList()
 	any->setCheckState(4, any->checkState(4));
 
 	any->setText(5, "07:00:00");
+	any->setText(6, "1");
+	any->setText(7, "1");
 
 	any->setBackground(5, QColor(98, 244, 249, 255));
 	any->setBackground(6, QColor(125, 198, 210, 255));
@@ -703,3 +706,10 @@ void FlameDate::getTokenFromFile()
 
 	file.close();
 }
+
+/*
+void FlameDate::showGeneralParam()
+{
+	myGeneralParam->show();
+}
+*/

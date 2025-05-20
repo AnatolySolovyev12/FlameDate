@@ -58,6 +58,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GeneralParam.cpp" />
     <ClCompile Include="ProcessObject.cpp" />
     <ClCompile Include="TelegramJacket.cpp" />
     <QtRcc Include="FlameDate.qrc" />
@@ -65,10 +66,14 @@
     <QtMoc Include="FlameDate.h" />
     <ClCompile Include="FlameDate.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="GeneralParam.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ProcessObject.h" />
     <QtMoc Include="TelegramJacket.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="GeneralParam.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

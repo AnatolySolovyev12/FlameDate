@@ -49,6 +49,8 @@ public:
 
     void getTokenFromFile();
 
+   // void showGeneralParam();
+
 private:
     Ui::FlameDateClass ui;
     bool offChanger = false;
