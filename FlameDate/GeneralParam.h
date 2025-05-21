@@ -25,11 +25,8 @@ public:
 	QString m_rowLine;
 	QString m_columnLine;
 	QString m_telegramLine;
-
-	QString hostName;
-	QString odbc;
-	QString userNameDb;
-	QString passDb;
+	QString m_list;
+	QString m_rowHead;
 
 signals:
 	void refreshSetting();

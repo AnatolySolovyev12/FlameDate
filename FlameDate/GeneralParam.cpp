@@ -130,6 +130,26 @@ void GeneralParam::readDefaultConfig()
 			ui.telegramLine->setText(m_telegramLine);
 			break;
 		}
+		case(8):
+		{
+			m_list = temporary;
+
+			if (m_list.toInt() < 1 || m_list.toInt() > 50)
+				m_list = QString::number(1);
+
+			ui.listLine->setText(m_list);
+			break;
+		}
+		case(9):
+		{
+			m_rowHead = temporary;
+
+			if (m_rowHead.toInt() < 1 || m_rowHead.toInt() > 50)
+				m_rowHead = QString::number(1);
+
+			ui.rowHeadLine->setText(m_rowHead);
+			break;
+		}
 
 		}
 	}
@@ -154,6 +174,8 @@ void GeneralParam::writeCurrent()
 		out << ui.rowLine->text() << Qt::endl;
 		out << ui.columnLine->text() << Qt::endl;
 		out << ui.telegramLine->text() << Qt::endl;
+		out << ui.listLine->text() << Qt::endl;
+		out << ui.rowHeadLine->text() << Qt::endl;
 
 	}
 	else

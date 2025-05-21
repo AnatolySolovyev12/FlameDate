@@ -86,10 +86,10 @@ private:
     QString mFlame_deadlineLine = "15";
     QString mFlame_timeLine = "07:00:00";
     QString mFlame_rowLine = "1";
+    QString mFlame_columnLine = "1";
+    QString mFlame_telegramLine;
     QString mFlame_list = "1";
     QString mFlame_rowHead = "1";
-   // QString mFlame_columnLine = "1";
-   // QString mFlame_telegramLine;
 
 };
 

@@ -82,11 +82,15 @@ void FlameDate::addItemInList()
 	any->setText(6, mFlame_rowLine);
 	any->setText(7, mFlame_columnLine);
 	any->setText(8, mFlame_telegramLine);
+	any->setText(9, mFlame_list);
+	any->setText(10, mFlame_rowHead);
 
 	any->setBackground(5, QColor(98, 244, 249, 255));
 	any->setBackground(6, QColor(125, 198, 210, 255));
 	any->setBackground(7, QColor(119, 168, 142, 255));
 	any->setBackground(8, QColor(79, 168, 142, 255));
+	any->setBackground(9, QColor(88, 122, 111, 255));
+	any->setBackground(10, QColor(94, 140, 113, 255));
 
 	offChanger = false;
 
@@ -101,7 +105,9 @@ void FlameDate::addItemInList()
 		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(5),
 		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(6),
 		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(7),
-		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(8)
+		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(8),
+		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(9),
+		ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(10)
 	);
 
 	connect(poolParse.last().data(), &ProcessObject::messageReceived, tgObject, &TelegramJacket::sendMessage);
@@ -161,6 +167,12 @@ void FlameDate::closeEditor(QTreeWidgetItem* any) // слот закрытия �
 
 	temporary = any->text(8).trimmed(); // убираем пробелы
 	any->setText(8, temporary);
+
+	temporary = any->text(9).trimmed(); // убираем пробелы
+	any->setText(9, temporary);
+
+	temporary = any->text(10).trimmed(); // убираем пробелы
+	any->setText(10, temporary);
 
 	offChanger = true;
 
@@ -230,6 +242,16 @@ void FlameDate::closeEditor(QTreeWidgetItem* any) // слот закрытия �
 		any->setText(8, "Not more then 150 signs");
 	}
 
+	if (any->text(9).toInt() < 1 || any->text(9).toInt() > 50)
+	{
+		any->setText(9, QString::number(1));
+	}
+
+	if (any->text(10).toInt() < 1 || any->text(10).toInt() > 50)
+	{
+		any->setText(10, QString::number(1));
+	}
+
 	offChanger = false;
 
 	ui.treeWidget->closePersistentEditor(middleItem, middleColumn); // закрываем редактор
@@ -263,9 +285,15 @@ void FlameDate::otherItemWasChecked(QTreeWidgetItem* any) // закрываем 
 
 	temporary = any->text(7).trimmed(); // убираем пробелы
 	any->setText(7, temporary);
-
+	
 	temporary = any->text(8).trimmed(); // убираем пробелы
 	any->setText(8, temporary);
+
+	temporary = any->text(9).trimmed(); // убираем пробелы
+	any->setText(9, temporary);
+
+	temporary = any->text(10).trimmed(); // убираем пробелы
+	any->setText(10, temporary);
 
 	ui.treeWidget->closePersistentEditor(middleItem, middleColumn);
 	middleItem = nullptr;
@@ -340,6 +368,10 @@ void FlameDate::recursionXmlWriter(QTreeWidgetItem* some, QXmlStreamWriter& some
 
 		someXmlWriter.writeAttribute("Id", some->text(8));
 
+		someXmlWriter.writeAttribute("List", some->text(9));
+
+		someXmlWriter.writeAttribute("RowHead", some->text(10));
+
 
 		int count = some->childCount();
 
@@ -380,6 +412,10 @@ void FlameDate::recursionXmlWriter(QTreeWidgetItem* some, QXmlStreamWriter& some
 		someXmlWriter.writeAttribute("Row", some->text(7));
 
 		someXmlWriter.writeAttribute("Id", some->text(8));
+
+		someXmlWriter.writeAttribute("List", some->text(9));
+
+		someXmlWriter.writeAttribute("RowHead", some->text(10));
 
 		someXmlWriter.writeEndElement();
 
@@ -463,6 +499,8 @@ void FlameDate::loopXmlReader(QXmlStreamReader& xmlReader)
 			some->setBackground(6, QColor(125, 198, 210, 255));
 			some->setBackground(7, QColor(119, 168, 142, 255));
 			some->setBackground(8, QColor(79, 168, 142, 255));
+			some->setBackground(9, QColor(88, 122, 111, 255));
+			some->setBackground(10, QColor(94, 140, 113, 255));
 
 
 			some->setText(0, xmlReader.name().toString());
@@ -499,6 +537,9 @@ void FlameDate::loopXmlReader(QXmlStreamReader& xmlReader)
 
 				if (val.name().toString() == "Id") some->setText(8, val.value().toString());
 
+				if (val.name().toString() == "List") some->setText(9, val.value().toString());
+
+				if (val.name().toString() == "RowHead") some->setText(10, val.value().toString());
 			}
 
 			offChanger = false;
@@ -573,22 +614,22 @@ void FlameDate::initializationPoolFunc()
 
 	for (int count = 0; count < countOfTopItems; count++)
 	{
-		if (ui.treeWidget->topLevelItem(count)->text(0).toStdString().length() > 500) // красим если что-то написано в серийнике
+		if (ui.treeWidget->topLevelItem(count)->text(0).toStdString().length() > 500) 
 		{
 			ui.treeWidget->topLevelItem(count)->setText(0, "Not more then 500 signs");
 		}
 
-		if (ui.treeWidget->topLevelItem(count)->text(1).toStdString().length() > 500) // красим если что-то написано в серийнике
+		if (ui.treeWidget->topLevelItem(count)->text(1).toStdString().length() > 500) 
 		{
 			ui.treeWidget->topLevelItem(count)->setText(1, "Not more then 500 signs");
 		}
 
-		if (ui.treeWidget->topLevelItem(count)->text(2).toInt() < 15 || ui.treeWidget->topLevelItem(count)->text(2).toInt() > 120) // красим если что-то написано в серийнике
+		if (ui.treeWidget->topLevelItem(count)->text(2).toInt() < 15 || ui.treeWidget->topLevelItem(count)->text(2).toInt() > 120) 
 		{
 			ui.treeWidget->topLevelItem(count)->setText(2, QString::number(15));
 		}
 
-		if (ui.treeWidget->topLevelItem(count)->text(5).isEmpty()) // красим если что-то написано в серийнике
+		if (ui.treeWidget->topLevelItem(count)->text(5).isEmpty()) 
 		{
 			ui.treeWidget->topLevelItem(count)->setText(5, "07:00:00");
 		}
@@ -598,19 +639,29 @@ void FlameDate::initializationPoolFunc()
 			validDate(ui.treeWidget->topLevelItem(count));
 		}
 
-		if (ui.treeWidget->topLevelItem(count)->text(6).toStdString().length() > 300) // красим если что-то написано в серийнике
+		if (ui.treeWidget->topLevelItem(count)->text(6).toStdString().length() > 300) 
 		{
 			ui.treeWidget->topLevelItem(count)->setText(6, QString::number(1));
 		}
 
-		if (ui.treeWidget->topLevelItem(count)->text(7).toStdString().length() > 300) // красим если что-то написано в серийнике
+		if (ui.treeWidget->topLevelItem(count)->text(7).toStdString().length() > 300) 
 		{
 			ui.treeWidget->topLevelItem(count)->setText(7, QString::number(1));
 		}
 
-		if (ui.treeWidget->topLevelItem(count)->text(8).toStdString().length() > 150) // красим если что-то написано в серийнике
+		if (ui.treeWidget->topLevelItem(count)->text(8).toStdString().length() > 150) 
 		{
 			ui.treeWidget->topLevelItem(count)->setText(8, "Not more then 150 signs");
+		}
+
+		if (ui.treeWidget->topLevelItem(count)->text(9).toInt() < 1 || ui.treeWidget->topLevelItem(count)->text(10).toInt() > 50)
+		{
+			ui.treeWidget->topLevelItem(count)->setText(9, QString::number(1));
+		}
+
+		if (ui.treeWidget->topLevelItem(count)->text(10).toInt() < 1 || ui.treeWidget->topLevelItem(count)->text(10).toInt() > 50)
+		{
+			ui.treeWidget->topLevelItem(count)->setText(10, QString::number(1));
 		}
 
 		poolParse.append(QSharedPointer<ProcessObject>::create());
@@ -624,7 +675,9 @@ void FlameDate::initializationPoolFunc()
 			ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(5),
 			ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(6),
 			ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(7),
-			ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(8)
+			ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(8),
+			ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(9),
+			ui.treeWidget->topLevelItem(poolParse.length() - 1)->text(10)
 
 		);
 
@@ -724,5 +777,7 @@ void FlameDate::refreshSettingInFlameDate()
 	 mFlame_timeLine = myGenParam->m_timeLine;
 	 mFlame_rowLine = myGenParam->m_rowLine;
 	 mFlame_columnLine = myGenParam->m_columnLine;
-	 mFlame_telegramLine = myGenParam->m_telegramLine;;
+	 mFlame_telegramLine = myGenParam->m_telegramLine;
+	 mFlame_list = myGenParam->m_list;
+	 mFlame_rowHead = myGenParam->m_rowHead;
 }

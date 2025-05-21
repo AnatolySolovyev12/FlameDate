@@ -10,7 +10,7 @@ ProcessObject::ProcessObject(QObject* parent)
 }
 
 
-void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bool checkParse, bool checkSend, QString timeForCheck, QString rows, QString columns, QString tgIds)
+void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bool checkParse, bool checkSend, QString timeForCheck, QString rows, QString columns, QString tgIds, QString list, QString rowHead)
 {
 	m_name = name;
 
@@ -25,6 +25,8 @@ void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bo
 	m_rows = rows;
 	m_columns = columns;
 	m_tgIds = tgIds;
+	m_list = list;
+	m_rowHead = rowHead;
 
 	if (m_checkParse)
 		classTimer->start(60000); // каждую минуту 60000
@@ -63,7 +65,7 @@ void ProcessObject::check()
 			QSharedPointer<QAxObject>workbooksDonor(excelDonor.data()->querySubObject("Workbooks"));
 			QSharedPointer<QAxObject>workbookDonor(workbooksDonor.data()->querySubObject("Open(const QString&)", m_URL));
 			QSharedPointer<QAxObject>sheetsDonor(workbookDonor.data()->querySubObject("Worksheets"));
-			QSharedPointer<QAxObject>sheetDonor(sheetsDonor.data()->querySubObject("Item(int)", 1)); // лист с которым будем работать
+			QSharedPointer<QAxObject>sheetDonor(sheetsDonor.data()->querySubObject("Item(int)", m_list.toInt())); // лист с которым будем работать
 
 			QSharedPointer<QAxObject>usedRangeColDonor(sheetDonor->querySubObject("UsedRange")); // свойоство листа
 			QSharedPointer<QAxObject>columnsDonor(usedRangeColDonor->querySubObject("Columns")); // столбец
@@ -80,7 +82,7 @@ void ProcessObject::check()
 				if (dateInFileString == "")
 					continue;
 
-				QSharedPointer<QAxObject>headText(sheetDonor.data()->querySubObject("Cells(int,int)", 2, startingCol)); // нужно добавить выбор строки с шапкой
+				QSharedPointer<QAxObject>headText(sheetDonor.data()->querySubObject("Cells(int,int)", m_rowHead.toInt(), startingCol)); // нужно добавить выбор строки с шапкой
 				QString headTextInFileString = headText.data()->property("Value").toString();
 
 				qDebug() << dateInFileString;
