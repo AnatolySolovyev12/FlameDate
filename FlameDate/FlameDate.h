@@ -52,6 +52,8 @@ public:
 
     void showGeneralParam();
 
+    void refreshSettingInFlameDate();
+
 private:
     Ui::FlameDateClass ui;
     bool offChanger = false;
@@ -70,7 +72,6 @@ private:
 
     int countOfTopItems;
 
-
     QSystemTrayIcon* trayIcon = nullptr;
     QDateTime fullTimeWork;
 
@@ -78,8 +79,18 @@ private:
 
     QTimer* timerUpdate = nullptr;
 
-
     GeneralParam* myGenParam = nullptr;
+
+    QString mFlame_name = "new";
+    QString mFlame_directory = "path";
+    QString mFlame_deadlineLine = "15";
+    QString mFlame_timeLine = "07:00:00";
+    QString mFlame_rowLine = "1";
+    QString mFlame_list = "1";
+    QString mFlame_rowHead = "1";
+   // QString mFlame_columnLine = "1";
+   // QString mFlame_telegramLine;
+
 };
 
 

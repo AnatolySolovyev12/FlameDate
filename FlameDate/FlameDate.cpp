@@ -8,7 +8,8 @@ FlameDate::FlameDate(QWidget* parent)
 	ui.setupUi(this);
 
 	connect(ui.pushButtonSetting, &QPushButton::clicked, this, &FlameDate::showGeneralParam);
-
+	connect(myGenParam, &GeneralParam::refreshSetting, this, &FlameDate::refreshSettingInFlameDate);
+	
 	trayIcon = new QSystemTrayIcon(this);
 	trayIcon->setIcon(QIcon("icon.png"));
 
@@ -42,6 +43,7 @@ FlameDate::FlameDate(QWidget* parent)
 	connect(timerUpdate, &QTimer::timeout, tgObject, &TelegramJacket::getUpdates);
 	timerUpdate->start(12000);
 
+	refreshSettingInFlameDate();
 	startingImportXml();
 	initializationPoolFunc();
 
@@ -66,9 +68,9 @@ void FlameDate::addItemInList()
 
 	offChanger = true;
 
-	any->setText(0, "new");
-
-	any->setText(2, QString::number(15));
+	any->setText(0, mFlame_name);
+	any->setText(1, mFlame_directory);
+	any->setText(2, mFlame_deadlineLine);
 
 	any->setBackground(0, QColor(221, 221, 221, 255));
 	any->setBackground(1, QColor(245, 216, 183, 255));
@@ -76,9 +78,10 @@ void FlameDate::addItemInList()
 	any->setCheckState(3, any->checkState(3));
 	any->setCheckState(4, any->checkState(4));
 
-	any->setText(5, "07:00:00");
-	any->setText(6, "1");
-	any->setText(7, "1");
+	any->setText(5, mFlame_timeLine);
+	any->setText(6, mFlame_rowLine);
+	any->setText(7, mFlame_columnLine);
+	any->setText(8, mFlame_telegramLine);
 
 	any->setBackground(5, QColor(98, 244, 249, 255));
 	any->setBackground(6, QColor(125, 198, 210, 255));
@@ -164,27 +167,27 @@ void FlameDate::closeEditor(QTreeWidgetItem* any) // слот закрытия �
 	any->setCheckState(3, any->checkState(3));
 	any->setCheckState(4, any->checkState(4));
 
-	if (any->text(0).toStdString().length() > 500) // красим если что-то написано в серийнике
+	if (any->text(0).toStdString().length() > 500) 
 	{
 		any->setText(0, "Not more then 500 signs");
 	}
 
-	if (any->text(1).toStdString().length() > 500) // красим если что-то написано в серийнике
+	if (any->text(1).toStdString().length() > 500) 
 	{
 		any->setText(1, "Not more then 500 signs");
 	}
 
-	if (any->text(2).toInt() < 15 || any->text(2).toInt() > 120) // красим если что-то написано в серийнике
+	if (any->text(2).toInt() < 15 || any->text(2).toInt() > 120) 
 	{
 		any->setText(2, QString::number(15));
 	}
 
-	if (any->text(2).toInt() < 15 || any->text(2).toInt() > 120) // красим если что-то написано в серийнике
+	if (any->text(2).toInt() < 15 || any->text(2).toInt() > 120) 
 	{
 		any->setText(2, QString::number(15));
 	}
 
-	if (any->text(5).isEmpty()) // красим если что-то написано в серийнике
+	if (any->text(5).isEmpty()) 
 	{
 		any->setText(5, "07:00:00");
 	}
@@ -194,7 +197,7 @@ void FlameDate::closeEditor(QTreeWidgetItem* any) // слот закрытия �
 		validDate(any);
 	}
 
-	if (any->checkState(3) == Qt::Unchecked) // красим если что-то написано в серийнике
+	if (any->checkState(3) == Qt::Unchecked) 
 	{
 		any->setBackground(3, QColor("white"));
 	}
@@ -203,7 +206,7 @@ void FlameDate::closeEditor(QTreeWidgetItem* any) // слот закрытия �
 		any->setBackground(3, QColor(128, 243, 150, 255));
 	}
 
-	if (any->checkState(4) == Qt::Unchecked) // красим если что-то написано в серийнике
+	if (any->checkState(4) == Qt::Unchecked) 
 	{
 		any->setBackground(4, QColor("white"));
 	}
@@ -212,17 +215,17 @@ void FlameDate::closeEditor(QTreeWidgetItem* any) // слот закрытия �
 		any->setBackground(4, QColor(128, 243, 150, 255));
 	}
 
-	if (any->text(6).toInt() < 1 || any->text(6).toInt() > 300) // красим если что-то написано в серийнике
+	if (any->text(6).toInt() < 1 || any->text(6).toInt() > 300) 
 	{
 		any->setText(6, QString::number(1));
 	}
 
-	if (any->text(7).toInt() < 1 || any->text(7).toInt() > 300) // красим если что-то написано в серийнике
+	if (any->text(7).toInt() < 1 || any->text(7).toInt() > 300) 
 	{
 		any->setText(7, QString::number(1));
 	}
 
-	if (any->text(8).toStdString().length() > 150) // красим если что-то написано в серийнике
+	if (any->text(8).toStdString().length() > 150) 
 	{
 		any->setText(8, "Not more then 150 signs");
 	}
@@ -711,4 +714,15 @@ void FlameDate::getTokenFromFile()
 void FlameDate::showGeneralParam()
 {
 	myGenParam->show();
+}
+
+void FlameDate::refreshSettingInFlameDate()
+{
+	 mFlame_name = myGenParam->m_name;
+	 mFlame_directory = myGenParam->m_directory;
+	 mFlame_deadlineLine = myGenParam->m_deadlineLine;
+	 mFlame_timeLine = myGenParam->m_timeLine;
+	 mFlame_rowLine = myGenParam->m_rowLine;
+	 mFlame_columnLine = myGenParam->m_columnLine;
+	 mFlame_telegramLine = myGenParam->m_telegramLine;;
 }

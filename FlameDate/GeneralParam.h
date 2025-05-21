@@ -1,24 +1,4 @@
 #pragma once
-/*
-#include <QMainWindow>
-#include "ui_GeneralParam.h"
-
-class GeneralParam : public QMainWindow
-{
-	Q_OBJECT
-
-public:
-	GeneralParam(QWidget *parent = nullptr);
-	~GeneralParam();
-
-private:
-	Ui::GeneralParamClass ui;
-};
-*/
-
-
-
-#pragma once
 
 #include <QMainWindow>
 #include "ui_GeneralParam.h"
@@ -38,13 +18,13 @@ public:
 	void readDefaultConfig();
 	void fileNameSetter(QString any);
 
-
-	QString smtpServer;
-	QString smtpPort;
-	QString userName;
-	QString password;
-	QString recipantTo;
-	QString subject;
+	QString m_name;
+	QString m_directory;
+	QString m_deadlineLine;
+	QString m_timeLine;
+	QString m_rowLine;
+	QString m_columnLine;
+	QString m_telegramLine;
 
 	QString hostName;
 	QString odbc;
@@ -52,7 +32,7 @@ public:
 	QString passDb;
 
 signals:
-	void status(const QString&);
+	void refreshSetting();
 
 private slots:
 	void writeCurrent();

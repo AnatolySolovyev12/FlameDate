@@ -9,16 +9,16 @@ GeneralParam::GeneralParam(QWidget* parent)
 {
 	ui.setupUi(this);
 
-
 	connect(ui.exitBtn, SIGNAL(clicked()), this, SLOT(close()));
 	connect(ui.saveAllBtn, SIGNAL(clicked()), this, SLOT(writeCurrent()));
 
 	readDefaultConfig();
-
 }
 
 GeneralParam::~GeneralParam()
-{}
+{
+}
+
 
 void GeneralParam::fileNameSetter(QString any)
 {
@@ -53,85 +53,90 @@ void GeneralParam::readDefaultConfig()
 			temporary += val;
 		}
 
+		temporary = temporary.trimmed();
+
 		switch (countParam)
 		{
-
 		case(1):
 		{
-			smtpServer = temporary;
-			ui.directoryLine->setText(smtpServer);
+			m_name = temporary;
+
+			if (m_name.length() > 500)
+				m_name = "Not more then 500 signs";
+
+			ui.nameLine->setText(m_name);
 			break;
 		}
 		case(2):
 		{
-			smtpPort = temporary;
-			ui.deadlineLine->setText(smtpPort);
+			m_directory = temporary;
+
+			if (m_directory.length() > 500)
+				m_directory = "Not more then 500 signs";
+
+			ui.directoryLine->setText(m_directory);
 			break;
 		}
 		case(3):
 		{
-			userName = temporary;
-			ui.timeLine->setText(userName);
+			m_deadlineLine = temporary;
+
+			if (m_deadlineLine.toInt() < 15 || m_deadlineLine.toInt() > 120)
+				m_deadlineLine = QString::number(15);
+
+			ui.deadlineLine->setText(m_deadlineLine);
 			break;
 		}
 		case(4):
 		{
-			password = temporary;
-			ui.rowLine->setText(password);
+			m_timeLine = temporary;
+
+			if (m_timeLine.length() != 8)
+				m_timeLine = "07:00:00";
+
+			if (QTime::fromString(m_timeLine, "hh:mm:ss").toString().isEmpty())
+				m_timeLine = "07:00:00";
+
+			ui.timeLine->setText(m_timeLine);
 			break;
 		}
 		case(5):
 		{
-			recipantTo = temporary;
-			ui.columnLine->setText(recipantTo);
+			m_rowLine = temporary;
+
+			if (m_rowLine.toInt() < 1 || m_rowLine.toInt() > 300)
+				m_rowLine = QString::number(1);
+
+			ui.rowLine->setText(m_rowLine);
 			break;
 		}
 		case(6):
 		{
-			subject = temporary;
-			ui.telegramLine->setText(subject);
+			m_columnLine = temporary;
+
+			if (m_columnLine.toInt() < 1 || m_columnLine.toInt() > 300)
+				m_columnLine = QString::number(1);
+
+			ui.columnLine->setText(m_columnLine);
 			break;
 		}
-		/*case(7):
+		case(7):
 		{
-			hostName = temporary;
-			ui.lineEditHostName->setText(hostName);
+			m_telegramLine = temporary;
+
+			if (m_telegramLine.length() > 500)
+				m_telegramLine = "Not more then 500 signs";
+
+			ui.telegramLine->setText(m_telegramLine);
 			break;
 		}
-		case(8):
-		{
-			odbc = temporary;
-			ui.lineEditOdbc->setText(odbc);
-			break;
-		}
-		case(9):
-		{
-			userNameDb = temporary;
-			ui.lineEditUserName->setText(userNameDb);
-			break;
-		}
-		case(10):
-		{
-			passDb = temporary;
-			ui.lineEditPassword->setText(passDb);
-			break;
-		}
-		case(11):
-		{
-			if (temporary.toInt() > 240 || temporary.toInt() < 1)
-			{
-				temporary = "240";
-				qDebug() << "Hours for autocreater have wrong value in config file. Was accept default value 240 hours";
-			}
-			timerTime = temporary.toInt();
-			ui.spinBoxHours->setValue(timerTime);
-			break;
-		}*/
+
 		}
 	}
 
 	file.close();
 }
+
 
 void GeneralParam::writeCurrent()
 {
@@ -142,21 +147,14 @@ void GeneralParam::writeCurrent()
 		QTextStream out(&file); // поток записываемых данных направляем в файл
 
 		// Для записи данных в файл используем оператор <<
+		out << ui.nameLine->text() << Qt::endl;
 		out << ui.directoryLine->text() << Qt::endl;
 		out << ui.deadlineLine->text() << Qt::endl;
 		out << ui.timeLine->text() << Qt::endl;
 		out << ui.rowLine->text() << Qt::endl;
 		out << ui.columnLine->text() << Qt::endl;
 		out << ui.telegramLine->text() << Qt::endl;
-		
-		/*
-		out << ui.lineEditHostName->text() << Qt::endl;
-		out << ui.lineEditOdbc->text() << Qt::endl;
-		out << ui.lineEditUserName->text() << Qt::endl;
-		out << ui.lineEditPassword->text() << Qt::endl;
 
-		out << ui.spinBoxHours->text() << Qt::endl;
-		*/
 	}
 	else
 	{
@@ -167,6 +165,6 @@ void GeneralParam::writeCurrent()
 
 	readDefaultConfig();
 
-	emit status(tr("dbreconnet"));
+	emit refreshSetting();
 }
 

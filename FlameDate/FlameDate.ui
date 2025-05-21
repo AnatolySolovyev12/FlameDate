@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1079</width>
+    <width>1198</width>
     <height>510</height>
    </rect>
   </property>
@@ -93,7 +93,7 @@
      <rect>
       <x>60</x>
       <y>10</y>
-      <width>1001</width>
+      <width>1121</width>
       <height>441</height>
      </rect>
     </property>
@@ -158,6 +158,16 @@
     <column>
      <property name="text">
       <string>Telegram Id</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>List in file</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Row head</string>
      </property>
     </column>
    </widget>
@@ -228,7 +238,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1079</width>
+     <width>1198</width>
      <height>22</height>
     </rect>
    </property>
