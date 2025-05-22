@@ -90,7 +90,6 @@ private:
     QString mFlame_telegramLine;
     QString mFlame_list = "1";
     QString mFlame_rowHead = "1";
-
 };
 
 

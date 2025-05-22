@@ -9,7 +9,7 @@ FlameDate::FlameDate(QWidget* parent)
 
 	connect(ui.pushButtonSetting, &QPushButton::clicked, this, &FlameDate::showGeneralParam);
 	connect(myGenParam, &GeneralParam::refreshSetting, this, &FlameDate::refreshSettingInFlameDate);
-	
+
 	trayIcon = new QSystemTrayIcon(this);
 	trayIcon->setIcon(QIcon("icon.png"));
 
@@ -49,6 +49,8 @@ FlameDate::FlameDate(QWidget* parent)
 
 	getTokenFromFile();
 }
+
+	
 
 
 FlameDate::~FlameDate()
