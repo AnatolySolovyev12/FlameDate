@@ -190,3 +190,8 @@ void GeneralParam::writeCurrent()
 	emit refreshSetting();
 }
 
+bool GeneralParam::getNameCheck()
+{
+	return ui.checkBoxNameCounter->isChecked();
+}
+

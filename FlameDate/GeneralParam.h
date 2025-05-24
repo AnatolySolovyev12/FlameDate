@@ -17,6 +17,7 @@ public:
 
 	void readDefaultConfig();
 	void fileNameSetter(QString any);
+	bool getNameCheck();
 
 	QString m_name;
 	QString m_directory;

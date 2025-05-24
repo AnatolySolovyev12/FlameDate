@@ -34,7 +34,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>0</y>
+        <y>40</y>
         <width>331</width>
         <height>471</height>
        </rect>
@@ -174,58 +174,47 @@
          </property>
         </widget>
        </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="label_20">
+         <property name="text">
+          <string>List</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QLineEdit" name="listLine">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_21">
+         <property name="text">
+          <string>Head</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <widget class="QLineEdit" name="rowHeadLine">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
-     <widget class="QLineEdit" name="listLine">
+     <widget class="QCheckBox" name="checkBoxNameCounter">
       <property name="geometry">
        <rect>
-        <x>64</x>
-        <y>220</y>
-        <width>271</width>
-        <height>22</height>
+        <x>10</x>
+        <y>10</y>
+        <width>121</width>
+        <height>20</height>
        </rect>
       </property>
       <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="rowHeadLine">
-      <property name="geometry">
-       <rect>
-        <x>64</x>
-        <y>251</y>
-        <width>271</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_20">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>220</y>
-        <width>31</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>List</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_21">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>251</y>
-        <width>31</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Head</string>
+       <string>Name is counter</string>
       </property>
      </widget>
     </widget>

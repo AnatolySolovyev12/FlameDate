@@ -70,6 +70,9 @@ void FlameDate::addItemInList()
 
 	offChanger = true;
 
+	if (myGenParam->getNameCheck() == 1)
+		mFlame_name = QString::number(poolParse.length() + 1);
+
 	any->setText(0, mFlame_name);
 	any->setText(1, mFlame_directory);
 	any->setText(2, mFlame_deadlineLine);
