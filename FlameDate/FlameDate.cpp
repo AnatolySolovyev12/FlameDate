@@ -787,4 +787,6 @@ void FlameDate::refreshSettingInFlameDate()
 	 mFlame_telegramLine = myGenParam->m_telegramLine;
 	 mFlame_list = myGenParam->m_list;
 	 mFlame_rowHead = myGenParam->m_rowHead;
+
+	 tgObject->setWeekMask(myGenParam->getMessegeWeekMaskInGeneral());
 }

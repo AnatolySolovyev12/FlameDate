@@ -161,7 +161,5 @@ void TelegramJacket::setToken(QString val)
 void TelegramJacket::setWeekMask(QList<int> any)
 {
 	messegeWeekMask = any;
-	qDebug() << any;
-	qDebug() << messegeWeekMask;
 }
 
