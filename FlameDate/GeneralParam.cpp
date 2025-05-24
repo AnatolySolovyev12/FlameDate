@@ -150,7 +150,86 @@ void GeneralParam::readDefaultConfig()
 			ui.rowHeadLine->setText(m_rowHead);
 			break;
 		}
+		case(10):
+		{
+			if (temporary.toInt() > 1 || temporary.toInt() < 0)
+				messegeWeekMaskInGeneral[1] = 1;
+			else
+				messegeWeekMaskInGeneral[1] = temporary.toInt();
 
+			ui.checkMon->setChecked(temporary.toInt());
+			break;
+		}
+		case(11):
+		{
+			if (temporary.toInt() > 1 || temporary.toInt() < 0)
+				messegeWeekMaskInGeneral[2] = 1;
+			else
+				messegeWeekMaskInGeneral[2] = temporary.toInt();
+
+			ui.checkTue->setChecked(temporary.toInt());
+			break;
+		}
+		case(12):
+		{
+			if (temporary.toInt() > 1 || temporary.toInt() < 0)
+				messegeWeekMaskInGeneral[3] = 1;
+			else
+				messegeWeekMaskInGeneral[3] = temporary.toInt();
+
+			ui.checkWed->setChecked(temporary.toInt());
+			break;
+		}
+		case(13):
+		{
+			if (temporary.toInt() > 1 || temporary.toInt() < 0)
+				messegeWeekMaskInGeneral[4] = 1;
+			else
+				messegeWeekMaskInGeneral[4] = temporary.toInt();
+
+			ui.checkThurs->setChecked(temporary.toInt());
+			break;
+		}
+		case(14):
+		{
+			if (temporary.toInt() > 1 || temporary.toInt() < 0)
+				messegeWeekMaskInGeneral[5] = 1;
+			else
+				messegeWeekMaskInGeneral[5] = temporary.toInt();
+
+			ui.checkFri->setChecked(temporary.toInt());
+			break;
+		}
+		case(15):
+		{
+			if (temporary.toInt() > 1 || temporary.toInt() < 0)
+				messegeWeekMaskInGeneral[6] = 1;
+			else
+				messegeWeekMaskInGeneral[6] = temporary.toInt();
+
+			ui.checkSat->setChecked(temporary.toInt());
+			break;
+		}
+		case(16):
+		{
+			if (temporary.toInt() > 1 || temporary.toInt() < 0)
+				messegeWeekMaskInGeneral[7] = 1;
+			else
+				messegeWeekMaskInGeneral[7] = temporary.toInt();
+
+			ui.checkSun->setChecked(temporary.toInt());
+			break;
+		}
+		case(17):
+		{
+			if (temporary.toInt() > 1 || temporary.toInt() < 0)
+				messegeWeekMaskInGeneral[0] = 1;
+			else
+				messegeWeekMaskInGeneral[0] = temporary.toInt();
+
+			ui.checkSendCrit->setChecked(temporary.toInt());
+			break;
+		}
 		}
 	}
 
@@ -177,6 +256,15 @@ void GeneralParam::writeCurrent()
 		out << ui.listLine->text() << Qt::endl;
 		out << ui.rowHeadLine->text() << Qt::endl;
 
+		out << ui.checkMon->isChecked() << Qt::endl;
+		out << ui.checkTue->isChecked() << Qt::endl;
+		out << ui.checkWed->isChecked() << Qt::endl;
+		out << ui.checkThurs->isChecked() << Qt::endl;
+		out << ui.checkFri->isChecked() << Qt::endl;
+		out << ui.checkSat->isChecked() << Qt::endl;
+		out << ui.checkSun->isChecked() << Qt::endl;
+		out << ui.checkSendCrit->isChecked() << Qt::endl;
+
 	}
 	else
 	{
@@ -195,3 +283,7 @@ bool GeneralParam::getNameCheck()
 	return ui.checkBoxNameCounter->isChecked();
 }
 
+QList<int> GeneralParam::getMessegeWeekMaskInGeneral()
+{
+	return messegeWeekMaskInGeneral;
+}

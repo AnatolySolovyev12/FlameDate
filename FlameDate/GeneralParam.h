@@ -18,6 +18,7 @@ public:
 	void readDefaultConfig();
 	void fileNameSetter(QString any);
 	bool getNameCheck();
+	QList<int> getMessegeWeekMaskInGeneral();
 
 	QString m_name;
 	QString m_directory;
@@ -29,6 +30,9 @@ public:
 	QString m_list;
 	QString m_rowHead;
 
+	
+
+
 signals:
 	void refreshSetting();
 
@@ -38,4 +42,5 @@ private slots:
 private:
 	Ui::GeneralParamClass ui;
 	QString fileForSend;
+	QList<int>messegeWeekMaskInGeneral{ 0,0,0,0,0,0,0,0 };
 };

@@ -40,6 +40,8 @@ FlameDate::FlameDate(QWidget* parent)
 
 	QMainWindow::setStatusBar(sBar);
 
+	tgObject->setWeekMask(myGenParam->getMessegeWeekMaskInGeneral());
+
 	connect(timerUpdate, &QTimer::timeout, tgObject, &TelegramJacket::getUpdates);
 	timerUpdate->start(12000);
 

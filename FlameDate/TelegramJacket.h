@@ -25,6 +25,8 @@ public:
 	void getUpdates();
 	void setToken(QString val);
 
+	void setWeekMask(QList<int> any);
+
 public slots:
 	//void sendMessage(const QString chatId, const QString message);
 
@@ -39,4 +41,7 @@ public:
 private:
 	QNetworkAccessManager* manager = nullptr;
 
+	QList<int>messegeWeekMask{ 0,0,0,0,0,0,0,0 };
 };
+
+
