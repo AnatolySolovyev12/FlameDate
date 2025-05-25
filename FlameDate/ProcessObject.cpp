@@ -132,7 +132,7 @@ void ProcessObject::check()
 			{
 				qDebug() << finalMessegeString;
 				
-				emit messageReceived(m_tgIds + "@" + finalMessegeString);
+				emit messageReceived(m_tgIds + "@" + finalMessegeString, m_deadlineDays);
 				canMessegeSend = false;
 				
 				QTimer::singleShot(240000, [this]() {canMessegeSend = true; });

@@ -30,7 +30,7 @@ public:
 	void check();
 
 signals:
-	void messageReceived(const QString&);
+	void messageReceived(const QString&, const QString&);
 
 private:
 	void classTimerIsDone();
