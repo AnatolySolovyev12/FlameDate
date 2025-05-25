@@ -85,6 +85,12 @@ void TelegramJacket::sendMessage(const QString message)
 		return;
 	}
 	
+	if (!messegeWeekMask[QDate::currentDate().dayOfWeek()] && !messegeWeekMask[0])
+	{
+		qDebug() << "Not send in this day";
+		return;
+	}
+
 	QString temporary;
 
 	for (auto& val : message)
