@@ -88,13 +88,13 @@ void TelegramJacket::sendMessage(const QString message, const QString d_message)
 
 	if (!startBool)
 	{
-		if (!messegeWeekMask[QDate::currentDate().dayOfWeek()] && !messegeWeekMask[0])
+		if (!messegeWeekMask[QDate::currentDate().dayOfWeek()] && (d_message.toInt() > 15))
 		{
 			qDebug() << "\nNot send in this day";
 			return;
 		}
 		
-		if (messegeWeekMask[0] && (d_message.toInt() > 15))
+		if (messegeWeekMask[0] && (d_message.toInt() > 15) && !messegeWeekMask[QDate::currentDate().dayOfWeek()])
 		{
 			qDebug() << "\nNot in critical zone";
 			return;
