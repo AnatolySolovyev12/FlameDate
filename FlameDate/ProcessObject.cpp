@@ -134,7 +134,7 @@ void ProcessObject::check()
 			{
 				qDebug() << finalMessegeString;
 
-				auto minDateInArray = std::min_element(minimalDate.begin(), minimalDate.end());
+				auto minDateInArray = std::min_element(minimalDate.begin(), minimalDate.end()); // для определения минимальной даты
 				int indexMininmalDate = std::distance(minimalDate.begin(), minDateInArray);
 
 				emit messageReceived(m_tgIds + "@" + finalMessegeString, QString::number(minimalDate[indexMininmalDate]));
