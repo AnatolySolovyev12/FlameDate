@@ -42,6 +42,8 @@ FlameDate::FlameDate(QWidget* parent)
 
 	tgObject->setWeekMask(myGenParam->getMessegeWeekMaskInGeneral());
 
+	myGenParam->setWindowIcon(QIcon("iconParam.png"));
+
 	connect(timerUpdate, &QTimer::timeout, tgObject, &TelegramJacket::getUpdates);
 	timerUpdate->start(12000);
 

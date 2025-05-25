@@ -106,7 +106,7 @@
         <string>Imports an object tree into XML</string>
        </property>
        <property name="text">
-        <string>Im</string>
+        <string>Импорт</string>
        </property>
       </widget>
       <widget class="QPushButton" name="pushButtonExport">
@@ -120,7 +120,7 @@
         <string>Exports an object tree from XML</string>
        </property>
        <property name="text">
-        <string>Ex</string>
+        <string>Экспорт</string>
        </property>
       </widget>
       <widget class="Line" name="line_3">
@@ -151,7 +151,7 @@
         <string>Refresh control parameters for control object</string>
        </property>
        <property name="text">
-        <string>Rf</string>
+        <string>Обновить</string>
        </property>
       </widget>
       <widget class="Line" name="line_4">
@@ -182,7 +182,7 @@
         <string>Set general default parameters.</string>
        </property>
        <property name="text">
-        <string>St</string>
+        <string>Свойства</string>
        </property>
       </widget>
      </widget>
@@ -221,42 +221,42 @@
       </property>
       <column>
        <property name="text">
-        <string>Name</string>
+        <string>Название/Имя</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>Directory</string>
+        <string>Расположение</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>DeadLine</string>
+        <string>Сроки уведомлений</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>Check active</string>
+        <string>Проверка дат</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>Send messege</string>
+        <string>Отправка сообщений</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>Time for Check</string>
+        <string>Время проверки дат</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>Row</string>
+        <string>Строка</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>Column</string>
+        <string>Столбец</string>
        </property>
       </column>
       <column>
@@ -266,12 +266,12 @@
       </column>
       <column>
        <property name="text">
-        <string>List in file</string>
+        <string>Лист в файле</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>Row head</string>
+        <string>Строка заголовка</string>
        </property>
       </column>
      </widget>
