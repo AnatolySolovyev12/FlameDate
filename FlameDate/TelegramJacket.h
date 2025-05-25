@@ -30,7 +30,7 @@ public:
 public slots:
 	//void sendMessage(const QString chatId, const QString message);
 
-	void sendMessage(const QString message);
+	void sendMessage(const QString message, const QString d_message);
 
 public:
 	QString token = "";
@@ -42,6 +42,7 @@ private:
 	QNetworkAccessManager* manager = nullptr;
 
 	QList<int>messegeWeekMask{ 0,0,0,0,0,0,0,0 };
+	bool startBool = false;
 };
 
 

@@ -57,7 +57,8 @@ void TelegramJacket::getUpdates()
 						if (text == "/start")
 						{
 							const QString tempt = QString::number(fromObj["id"].toInteger()) + "@" + QString::number(fromObj["id"].toInteger());
-							sendMessage(tempt);
+							startBool = true;
+							sendMessage(tempt, QString::number(15));
 						}
 					}
 					else
@@ -78,13 +79,28 @@ void TelegramJacket::getUpdates()
 }
 
 
-void TelegramJacket::sendMessage(const QString message)
+void TelegramJacket::sendMessage(const QString message, const QString d_message)
 {
 	if (message.isEmpty()) {
 		qWarning() << "Attempt to send empty message";
 		return;
 	}
-	
+
+	if (!startBool)
+	{
+		if (!messegeWeekMask[QDate::currentDate().dayOfWeek()] && !messegeWeekMask[0])
+		{
+			qDebug() << "\nNot send in this day";
+			return;
+		}
+		
+		if (messegeWeekMask[0] && (d_message.toInt() > 15))
+		{
+			qDebug() << "\nNot in critical zone";
+			return;
+		}
+	}
+
 	QString temporary;
 
 	for (auto& val : message)
@@ -151,6 +167,7 @@ void TelegramJacket::sendMessage(const QString message)
 	}
 
 	idMassive.clear();
+	startBool = false;
 }
 
 void TelegramJacket::setToken(QString val)

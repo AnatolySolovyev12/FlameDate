@@ -29,7 +29,7 @@ void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bo
 	m_rowHead = rowHead;
 
 	if (m_checkParse)
-		classTimer->start(60000); // каждую минуту 60000
+		classTimer->start(30000); // каждую минуту 60000
 	else
 		classTimer->stop();
 }
@@ -101,6 +101,8 @@ void ProcessObject::check()
 
 				if (QDate::currentDate().daysTo(testDate) < m_deadlineDays.toInt())
 				{
+					minimalDate.push_back(QDate::currentDate().daysTo(testDate));
+
 					QString messegeString = (QDate::currentDate().daysTo(testDate) > 0) ? (headTextInFileString + " действует " + QString::number(QDate::currentDate().daysTo(testDate)) + " дней") : (headTextInFileString + " просрочилось " + QString::number(qFabs(QDate::currentDate().daysTo(testDate))) + " дней");
 
 					qDebug() << messegeString << "\n";
@@ -131,8 +133,11 @@ void ProcessObject::check()
 			if (m_checkSend && canMessegeSend && dateMassiveFromFile.length())
 			{
 				qDebug() << finalMessegeString;
-				
-				emit messageReceived(m_tgIds + "@" + finalMessegeString);
+
+				auto minDateInArray = std::min_element(minimalDate.begin(), minimalDate.end());
+				int indexMininmalDate = std::distance(minimalDate.begin(), minDateInArray);
+
+				emit messageReceived(m_tgIds + "@" + finalMessegeString, QString::number(minimalDate[indexMininmalDate]));
 				canMessegeSend = false;
 				
 				QTimer::singleShot(240000, [this]() {canMessegeSend = true; });
@@ -140,6 +145,8 @@ void ProcessObject::check()
 
 			workbookDonor.data()->dynamicCall("Close()");
 			excelDonor.data()->dynamicCall("Quit()");
+
+			minimalDate.clear();
 		}
 		else
 			qDebug() << m_name << "more then 3 min\n";

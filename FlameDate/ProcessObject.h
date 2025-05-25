@@ -30,7 +30,7 @@ public:
 	void check();
 
 signals:
-	void messageReceived(const QString&);
+	void messageReceived(const QString&, const QString&);
 
 private:
 	void classTimerIsDone();
@@ -50,7 +50,7 @@ private:
 	QTimer* classTimer = nullptr;
 	QString pattern = "[\u200E\u200F\u202A\u202B\u202C\u202D\u202E]";
 	bool canMessegeSend = true;
-
+	QList<int>minimalDate;
 
 	
 
