@@ -1,4 +1,4 @@
-
+п»ї
 #include "GeneralParam.h"
 #include <QElapsedTimer>
 #include <QFile>
@@ -40,11 +40,11 @@ void GeneralParam::readDefaultConfig()
 
 	int countParam = 0;
 
-	// Считываем файл строка за строкой
+	// РЎС‡РёС‚С‹РІР°РµРј С„Р°Р№Р» СЃС‚СЂРѕРєР° Р·Р° СЃС‚СЂРѕРєРѕР№
 
-	while (!in.atEnd()) // метод atEnd() возвращает true, если в потоке больше нет данных для чтения
+	while (!in.atEnd()) // РјРµС‚РѕРґ atEnd() РІРѕР·РІСЂР°С‰Р°РµС‚ true, РµСЃР»Рё РІ РїРѕС‚РѕРєРµ Р±РѕР»СЊС€Рµ РЅРµС‚ РґР°РЅРЅС‹С… РґР»СЏ С‡С‚РµРЅРёСЏ
 	{
-		QString line = in.readLine(); // метод readLine() считывает одну строку из потока
+		QString line = in.readLine(); // РјРµС‚РѕРґ readLine() СЃС‡РёС‚С‹РІР°РµС‚ РѕРґРЅСѓ СЃС‚СЂРѕРєСѓ РёР· РїРѕС‚РѕРєР°
 		++countParam;
 		QString temporary;
 
@@ -241,11 +241,11 @@ void GeneralParam::writeCurrent()
 {
 	QFile file("config.txt");
 
-	// Открываем файл в режиме "Только для записи"
+	// РћС‚РєСЂС‹РІР°РµРј С„Р°Р№Р» РІ СЂРµР¶РёРјРµ "РўРѕР»СЊРєРѕ РґР»СЏ Р·Р°РїРёСЃРё"
 	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-		QTextStream out(&file); // поток записываемых данных направляем в файл
+		QTextStream out(&file); // РїРѕС‚РѕРє Р·Р°РїРёСЃС‹РІР°РµРјС‹С… РґР°РЅРЅС‹С… РЅР°РїСЂР°РІР»СЏРµРј РІ С„Р°Р№Р»
 
-		// Для записи данных в файл используем оператор <<
+		// Р”Р»СЏ Р·Р°РїРёСЃРё РґР°РЅРЅС‹С… РІ С„Р°Р№Р» РёСЃРїРѕР»СЊР·СѓРµРј РѕРїРµСЂР°С‚РѕСЂ <<
 		out << ui.nameLine->text() << Qt::endl;
 		out << ui.directoryLine->text() << Qt::endl;
 		out << ui.deadlineLine->text() << Qt::endl;

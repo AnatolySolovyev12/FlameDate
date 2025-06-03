@@ -15,7 +15,7 @@
 #include <QMenu>
 #include <QAction>
 
-#include <windows.h>
+//#include <windows.h>
 #include <TelegramJacket.h>
 
 #include "GeneralParam.h"

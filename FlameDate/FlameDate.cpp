@@ -250,12 +250,12 @@ void FlameDate::closeEditor(QTreeWidgetItem* any) // слот закрытия �
 	{
 		any->setText(8, "Not more then 150 signs");
 	}
-
+	/*
 	if (any->text(9).toInt() < 1 || any->text(9).toInt() > 50)
 	{
 		any->setText(9, QString::number(1));
 	}
-
+	*/
 	if (any->text(10).toInt() < 1 || any->text(10).toInt() > 50)
 	{
 		any->setText(10, QString::number(1));
@@ -662,12 +662,12 @@ void FlameDate::initializationPoolFunc()
 		{
 			ui.treeWidget->topLevelItem(count)->setText(8, "Not more then 150 signs");
 		}
-
+		/*
 		if (ui.treeWidget->topLevelItem(count)->text(9).toInt() < 1 || ui.treeWidget->topLevelItem(count)->text(10).toInt() > 50)
 		{
 			ui.treeWidget->topLevelItem(count)->setText(9, QString::number(1));
 		}
-
+		*/
 		if (ui.treeWidget->topLevelItem(count)->text(10).toInt() < 1 || ui.treeWidget->topLevelItem(count)->text(10).toInt() > 50)
 		{
 			ui.treeWidget->topLevelItem(count)->setText(10, QString::number(1));
