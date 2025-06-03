@@ -18,6 +18,13 @@
 
 #include <QtMath>
 
+#include "xlsxdocument.h"
+#include "xlsxchartsheet.h"
+#include "xlsxcellrange.h"
+#include "xlsxchart.h"
+#include "xlsxrichstring.h"
+#include "xlsxworkbook.h"
+
 
 class ProcessObject : public QObject
 {
