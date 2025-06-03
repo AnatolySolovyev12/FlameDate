@@ -63,7 +63,7 @@ void ProcessObject::check()
 
 			QXlsx::Document xlsxR(m_URL);
 
-			int countColsDonor = m_columns.toInt();
+			int countColsDonor = m_columns.toInt() - 1;
 
 			if (xlsxR.load()) // load excel file
 			{
@@ -71,7 +71,7 @@ void ProcessObject::check()
 
 				for (int col = m_columns.toInt();; col++)
 				{
-					if (xlsxR.read(m_rowHead.toInt(), col) != "")
+					if (xlsxR.read(m_rowHead.toInt(), col).toString() != "")
 					{
 						countColsDonor++;
 					}
@@ -87,17 +87,19 @@ void ProcessObject::check()
 
 				QString dateInFileString = xlsxR.read(m_rows.toInt(), startingCol).toString();
 
+
 				if (dateInFileString == "")
 					continue;
 
 				QString headTextInFileString = xlsxR.read(m_rowHead.toInt(), startingCol).toString();
 
-				qDebug() << dateInFileString;
-
+				/*
 				if (dateInFileString.length() > 10)
 				{
 					dateInFileString = QDateTime::fromString(dateInFileString, Qt::ISODate).date().toString("dd.MM.yyyy");
 				}
+				*/
+				dateInFileString = QDateTime::fromString(dateInFileString, Qt::ISODate).date().toString("dd.MM.yyyy");
 
 				QDate testDate = QDate::fromString(dateInFileString, "dd.MM.yyyy");
 

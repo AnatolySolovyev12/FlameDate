@@ -43,10 +43,10 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\PavlovAA\source\repos\QXlsx\QXlsx\header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\admin\source\repos\QXlsx\QXlsx\header;C:\Users\PavlovAA\source\repos\QXlsx\QXlsx\header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>C:\Users\PavlovAA\source\repos\QXlsx\QXlsx\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\admin\source\repos\QXlsx\QXlsx\release;C:\Users\PavlovAA\source\repos\QXlsx\QXlsx\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>QXlsx.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
