@@ -61,6 +61,136 @@ void ProcessObject::check()
 				return;
 			}
 
+			QXlsx::Document xlsxR(m_URL);
+
+			int countColsDonor = m_columns.toInt();
+
+			if (xlsxR.load()) // load excel file
+			{
+				xlsxR.selectSheet(m_list); // select a sheet. current sheet is 'added sheet'.
+
+				for (int col = m_columns.toInt();; col++)
+				{
+					if (xlsxR.read(m_rowHead.toInt(), col) != "")
+					{
+						countColsDonor++;
+					}
+					else
+						break;
+				}
+			}
+
+			QList<QString>dateMassiveFromFile;
+
+			for (int startingCol = m_columns.toInt(); startingCol < countColsDonor; startingCol++)
+			{
+
+				QString dateInFileString = xlsxR.read(m_rows.toInt(), startingCol).toString();
+
+				if (dateInFileString == "")
+					continue;
+
+				QString headTextInFileString = xlsxR.read(m_rowHead.toInt(), startingCol).toString();
+
+				qDebug() << dateInFileString;
+
+				if (dateInFileString.length() > 10)
+				{
+					dateInFileString = QDateTime::fromString(dateInFileString, Qt::ISODate).date().toString("dd.MM.yyyy");
+				}
+
+				QDate testDate = QDate::fromString(dateInFileString, "dd.MM.yyyy");
+
+				qDebug() << m_name << " " << "CurrDate " << QDate::currentDate().toString("dd.MM.yyyy") << " " << "TestDate " << testDate.toString("dd.MM.yyyy");
+
+				if (testDate.toString("dd.MM.yyyy") == "")
+					continue;
+
+				if (QDate::currentDate().daysTo(testDate) < m_deadlineDays.toInt())
+				{
+					minimalDate.push_back(QDate::currentDate().daysTo(testDate));
+
+					QString messegeString = (QDate::currentDate().daysTo(testDate) > 0) ? (headTextInFileString + " действует " + QString::number(QDate::currentDate().daysTo(testDate)) + " дней") : (headTextInFileString + " просрочилось " + QString::number(qFabs(QDate::currentDate().daysTo(testDate))) + " дней");
+
+					qDebug() << messegeString << "\n";
+
+					dateMassiveFromFile.append(messegeString);
+				}
+				else
+					qDebug() << m_name << " more then " << m_deadlineDays.toInt() << "\n";
+			}
+
+			QString finalMessegeString;
+
+			for (int firstColumnInFile = 1; firstColumnInFile < m_columns.toInt(); firstColumnInFile++)
+			{
+				QString headTextInFileString = xlsxR.read(m_rows.toInt(), firstColumnInFile).toString();
+				finalMessegeString += headTextInFileString + "\n";
+			}
+
+			QString headTextInFileString = xlsxR.read(m_rows.toInt(), 2).toString();
+
+			for (auto& val : dateMassiveFromFile)
+			{
+				finalMessegeString += val + "\n";
+			}
+
+			if (m_checkSend && canMessegeSend && dateMassiveFromFile.length())
+			{
+				qDebug() << finalMessegeString;
+
+				auto minDateInArray = std::min_element(minimalDate.begin(), minimalDate.end()); // для определения минимальной даты
+				int indexMininmalDate = std::distance(minimalDate.begin(), minDateInArray);
+
+				emit messageReceived(m_tgIds + "@" + finalMessegeString, QString::number(minimalDate[indexMininmalDate]));
+				canMessegeSend = false;
+				
+				QTimer::singleShot(240000, [this]() {canMessegeSend = true; });
+			}
+
+			minimalDate.clear();
+		}
+		else
+			qDebug() << m_name << "more then 3 min\n";
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+void ProcessObject::check()
+{
+	QTime testTime = QTime::fromString(m_timeForCheck, "hh:mm:ss");
+
+	qDebug() << m_name << " " << testTime.toString() << " " << QTime::currentTime().toString() << " " << QTime::currentTime().secsTo(testTime);
+
+	if (QTime::currentTime().secsTo(testTime) > 0)
+	{
+		if (QTime::currentTime().secsTo(testTime) < 300)
+		{
+			qDebug() << m_name << " " << "less then 3 min";
+
+			QFileInfo directoryFile(m_URL);
+
+			if (!directoryFile.exists() || !directoryFile.isFile()) {
+
+				qDebug() << "Error: for " << m_name << " can't find file from Directory!";
+				return;
+			}
+
 			QSharedPointer<QAxObject>excelDonor(new QAxObject("Excel.Application", 0));
 			QSharedPointer<QAxObject>workbooksDonor(excelDonor.data()->querySubObject("Workbooks"));
 			QSharedPointer<QAxObject>workbookDonor(workbooksDonor.data()->querySubObject("Open(const QString&)", m_URL));
@@ -139,7 +269,7 @@ void ProcessObject::check()
 
 				emit messageReceived(m_tgIds + "@" + finalMessegeString, QString::number(minimalDate[indexMininmalDate]));
 				canMessegeSend = false;
-				
+
 				QTimer::singleShot(240000, [this]() {canMessegeSend = true; });
 			}
 
@@ -152,3 +282,5 @@ void ProcessObject::check()
 			qDebug() << m_name << "more then 3 min\n";
 	}
 }
+
+*/
