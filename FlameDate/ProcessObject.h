@@ -4,8 +4,8 @@
 #include <QFile>
 #include <QTimer>
 #include <QDateTime>
-#include <windows.h>
-#include <tlhelp32.h>
+//#include <windows.h>
+//#include <tlhelp32.h>
 
 #include <QAxWidget>
 #include <QAxObject>
