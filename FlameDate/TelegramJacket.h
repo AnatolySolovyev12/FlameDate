@@ -10,7 +10,7 @@
 #include <QJsonArray>
 #include <QTimer>
 #include <QUrlQuery>
-#include <windows.h>
+//#include <windows.h>
 #include <QFile.h>
 
 

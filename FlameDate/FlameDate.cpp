@@ -10,22 +10,22 @@ FlameDate::FlameDate(QWidget* parent)
 	connect(ui.pushButtonSetting, &QPushButton::clicked, this, &FlameDate::showGeneralParam);
 	connect(myGenParam, &GeneralParam::refreshSetting, this, &FlameDate::refreshSettingInFlameDate);
 
-	trayIcon = new QSystemTrayIcon(this);
-	trayIcon->setIcon(QIcon("icon.png"));
+	//trayIcon = new QSystemTrayIcon(this);
+	//trayIcon->setIcon(QIcon("icon.png"));
 
-	QMenu* menu = new QMenu(this);
-	QAction* restoreAction = menu->addAction("CMD open and connect");
-	QAction* restoreActionHide = menu->addAction("CMD disconnect");
-	QAction* quitAction = menu->addAction("Exit");
+	//QMenu* menu = new QMenu(this);
+	//QAction* restoreAction = menu->addAction("CMD open and connect");
+	//QAction* restoreActionHide = menu->addAction("CMD disconnect");
+	//QAction* quitAction = menu->addAction("Exit");
 
-	connect(restoreAction, &QAction::triggered, this, &FlameDate::cmdOpen);
-	connect(restoreActionHide, &QAction::triggered, this, &FlameDate::cmdClose);
-	connect(quitAction, &QAction::triggered, qApp, &QApplication::quit);
+	//connect(restoreAction, &QAction::triggered, this, &FlameDate::cmdOpen);
+	//connect(restoreActionHide, &QAction::triggered, this, &FlameDate::cmdClose);
+	//connect(quitAction, &QAction::triggered, qApp, &QApplication::quit);
 
-	trayIcon->setContextMenu(menu);
-	trayIcon->setVisible(true);
+	//trayIcon->setContextMenu(menu);
+	//trayIcon->setVisible(true);
 
-	connect(trayIcon, &QSystemTrayIcon::activated, this, &FlameDate::iconActivated);
+	//connect(trayIcon, &QSystemTrayIcon::activated, this, &FlameDate::iconActivated);
 
 	connect(ui.pushButtonAdd, &QPushButton::clicked, this, &FlameDate::addItemInList);
 	connect(ui.pushButtonAddMinus, &QPushButton::clicked, this, &FlameDate::deleteItemInList);
@@ -250,12 +250,12 @@ void FlameDate::closeEditor(QTreeWidgetItem* any) // слот закрытия �
 	{
 		any->setText(8, "Not more then 150 signs");
 	}
-
+	/*
 	if (any->text(9).toInt() < 1 || any->text(9).toInt() > 50)
 	{
 		any->setText(9, QString::number(1));
 	}
-
+	*/
 	if (any->text(10).toInt() < 1 || any->text(10).toInt() > 50)
 	{
 		any->setText(10, QString::number(1));
@@ -662,12 +662,12 @@ void FlameDate::initializationPoolFunc()
 		{
 			ui.treeWidget->topLevelItem(count)->setText(8, "Not more then 150 signs");
 		}
-
+		/*
 		if (ui.treeWidget->topLevelItem(count)->text(9).toInt() < 1 || ui.treeWidget->topLevelItem(count)->text(10).toInt() > 50)
 		{
 			ui.treeWidget->topLevelItem(count)->setText(9, QString::number(1));
 		}
-
+		*/
 		if (ui.treeWidget->topLevelItem(count)->text(10).toInt() < 1 || ui.treeWidget->topLevelItem(count)->text(10).toInt() > 50)
 		{
 			ui.treeWidget->topLevelItem(count)->setText(10, QString::number(1));
@@ -693,7 +693,7 @@ void FlameDate::initializationPoolFunc()
 		connect(poolParse.last().data(), &ProcessObject::messageReceived, tgObject, &TelegramJacket::sendMessage);
 	}
 }
-
+/*
 void FlameDate::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
 	if (reason == QSystemTrayIcon::ActivationReason::DoubleClick)
@@ -730,7 +730,7 @@ void FlameDate::cmdClose()
 
 	FreeConsole(); // Отделяем процесс от cmd. После cmd закрываем руками.
 }
-
+*/
 void FlameDate::validDate(QTreeWidgetItem* str)
 {
 	if (str->text(5).length() != 8)

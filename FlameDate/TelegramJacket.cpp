@@ -3,7 +3,7 @@
 TelegramJacket::TelegramJacket(QObject* parent)
 	: QObject(parent), manager(new QNetworkAccessManager)
 {
-	AttachConsole(ATTACH_PARENT_PROCESS);
+	//AttachConsole(ATTACH_PARENT_PROCESS);
 }
 
 
