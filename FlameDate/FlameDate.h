@@ -11,11 +11,11 @@
 #include <QXmlStreamAttribute>
 #include <QMouseEvent>
 
-//#include <QSystemTrayIcon>
-//#include <QMenu>
-//#include <QAction>
+#include <QSystemTrayIcon>
+#include <QMenu>
+#include <QAction>
 
-//#include <windows.h>
+#include <windows.h>
 #include <TelegramJacket.h>
 
 #include "GeneralParam.h"
@@ -44,9 +44,9 @@ public:
     void closeEditor(QTreeWidgetItem* any);
     void otherItemWasChecked(QTreeWidgetItem* any);
 
-   // void iconActivated(QSystemTrayIcon::ActivationReason reason);
-    //void cmdOpen();
-    //void cmdClose();
+    void iconActivated(QSystemTrayIcon::ActivationReason reason);
+    void cmdOpen();
+    void cmdClose();
 
     void getTokenFromFile();
 
@@ -72,7 +72,7 @@ private:
 
     int countOfTopItems;
 
-    //QSystemTrayIcon* trayIcon = nullptr;
+    QSystemTrayIcon* trayIcon = nullptr;
     QDateTime fullTimeWork;
 
     bool windowShow = false;

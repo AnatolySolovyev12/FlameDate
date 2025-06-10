@@ -4,8 +4,8 @@
 #include <QFile>
 #include <QTimer>
 #include <QDateTime>
-//#include <windows.h>
-//#include <tlhelp32.h>
+#include <windows.h>
+#include <tlhelp32.h>
 
 #include <QAxWidget>
 #include <QAxObject>
@@ -58,8 +58,4 @@ private:
 	QString pattern = "[\u200E\u200F\u202A\u202B\u202C\u202D\u202E]";
 	bool canMessegeSend = true;
 	QList<int>minimalDate;
-
-	
-
-
 };
