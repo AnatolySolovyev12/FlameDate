@@ -556,7 +556,7 @@ void FlameDate::loopXmlReader(QXmlStreamReader& xmlReader)
 			FlameDate::closeEditor(some);
 		}
 
-		if (xmlReader.isEndElement())
+		if (xmlReader.isEndElement() && !myList.isEmpty())
 			myList.pop_back();
 
 		countOfTopItems = ui.treeWidget->topLevelItemCount();
