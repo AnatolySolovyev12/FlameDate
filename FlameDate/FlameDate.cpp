@@ -511,7 +511,6 @@ void FlameDate::loopXmlReader(QXmlStreamReader& xmlReader)
 			some->setBackground(9, QColor(88, 122, 111, 255));
 			some->setBackground(10, QColor(94, 140, 113, 255));
 
-
 			some->setText(0, xmlReader.name().toString());
 
 			for (QXmlStreamAttribute& val : xmlReader.attributes())
@@ -556,7 +555,7 @@ void FlameDate::loopXmlReader(QXmlStreamReader& xmlReader)
 			FlameDate::closeEditor(some);
 		}
 
-		if (xmlReader.isEndElement())
+		if (xmlReader.isEndElement() && !myList.isEmpty())
 			myList.pop_back();
 
 		countOfTopItems = ui.treeWidget->topLevelItemCount();
