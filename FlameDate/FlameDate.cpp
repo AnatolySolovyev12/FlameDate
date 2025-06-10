@@ -487,15 +487,23 @@ void FlameDate::loopXmlReader(QXmlStreamReader& xmlReader)
 	{
 		if (xmlReader.readNextStartElement())
 		{
+			if (xmlReader.hasError())
+			{
+				qDebug() << "XML error:" << xmlReader.errorString();
+				break;
+			}
+
 			if (xmlReader.name().toString() == "Root")
 				continue;
 
-			if (myList.length() == 0)
+			if (!myList.isEmpty())
+			{
+				some = new QTreeWidgetItem(myList.constLast());
+			}
+			else
 			{
 				some = new QTreeWidgetItem(ui.treeWidget);
 			}
-			else
-				some = new QTreeWidgetItem(myList.constLast());
 
 			myList.push_back(some);
 
