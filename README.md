@@ -8,6 +8,6 @@ What can:
 4) Connect and disconnect CMD to see log.
 5) Folding in and out of trey.
 6) XML tree load and upload.
-7) QXlsx branch for Windows/Linux cross-platform build (used https://github.com/QtExcel/QXlsx). Linux requires a GUI to work.
+7) QXlsx branch for Windows/Linux cross-platform build (used https://github.com/QtExcel/QXlsx). Linux requires a GUI to work (test in Astra).
 
 ![Анимация 3](https://github.com/user-attachments/assets/a5b37353-b6ac-4e2d-9522-3b7a9a05bc81)
