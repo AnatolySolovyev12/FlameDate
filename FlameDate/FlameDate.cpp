@@ -453,7 +453,7 @@ void FlameDate::importXml()
 
 	file.close();
 
-	QFile txtFile("tree.txt");
+	QFile txtFile(QCoreApplication::applicationDirPath() + "\\tree.txt");
 
 	if (!(txtFile.open(QIODevice::WriteOnly | QIODevice::Truncate))) // Truncate - для очистки содержимого файла
 	{
@@ -576,7 +576,7 @@ void FlameDate::startingImportXml()
 {
 	/* Открываем файл для Чтения с помощью пути, указанного в lineEditWrite */
 
-	QFile file("tree.txt");
+	QFile file(QCoreApplication::applicationDirPath() + "\\tree.txt");
 
 	if (!file.open(QIODevice::ReadOnly))
 	{
@@ -756,7 +756,7 @@ void FlameDate::validDate(QTreeWidgetItem* str)
 
 void FlameDate::getTokenFromFile()
 {
-	QFile file("token.txt");
+	QFile file(QCoreApplication::applicationDirPath() + "\\token.txt");
 
 	if (!file.open(QIODevice::ReadOnly))
 	{

@@ -28,7 +28,7 @@ void GeneralParam::fileNameSetter(QString any)
 
 void GeneralParam::readDefaultConfig()
 {
-	QFile file("config.txt");
+	QFile file(QCoreApplication::applicationDirPath() + "\\config.txt");
 
 	if (!file.open(QIODevice::ReadOnly))
 	{
@@ -239,7 +239,7 @@ void GeneralParam::readDefaultConfig()
 
 void GeneralParam::writeCurrent()
 {
-	QFile file("config.txt");
+	QFile file(QCoreApplication::applicationDirPath() + "\\config.txt");
 
 	// Открываем файл в режиме "Только для записи"
 	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
