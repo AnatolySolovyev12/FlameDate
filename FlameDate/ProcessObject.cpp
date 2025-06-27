@@ -117,12 +117,12 @@ void ProcessObject::check()
 
 			for (int firstColumnInFile = 1; firstColumnInFile < m_columns.toInt(); firstColumnInFile++)
 			{
-				QSharedPointer<QAxObject>headText(sheetDonor.data()->querySubObject("Cells(int,int)", m_rows, firstColumnInFile)); // нужно добавить выбор строки с шапкой
+				QSharedPointer<QAxObject>headText(sheetDonor.data()->querySubObject("Cells(int,int)", m_rows, firstColumnInFile)); 
 				QString headTextInFileString = headText.data()->property("Value").toString();
 				finalMessegeString += headTextInFileString + "\n";
 			}
 
-			QSharedPointer<QAxObject>headText(sheetDonor.data()->querySubObject("Cells(int,int)", m_rows, 2)); // нужно добавить выбор строки с шапкой
+			QSharedPointer<QAxObject>headText(sheetDonor.data()->querySubObject("Cells(int,int)", m_rows, 2)); 
 			QString headTextInFileString = headText.data()->property("Value").toString();
 
 			for (auto& val : dateMassiveFromFile)
@@ -134,7 +134,7 @@ void ProcessObject::check()
 			{
 				qDebug() << finalMessegeString;
 
-				auto minDateInArray = std::min_element(minimalDate.begin(), minimalDate.end()); // для определения минимальной даты
+				auto minDateInArray = std::min_element(minimalDate.begin(), minimalDate.end()); 
 				int indexMininmalDate = std::distance(minimalDate.begin(), minDateInArray);
 
 				emit messageReceived(m_tgIds + "@" + finalMessegeString, QString::number(minimalDate[indexMininmalDate]));
