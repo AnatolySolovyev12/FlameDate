@@ -2,8 +2,8 @@
 #include <QElapsedTimer>
 #include <QFile>
 
-GeneralParam::GeneralParam(QWidget* parent)
-	: QMainWindow(parent)
+GeneralParam::GeneralParam(QObject* parent)
+	: QObject(parent)
 {
 	readDefaultConfig();
 }

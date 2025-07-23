@@ -1,7 +1,7 @@
 ﻿#include "FlameDate.h"
 
-FlameDate::FlameDate(QWidget* parent)
-	: QMainWindow(parent), tgObject(new TelegramJacket), timerUpdate(new QTimer), myGenParam(new GeneralParam)
+FlameDate::FlameDate(QObject* parent)
+	: QObject(parent), tgObject(new TelegramJacket), timerUpdate(new QTimer), myGenParam(new GeneralParam)
 {
 	tgObject->setWeekMask(myGenParam->getMessegeWeekMaskInGeneral());
 
@@ -11,43 +11,6 @@ FlameDate::FlameDate(QWidget* parent)
 	refreshSettingInFlameDate();
 	startingImportXml();
 	getTokenFromFile();
-}
-
-
-void FlameDate::importXml()
-{
-	QString addFileDonor = QFileDialog::getOpenFileName(0, "Choose XML for import", "", "*.xml");
-
-	if (addFileDonor == "")
-	{
-		return;
-	}
-
-	QFile file(addFileDonor);
-	QXmlStreamReader xmlReader(&file);
-
-	file.open(QFile::ReadWrite);
-
-	loopXmlReader(xmlReader);
-
-	file.close();
-
-	QFile txtFile("tree.txt");
-
-	if (!(txtFile.open(QIODevice::WriteOnly | QIODevice::Truncate))) // Truncate - для очистки содержимого файла
-	{
-		qDebug() << "Don't find browse file. Add a directory with a tree.";
-		return;
-	}
-
-	QTextStream in(&txtFile);
-
-	in << addFileDonor << Qt::endl;
-
-	if (addFileDonor == "")
-		txtFile.remove();
-
-	txtFile.close();
 }
 
 
@@ -195,13 +158,6 @@ void FlameDate::getTokenFromFile()
 	tgObject->setToken(myLine);
 	file.close();
 }
-
-
-void FlameDate::showGeneralParam()
-{
-	myGenParam->show();
-}
-
 
 void FlameDate::refreshSettingInFlameDate()
 {

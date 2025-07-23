@@ -1,11 +1,11 @@
 ﻿#include "FlameDate.h"
-#include <QApplication>
+#include <QCoreApplication>
 
 int main(int argc, char *argv[])
 {
     SetConsoleOutputCP(1251);  // Установить UTF-8
 
-    QApplication a(argc, argv);
+    QCoreApplication a(argc, argv);
     FlameDate w;
 
     return a.exec();

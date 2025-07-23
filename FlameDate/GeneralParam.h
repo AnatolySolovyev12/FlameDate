@@ -1,15 +1,17 @@
 ﻿#pragma once
 
 #include <QMainWindow>
-#include <QFileDialog>
 #include <QString>
+#include <QDebug>
+#include <QTextStream>
+#include <QTime>
 
-class GeneralParam : public QMainWindow
+class GeneralParam : public QObject
 {
 	Q_OBJECT
 
 public:
-	GeneralParam(QWidget* parent = nullptr);
+	GeneralParam(QObject* parent = nullptr);
 
 	void readDefaultConfig();
 

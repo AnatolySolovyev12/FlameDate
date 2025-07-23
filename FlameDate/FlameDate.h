@@ -8,22 +8,20 @@
 #include <QXmlStreamAttribute>
 #include <TelegramJacket.h>
 #include "GeneralParam.h"
+#include "qdebug.h"
 
-class FlameDate : public QMainWindow
+class FlameDate : public QObject
 {
     Q_OBJECT
 
 public:
 
-    FlameDate(QWidget* parent = nullptr);
+    FlameDate(QObject* parent = nullptr);
 
-    void importXml();
     void loopXmlReader(QXmlStreamReader& xmlReader);
     void startingImportXml();
 
     void getTokenFromFile();
-
-    void showGeneralParam();
 
     void refreshSettingInFlameDate();
 
