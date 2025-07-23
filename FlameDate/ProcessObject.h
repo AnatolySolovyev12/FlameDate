@@ -4,7 +4,7 @@
 #include <QFile>
 #include <QTimer>
 #include <QDateTime>
-#include <QSharedPointer.h>
+//#include <QSharedPointer.h>
 #include <QRegularExpression>
 #include <QFileInfo>
 #include <QtMath>
