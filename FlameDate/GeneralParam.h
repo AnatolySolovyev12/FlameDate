@@ -1,9 +1,6 @@
 ﻿#pragma once
 
 #include <QMainWindow>
-#include "ui_GeneralParam.h"
-
-#include <QMessageBox>
 #include <QFileDialog>
 #include <QString>
 
@@ -13,11 +10,9 @@ class GeneralParam : public QMainWindow
 
 public:
 	GeneralParam(QWidget* parent = nullptr);
-	//~GeneralParam();
 
 	void readDefaultConfig();
-	//void fileNameSetter(QString any);
-	bool getNameCheck();
+
 	QList<int> getMessegeWeekMaskInGeneral();
 
 	QString m_name;
@@ -30,17 +25,7 @@ public:
 	QString m_list;
 	QString m_rowHead;
 
-	
-
-
-signals:
-	void refreshSetting();
-
-private slots:
-	//void writeCurrent();
-
 private:
-	Ui::GeneralParamClass ui;
 	QString fileForSend;
 	QList<int>messegeWeekMaskInGeneral{ 0,0,0,0,0,0,0,0 };
 };

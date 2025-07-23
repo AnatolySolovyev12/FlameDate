@@ -3,8 +3,6 @@
 ProcessObject::ProcessObject(QObject* parent)
 	: QObject(parent), classTimer(new QTimer())
 {
-	AttachConsole(ATTACH_PARENT_PROCESS);
-
 	connect(classTimer, &QTimer::timeout, this, &ProcessObject::classTimerIsDone);
 	classTimer->stop();
 }
@@ -32,6 +30,8 @@ void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bo
 		classTimer->start(60000); // каждую минуту 60000
 	else
 		classTimer->stop();
+
+	qDebug() << "\n" << name << URL << deadlineDays << checkParse << checkSend << timeForCheck << rows << columns << tgIds << list << rowHead;
 }
 
 
@@ -93,12 +93,6 @@ void ProcessObject::check()
 
 				QString headTextInFileString = xlsxR.read(m_rowHead.toInt(), startingCol).toString();
 
-				/*
-				if (dateInFileString.length() > 10)
-				{
-					dateInFileString = QDateTime::fromString(dateInFileString, Qt::ISODate).date().toString("dd.MM.yyyy");
-				}
-				*/
 				dateInFileString = QDateTime::fromString(dateInFileString, Qt::ISODate).date().toString("dd.MM.yyyy");
 
 				QDate testDate = QDate::fromString(dateInFileString, "dd.MM.yyyy");

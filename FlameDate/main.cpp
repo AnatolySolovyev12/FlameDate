@@ -1,5 +1,5 @@
 ﻿#include "FlameDate.h"
-#include <QtWidgets/QApplication>
+#include <QApplication>
 
 int main(int argc, char *argv[])
 {
@@ -7,8 +7,6 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
     FlameDate w;
-   // w.setWindowIcon(QIcon("icon.png"));
-   // w.setWindowTitle("FlameDate by Solovev");
-    w.show();
+
     return a.exec();
 }

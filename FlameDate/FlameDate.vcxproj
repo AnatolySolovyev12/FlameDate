@@ -26,7 +26,7 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.2.4_msvc2019_64</QtInstall>
-    <QtModules>core;gui;network;widgets;axcontainer;core5compat</QtModules>
+    <QtModules>core;network;axcontainer</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -70,12 +70,9 @@
     <ClCompile Include="GeneralParam.cpp" />
     <ClCompile Include="ProcessObject.cpp" />
     <ClCompile Include="TelegramJacket.cpp" />
-    <QtRcc Include="FlameDate.qrc" />
-    <QtUic Include="FlameDate.ui" />
     <QtMoc Include="FlameDate.h" />
     <ClCompile Include="FlameDate.cpp" />
     <ClCompile Include="main.cpp" />
-    <QtUic Include="GeneralParam.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ProcessObject.h" />

@@ -1,30 +1,13 @@
-﻿
-#include "GeneralParam.h"
+﻿#include "GeneralParam.h"
 #include <QElapsedTimer>
 #include <QFile>
-
 
 GeneralParam::GeneralParam(QWidget* parent)
 	: QMainWindow(parent)
 {
-	ui.setupUi(this);
-
-	//connect(ui.exitBtn, SIGNAL(clicked()), this, SLOT(close()));
-	//connect(ui.saveAllBtn, SIGNAL(clicked()), this, SLOT(writeCurrent()));
-
 	readDefaultConfig();
 }
-/*
-GeneralParam::~GeneralParam()
-{
-}
-*/
-/*
-void GeneralParam::fileNameSetter(QString any)
-{
-	fileForSend = any;
-}
-*/
+
 
 void GeneralParam::readDefaultConfig()
 {
@@ -238,53 +221,6 @@ void GeneralParam::readDefaultConfig()
 	file.close();
 }
 
-/*
-void GeneralParam::writeCurrent()
-{
-	QFile file("config.txt");
-
-	// Открываем файл в режиме "Только для записи"
-	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-		QTextStream out(&file); // поток записываемых данных направляем в файл
-
-		// Для записи данных в файл используем оператор <<
-		out << ui.nameLine->text() << Qt::endl;
-		out << ui.directoryLine->text() << Qt::endl;
-		out << ui.deadlineLine->text() << Qt::endl;
-		out << ui.timeLine->text() << Qt::endl;
-		out << ui.rowLine->text() << Qt::endl;
-		out << ui.columnLine->text() << Qt::endl;
-		out << ui.telegramLine->text() << Qt::endl;
-		out << ui.listLine->text() << Qt::endl;
-		out << ui.rowHeadLine->text() << Qt::endl;
-
-		out << ui.checkMon->isChecked() << Qt::endl;
-		out << ui.checkTue->isChecked() << Qt::endl;
-		out << ui.checkWed->isChecked() << Qt::endl;
-		out << ui.checkThurs->isChecked() << Qt::endl;
-		out << ui.checkFri->isChecked() << Qt::endl;
-		out << ui.checkSat->isChecked() << Qt::endl;
-		out << ui.checkSun->isChecked() << Qt::endl;
-		out << ui.checkSendCrit->isChecked() << Qt::endl;
-
-	}
-	else
-	{
-		qWarning("Could not open file");
-	}
-
-	file.close();
-
-	readDefaultConfig();
-
-	emit refreshSetting();
-}
-*/
-
-bool GeneralParam::getNameCheck()
-{
-	return ui.checkBoxNameCounter->isChecked();
-}
 
 QList<int> GeneralParam::getMessegeWeekMaskInGeneral()
 {
