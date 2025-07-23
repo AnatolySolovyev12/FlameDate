@@ -62,6 +62,13 @@ void ProcessObject::check()
 			}
 
 			QSharedPointer<QAxObject>excelDonor(new QAxObject("Excel.Application", 0));
+
+			if (excelDonor.data()->isNull())
+			{
+				qDebug() << "Error in check(): Excel object is NULL. Maybe Excel not instaled.";
+				return;
+			}
+
 			QSharedPointer<QAxObject>workbooksDonor(excelDonor.data()->querySubObject("Workbooks"));
 			QSharedPointer<QAxObject>workbookDonor(workbooksDonor.data()->querySubObject("Open(const QString&)", m_URL));
 			QSharedPointer<QAxObject>sheetsDonor(workbookDonor.data()->querySubObject("Worksheets"));
@@ -117,12 +124,12 @@ void ProcessObject::check()
 
 			for (int firstColumnInFile = 1; firstColumnInFile < m_columns.toInt(); firstColumnInFile++)
 			{
-				QSharedPointer<QAxObject>headText(sheetDonor.data()->querySubObject("Cells(int,int)", m_rows, firstColumnInFile)); 
+				QSharedPointer<QAxObject>headText(sheetDonor.data()->querySubObject("Cells(int,int)", m_rows, firstColumnInFile));
 				QString headTextInFileString = headText.data()->property("Value").toString();
 				finalMessegeString += headTextInFileString + "\n";
 			}
 
-			QSharedPointer<QAxObject>headText(sheetDonor.data()->querySubObject("Cells(int,int)", m_rows, 2)); 
+			QSharedPointer<QAxObject>headText(sheetDonor.data()->querySubObject("Cells(int,int)", m_rows, 2));
 			QString headTextInFileString = headText.data()->property("Value").toString();
 
 			for (auto& val : dateMassiveFromFile)
@@ -134,12 +141,12 @@ void ProcessObject::check()
 			{
 				qDebug() << finalMessegeString;
 
-				auto minDateInArray = std::min_element(minimalDate.begin(), minimalDate.end()); 
+				auto minDateInArray = std::min_element(minimalDate.begin(), minimalDate.end());
 				int indexMininmalDate = std::distance(minimalDate.begin(), minDateInArray);
 
 				emit messageReceived(m_tgIds + "@" + finalMessegeString, QString::number(minimalDate[indexMininmalDate]));
 				canMessegeSend = false;
-				
+
 				QTimer::singleShot(240000, [this]() {canMessegeSend = true; });
 			}
 
