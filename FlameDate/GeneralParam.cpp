@@ -9,25 +9,27 @@ GeneralParam::GeneralParam(QWidget* parent)
 {
 	ui.setupUi(this);
 
-	connect(ui.exitBtn, SIGNAL(clicked()), this, SLOT(close()));
-	connect(ui.saveAllBtn, SIGNAL(clicked()), this, SLOT(writeCurrent()));
+	//connect(ui.exitBtn, SIGNAL(clicked()), this, SLOT(close()));
+	//connect(ui.saveAllBtn, SIGNAL(clicked()), this, SLOT(writeCurrent()));
 
 	readDefaultConfig();
 }
-
+/*
 GeneralParam::~GeneralParam()
 {
 }
-
-
+*/
+/*
 void GeneralParam::fileNameSetter(QString any)
 {
 	fileForSend = any;
 }
-
+*/
 
 void GeneralParam::readDefaultConfig()
 {
+	qDebug() << "GeneralParam::readDefaultConfig():";
+
 	QFile file("config.txt");
 
 	if (!file.open(QIODevice::ReadOnly))
@@ -64,7 +66,7 @@ void GeneralParam::readDefaultConfig()
 			if (m_name.length() > 500)
 				m_name = "Not more then 500 signs";
 
-			ui.nameLine->setText(m_name);
+			qDebug() << m_name;
 			break;
 		}
 		case(2):
@@ -74,7 +76,7 @@ void GeneralParam::readDefaultConfig()
 			if (m_directory.length() > 500)
 				m_directory = "Not more then 500 signs";
 
-			ui.directoryLine->setText(m_directory);
+			qDebug() << m_directory;
 			break;
 		}
 		case(3):
@@ -84,7 +86,7 @@ void GeneralParam::readDefaultConfig()
 			if (m_deadlineLine.toInt() < 15 || m_deadlineLine.toInt() > 120)
 				m_deadlineLine = QString::number(15);
 
-			ui.deadlineLine->setText(m_deadlineLine);
+			qDebug() << m_deadlineLine;
 			break;
 		}
 		case(4):
@@ -97,7 +99,7 @@ void GeneralParam::readDefaultConfig()
 			if (QTime::fromString(m_timeLine, "hh:mm:ss").toString().isEmpty())
 				m_timeLine = "07:00:00";
 
-			ui.timeLine->setText(m_timeLine);
+			qDebug() << m_timeLine;
 			break;
 		}
 		case(5):
@@ -107,7 +109,7 @@ void GeneralParam::readDefaultConfig()
 			if (m_rowLine.toInt() < 1 || m_rowLine.toInt() > 300)
 				m_rowLine = QString::number(1);
 
-			ui.rowLine->setText(m_rowLine);
+			qDebug() << m_rowLine;
 			break;
 		}
 		case(6):
@@ -117,7 +119,7 @@ void GeneralParam::readDefaultConfig()
 			if (m_columnLine.toInt() < 1 || m_columnLine.toInt() > 300)
 				m_columnLine = QString::number(1);
 
-			ui.columnLine->setText(m_columnLine);
+			qDebug() << m_columnLine;
 			break;
 		}
 		case(7):
@@ -127,7 +129,7 @@ void GeneralParam::readDefaultConfig()
 			if (m_telegramLine.length() > 500)
 				m_telegramLine = "Not more then 500 signs";
 
-			ui.telegramLine->setText(m_telegramLine);
+			qDebug() << m_telegramLine;
 			break;
 		}
 		case(8):
@@ -137,7 +139,7 @@ void GeneralParam::readDefaultConfig()
 			if (m_list.toInt() < 1 || m_list.toInt() > 50)
 				m_list = QString::number(1);
 
-			ui.listLine->setText(m_list);
+			qDebug() << m_list;
 			break;
 		}
 		case(9):
@@ -147,7 +149,7 @@ void GeneralParam::readDefaultConfig()
 			if (m_rowHead.toInt() < 1 || m_rowHead.toInt() > 50)
 				m_rowHead = QString::number(1);
 
-			ui.rowHeadLine->setText(m_rowHead);
+			qDebug() << m_rowHead;
 			break;
 		}
 		case(10):
@@ -157,7 +159,7 @@ void GeneralParam::readDefaultConfig()
 			else
 				messegeWeekMaskInGeneral[1] = temporary.toInt();
 
-			ui.checkMon->setChecked(temporary.toInt());
+			qDebug() << messegeWeekMaskInGeneral[1];
 			break;
 		}
 		case(11):
@@ -167,7 +169,7 @@ void GeneralParam::readDefaultConfig()
 			else
 				messegeWeekMaskInGeneral[2] = temporary.toInt();
 
-			ui.checkTue->setChecked(temporary.toInt());
+			qDebug() << messegeWeekMaskInGeneral[2];
 			break;
 		}
 		case(12):
@@ -177,7 +179,7 @@ void GeneralParam::readDefaultConfig()
 			else
 				messegeWeekMaskInGeneral[3] = temporary.toInt();
 
-			ui.checkWed->setChecked(temporary.toInt());
+			qDebug() << messegeWeekMaskInGeneral[3];
 			break;
 		}
 		case(13):
@@ -187,7 +189,7 @@ void GeneralParam::readDefaultConfig()
 			else
 				messegeWeekMaskInGeneral[4] = temporary.toInt();
 
-			ui.checkThurs->setChecked(temporary.toInt());
+			qDebug() << messegeWeekMaskInGeneral[4];
 			break;
 		}
 		case(14):
@@ -197,7 +199,7 @@ void GeneralParam::readDefaultConfig()
 			else
 				messegeWeekMaskInGeneral[5] = temporary.toInt();
 
-			ui.checkFri->setChecked(temporary.toInt());
+			qDebug() << messegeWeekMaskInGeneral[5];
 			break;
 		}
 		case(15):
@@ -207,7 +209,7 @@ void GeneralParam::readDefaultConfig()
 			else
 				messegeWeekMaskInGeneral[6] = temporary.toInt();
 
-			ui.checkSat->setChecked(temporary.toInt());
+			qDebug() << messegeWeekMaskInGeneral[6];
 			break;
 		}
 		case(16):
@@ -217,7 +219,7 @@ void GeneralParam::readDefaultConfig()
 			else
 				messegeWeekMaskInGeneral[7] = temporary.toInt();
 
-			ui.checkSun->setChecked(temporary.toInt());
+			qDebug() << messegeWeekMaskInGeneral[7];
 			break;
 		}
 		case(17):
@@ -227,7 +229,7 @@ void GeneralParam::readDefaultConfig()
 			else
 				messegeWeekMaskInGeneral[0] = temporary.toInt();
 
-			ui.checkSendCrit->setChecked(temporary.toInt());
+			qDebug() << messegeWeekMaskInGeneral[0];
 			break;
 		}
 		}
@@ -236,7 +238,7 @@ void GeneralParam::readDefaultConfig()
 	file.close();
 }
 
-
+/*
 void GeneralParam::writeCurrent()
 {
 	QFile file("config.txt");
@@ -277,6 +279,7 @@ void GeneralParam::writeCurrent()
 
 	emit refreshSetting();
 }
+*/
 
 bool GeneralParam::getNameCheck()
 {

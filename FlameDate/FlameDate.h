@@ -27,26 +27,11 @@ class FlameDate : public QMainWindow
 public:
 
     FlameDate(QWidget* parent = nullptr);
-    ~FlameDate();
 
-    void addItemInList();
-    void deleteItemInList();
-    void exportXml();
-    void recursionXmlWriter(QTreeWidgetItem* some, QXmlStreamWriter& someXmlWriter);
     void importXml();
     void loopXmlReader(QXmlStreamReader& xmlReader);
     void startingImportXml();
-    void mousePressEvent(QMouseEvent* event);
     void initializationPoolFunc();
-    void validDate(QTreeWidgetItem* val);
-
-    void setData();
-    void closeEditor(QTreeWidgetItem* any);
-    void otherItemWasChecked(QTreeWidgetItem* any);
-
-    void iconActivated(QSystemTrayIcon::ActivationReason reason);
-    void cmdOpen();
-    void cmdClose();
 
     void getTokenFromFile();
 

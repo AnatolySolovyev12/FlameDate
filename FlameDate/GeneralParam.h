@@ -13,10 +13,10 @@ class GeneralParam : public QMainWindow
 
 public:
 	GeneralParam(QWidget* parent = nullptr);
-	~GeneralParam();
+	//~GeneralParam();
 
 	void readDefaultConfig();
-	void fileNameSetter(QString any);
+	//void fileNameSetter(QString any);
 	bool getNameCheck();
 	QList<int> getMessegeWeekMaskInGeneral();
 
@@ -37,7 +37,7 @@ signals:
 	void refreshSetting();
 
 private slots:
-	void writeCurrent();
+	//void writeCurrent();
 
 private:
 	Ui::GeneralParamClass ui;
