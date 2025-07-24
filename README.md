@@ -10,4 +10,5 @@ What can:
 6) XML tree load and upload.
 7) QXlsx branch for Windows/Linux cross-platform build (used https://github.com/QtExcel/QXlsx). Linux requires a GUI to work (test in Astra). 
 8) There is also a branch for the terminal version of Linux.
+   
 ![Анимация 3](https://github.com/user-attachments/assets/a5b37353-b6ac-4e2d-9522-3b7a9a05bc81)
