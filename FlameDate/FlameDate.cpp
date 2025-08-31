@@ -44,8 +44,8 @@ FlameDate::FlameDate(QWidget* parent)
 
 	myGenParam->setWindowIcon(QIcon("iconParam.png"));
 
-	connect(timerUpdate, &QTimer::timeout, tgObject, &TelegramJacket::getUpdates);
-	timerUpdate->start(12000);
+	//connect(timerUpdate, &QTimer::timeout, tgObject, &TelegramJacket::getUpdates);
+	//timerUpdate->start(12000);
 
 	refreshSettingInFlameDate();
 	startingImportXml();
