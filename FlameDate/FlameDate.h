@@ -27,7 +27,6 @@ class FlameDate : public QMainWindow
 public:
 
     FlameDate(QWidget* parent = nullptr);
-    ~FlameDate();
 
     void addItemInList();
     void deleteItemInList();

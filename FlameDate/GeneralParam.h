@@ -30,9 +30,6 @@ public:
 	QString m_list;
 	QString m_rowHead;
 
-	
-
-
 signals:
 	void refreshSetting();
 
