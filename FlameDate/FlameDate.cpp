@@ -1,7 +1,6 @@
 ﻿#include "FlameDate.h"
 
 
-
 FlameDate::FlameDate(QWidget* parent)
 	: QMainWindow(parent), sBar(new QStatusBar()), tgObject(new TelegramJacket), timerUpdate(new QTimer), myGenParam(new GeneralParam)
 {
@@ -44,21 +43,14 @@ FlameDate::FlameDate(QWidget* parent)
 
 	myGenParam->setWindowIcon(QIcon("iconParam.png"));
 
-	connect(timerUpdate, &QTimer::timeout, tgObject, &TelegramJacket::getUpdates);
-	timerUpdate->start(12000);
+	//connect(timerUpdate, &QTimer::timeout, tgObject, &TelegramJacket::getUpdates); // получаем сообщения из бота (для команды /start)
+	//timerUpdate->start(12000);
 
 	refreshSettingInFlameDate();
 	startingImportXml();
 	initializationPoolFunc();
 
 	getTokenFromFile();
-}
-
-	
-
-
-FlameDate::~FlameDate()
-{
 }
 
 
