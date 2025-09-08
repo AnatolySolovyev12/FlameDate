@@ -43,7 +43,7 @@ FlameDate::FlameDate(QWidget* parent)
 
 	myGenParam->setWindowIcon(QIcon("iconParam.png"));
 
-	//connect(timerUpdate, &QTimer::timeout, tgObject, &TelegramJacket::getUpdates); // получаем сообщения из бота (для команды /start)
+	//connect(timerUpdate, &QTimer::timeout, tgObject, &TelegramJacket::getUpdates);
 	//timerUpdate->start(12000);
 
 	refreshSettingInFlameDate();
