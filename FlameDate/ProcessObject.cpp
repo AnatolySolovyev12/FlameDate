@@ -101,12 +101,6 @@ void ProcessObject::check()
 
 				QString headTextInFileString = xlsxR.read(m_rowHead.toInt(), startingCol).toString();
 
-				/*
-				if (dateInFileString.length() > 10)
-				{
-					dateInFileString = QDateTime::fromString(dateInFileString, Qt::ISODate).date().toString("dd.MM.yyyy");
-				}
-				*/
 				dateInFileString = QDateTime::fromString(dateInFileString, Qt::ISODate).date().toString("dd.MM.yyyy");
 
 				QDate testDate = QDate::fromString(dateInFileString, "dd.MM.yyyy");
