@@ -22,7 +22,7 @@ void TelegramJacket::getUpdates()
 	*/
 
 	// добавлен таймаут для LongPoll (при 0 ShortPoll) в секундах. Также добавлен offset для подтверждения получения сообщдения в Telegram (чтобы повторно не поулчать старые сообщения)
-	QString urlString = QString("https://api.telegram.org/bot%1/getUpdates?offset=%2?timeout=12")
+	QString urlString = QString("https://api.telegram.org/bot%1/getUpdates?offset=%2&timeout=12")
 		.arg(token)
 		.arg(iD);
 
@@ -73,7 +73,7 @@ void TelegramJacket::getUpdates()
 			qDebug() << "Error (TelegramJacket::getUpdates(2)): " << reply->error() << reply->errorString();
 		}
 
-		//reply->deleteLater();
+		reply->deleteLater();
 
 		});	
 }
