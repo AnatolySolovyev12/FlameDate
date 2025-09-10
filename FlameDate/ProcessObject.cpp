@@ -33,10 +33,10 @@ void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bo
 		if (classTimer->isActive())
 		{
 			classTimer->stop();
-			classTimer->start(60000); // каждую минуту 60000
+			classTimer->start(15000); // каждую минуту 60000
 		}
 		else
-			classTimer->start(60000); // каждую минуту 60000
+			classTimer->start(15000); // каждую минуту 60000
 	}
 	else
 		classTimer->stop();
@@ -51,6 +51,12 @@ void ProcessObject::classTimerIsDone()
 
 void ProcessObject::check()
 {
+	HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED); // без инициализации COM-объектов для данного потока не откроется Excel.
+	if (FAILED(hr)) {
+		qDebug() << "Failed to initialize COM in this thread";
+		return;
+	}
+
 	QTime testTime = QTime::fromString(m_timeForCheck, "hh:mm:ss");
 
 	qDebug() << m_name << " " << testTime.toString() << " " << QTime::currentTime().toString() << " " << QTime::currentTime().secsTo(testTime);
@@ -166,4 +172,6 @@ void ProcessObject::check()
 		else
 			qDebug() << m_name << "more then 3 min\n";
 	}
+
+	CoUninitialize(); // освобождаем COM из данного потока.
 }
