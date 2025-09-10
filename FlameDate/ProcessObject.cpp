@@ -36,8 +36,12 @@ void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bo
 			classTimer->start(60000); // каждую минуту 60000
 		}
 		else
-			classTimer->stop();
+			classTimer->start(60000); // каждую минуту 60000
 	}
+	else
+		classTimer->stop();
+
+
 }
 
 	void ProcessObject::classTimerIsDone()
