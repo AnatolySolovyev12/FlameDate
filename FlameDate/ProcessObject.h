@@ -14,6 +14,8 @@
 #include "xlsxchart.h"
 #include "xlsxrichstring.h"
 #include "xlsxworkbook.h"
+#include <QtConcurrent>
+#include <qfuture.h>
 
 class ProcessObject : public QObject
 {

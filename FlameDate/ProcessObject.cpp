@@ -37,7 +37,7 @@ void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bo
 
 void ProcessObject::classTimerIsDone()
 {
-	check();
+	QtConcurrent::run([this]() { check(); });
 }
 
 
