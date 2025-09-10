@@ -7,9 +7,6 @@
 #include <windows.h>
 #include <tlhelp32.h>
 
-#include <QAxWidget>
-#include <QAxObject>
-
 #include <QSharedPointer.h>
 
 #include <QRegularExpression>
@@ -25,6 +22,9 @@
 #include "xlsxrichstring.h"
 #include "xlsxworkbook.h"
 
+#include <QtConcurrent>
+#include <qfuture.h>
+
 
 class ProcessObject : public QObject
 {
@@ -35,6 +35,7 @@ public:
 
 	void setParam(QString name, QString URL, QString deadlineDays, bool checkParse, bool checkSend, QString timeForCheck, QString rows, QString columns, QString tgIds, QString list, QString rowHead);
 	void check();
+	//void startAsyncCheck();
 
 signals:
 	void messageReceived(const QString&, const QString&);
