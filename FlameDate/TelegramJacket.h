@@ -20,16 +20,12 @@ class TelegramJacket : public QObject
 
 public:
 	TelegramJacket(QObject* parent = nullptr);
-	~TelegramJacket();
 
 	void getUpdates();
 	void setToken(QString val);
-
 	void setWeekMask(QList<int> any);
 
 public slots:
-	//void sendMessage(const QString chatId, const QString message);
-
 	void sendMessage(const QString message, const QString d_message);
 
 public:

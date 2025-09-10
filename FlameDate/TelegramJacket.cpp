@@ -7,11 +7,6 @@ TelegramJacket::TelegramJacket(QObject* parent)
 }
 
 
-TelegramJacket::~TelegramJacket()
-{
-}
-
-
 void TelegramJacket::getUpdates()
 {
 	if (isBusy) return; // Уже выполняется запрос
@@ -30,10 +25,8 @@ void TelegramJacket::getUpdates()
 		.arg(token)
 		.arg(iD);
 
-
 	QNetworkRequest request(urlString);
 	QNetworkReply* reply = manager->get(request);
-
 
 	QObject::connect(reply, &QNetworkReply::finished, [reply, this]() {
 		if (reply->error() == QNetworkReply::NoError)
@@ -169,7 +162,6 @@ void TelegramJacket::sendMessage(const QString message, const QString d_message)
 			});
 
 			*/
-
 	}
 
 	idMassive.clear();
@@ -180,6 +172,7 @@ void TelegramJacket::setToken(QString val)
 {
 	token = val;
 }
+
 
 void TelegramJacket::setWeekMask(QList<int> any)
 {
