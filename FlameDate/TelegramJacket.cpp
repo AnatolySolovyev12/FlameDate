@@ -7,12 +7,12 @@ TelegramJacket::TelegramJacket(QObject* parent)
 }
 
 
-TelegramJacket::~TelegramJacket()
-{
-}
-
 void TelegramJacket::getUpdates()
 {
+	if (isBusy) return; // Уже выполняется запрос
+
+	isBusy = true;
+
 	/*
 	QString urlString = QString("https://api.telegram.org/bot%1/deleteWebhook") // метод удаления перехватичков. Защиа от захвата бота и не только.
 		.arg(token);
@@ -25,10 +25,8 @@ void TelegramJacket::getUpdates()
 		.arg(token)
 		.arg(iD);
 
-
 	QNetworkRequest request(urlString);
 	QNetworkReply* reply = manager->get(request);
-
 
 	QObject::connect(reply, &QNetworkReply::finished, [reply, this]() {
 		if (reply->error() == QNetworkReply::NoError)
@@ -74,6 +72,8 @@ void TelegramJacket::getUpdates()
 
 		reply->deleteLater();
 
+		isBusy = false;
+		getUpdates();
 		});	
 }
 
@@ -162,17 +162,18 @@ void TelegramJacket::sendMessage(const QString message, const QString d_message)
 			});
 
 			*/
-
 	}
 
 	idMassive.clear();
 	startBool = false;
 }
 
+
 void TelegramJacket::setToken(QString val)
 {
 	token = val;
 }
+
 
 void TelegramJacket::setWeekMask(QList<int> any)
 {

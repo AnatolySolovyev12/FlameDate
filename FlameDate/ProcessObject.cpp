@@ -40,131 +40,130 @@ void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bo
 	}
 	else
 		classTimer->stop();
-
-
 }
 
-	void ProcessObject::classTimerIsDone()
+
+void ProcessObject::classTimerIsDone()
+{
+	QtConcurrent::run([this]() { check(); });
+}
+
+
+void ProcessObject::check()
+{
+	QTime testTime = QTime::fromString(m_timeForCheck, "hh:mm:ss");
+
+	qDebug() << m_name << " " << testTime.toString() << " " << QTime::currentTime().toString() << " " << QTime::currentTime().secsTo(testTime);
+
+	if (QTime::currentTime().secsTo(testTime) > 0)
 	{
-		check();
-	}
-
-
-	void ProcessObject::check()
-	{
-		QTime testTime = QTime::fromString(m_timeForCheck, "hh:mm:ss");
-
-		qDebug() << m_name << " " << testTime.toString() << " " << QTime::currentTime().toString() << " " << QTime::currentTime().secsTo(testTime);
-
-		if (QTime::currentTime().secsTo(testTime) > 0)
+		if (QTime::currentTime().secsTo(testTime) < 300)
 		{
-			if (QTime::currentTime().secsTo(testTime) < 300)
+			qDebug() << m_name << " " << "less then 3 min";
+
+			QFileInfo directoryFile(m_URL);
+
+			if (!directoryFile.exists() || !directoryFile.isFile()) {
+
+				qDebug() << "Error: for " << m_name << " can't find file from Directory!";
+				return;
+			}
+
+			QSharedPointer<QAxObject>excelDonor(new QAxObject("Excel.Application", 0));
+
+			if (excelDonor.data()->isNull())
 			{
-				qDebug() << m_name << " " << "less then 3 min";
+				qDebug() << "Error in check(): Excel object is NULL. Maybe Excel not instaled.";
+				return;
+			}
 
-				QFileInfo directoryFile(m_URL);
+			QSharedPointer<QAxObject>workbooksDonor(excelDonor.data()->querySubObject("Workbooks"));
+			QSharedPointer<QAxObject>workbookDonor(workbooksDonor.data()->querySubObject("Open(const QString&)", m_URL));
+			QSharedPointer<QAxObject>sheetsDonor(workbookDonor.data()->querySubObject("Worksheets"));
+			QSharedPointer<QAxObject>sheetDonor(sheetsDonor.data()->querySubObject("Item(int)", m_list.toInt())); // лист с которым будем работать
 
-				if (!directoryFile.exists() || !directoryFile.isFile()) {
+			QSharedPointer<QAxObject>usedRangeColDonor(sheetDonor->querySubObject("UsedRange")); // свойоство листа
+			QSharedPointer<QAxObject>columnsDonor(usedRangeColDonor->querySubObject("Columns")); // столбец
+			int countColsDonor = columnsDonor->property("Count").toInt(); // переводим в int
 
-					qDebug() << "Error: for " << m_name << " can't find file from Directory!";
-					return;
-				}
+			QList<QString>dateMassiveFromFile;
 
-				QSharedPointer<QAxObject>excelDonor(new QAxObject("Excel.Application", 0));
+			for (int startingCol = m_columns.toInt(); startingCol < countColsDonor; startingCol++)
+			{
 
-				if (excelDonor.data()->isNull())
-				{
-					qDebug() << "Error in check(): Excel object is NULL. Maybe Excel not instaled.";
-					return;
-				}
+				QSharedPointer<QAxObject>dateInFilePtr(sheetDonor.data()->querySubObject("Cells(int,int)", m_rows, startingCol));
+				QString dateInFileString = dateInFilePtr.data()->property("Value").toString();
 
-				QSharedPointer<QAxObject>workbooksDonor(excelDonor.data()->querySubObject("Workbooks"));
-				QSharedPointer<QAxObject>workbookDonor(workbooksDonor.data()->querySubObject("Open(const QString&)", m_URL));
-				QSharedPointer<QAxObject>sheetsDonor(workbookDonor.data()->querySubObject("Worksheets"));
-				QSharedPointer<QAxObject>sheetDonor(sheetsDonor.data()->querySubObject("Item(int)", m_list.toInt())); // лист с которым будем работать
+				if (dateInFileString == "")
+					continue;
 
-				QSharedPointer<QAxObject>usedRangeColDonor(sheetDonor->querySubObject("UsedRange")); // свойоство листа
-				QSharedPointer<QAxObject>columnsDonor(usedRangeColDonor->querySubObject("Columns")); // столбец
-				int countColsDonor = columnsDonor->property("Count").toInt(); // переводим в int
-
-				QList<QString>dateMassiveFromFile;
-
-				for (int startingCol = m_columns.toInt(); startingCol < countColsDonor; startingCol++)
-				{
-
-					QSharedPointer<QAxObject>dateInFilePtr(sheetDonor.data()->querySubObject("Cells(int,int)", m_rows, startingCol));
-					QString dateInFileString = dateInFilePtr.data()->property("Value").toString();
-
-					if (dateInFileString == "")
-						continue;
-
-					QSharedPointer<QAxObject>headText(sheetDonor.data()->querySubObject("Cells(int,int)", m_rowHead.toInt(), startingCol)); // нужно добавить выбор строки с шапкой
-					QString headTextInFileString = headText.data()->property("Value").toString();
-
-					qDebug() << dateInFileString;
-
-					if (dateInFileString.length() > 10)
-					{
-						dateInFileString = QDateTime::fromString(dateInFileString, Qt::ISODate).date().toString("dd.MM.yyyy");
-					}
-
-					QDate testDate = QDate::fromString(dateInFileString, "dd.MM.yyyy");
-
-					qDebug() << m_name << " " << "CurrDate " << QDate::currentDate().toString("dd.MM.yyyy") << " " << "TestDate " << testDate.toString("dd.MM.yyyy");
-
-					if (testDate.toString("dd.MM.yyyy") == "")
-						continue;
-
-					if (QDate::currentDate().daysTo(testDate) < m_deadlineDays.toInt())
-					{
-						minimalDate.push_back(QDate::currentDate().daysTo(testDate));
-
-						QString messegeString = (QDate::currentDate().daysTo(testDate) > 0) ? (headTextInFileString + " действует " + QString::number(QDate::currentDate().daysTo(testDate)) + " дней") : (headTextInFileString + " просрочилось " + QString::number(qFabs(QDate::currentDate().daysTo(testDate))) + " дней");
-
-						qDebug() << messegeString << "\n";
-
-						dateMassiveFromFile.append(messegeString);
-					}
-					else
-						qDebug() << m_name << " more then " << m_deadlineDays.toInt() << "\n";
-				}
-
-				QString finalMessegeString;
-
-				for (int firstColumnInFile = 1; firstColumnInFile < m_columns.toInt(); firstColumnInFile++)
-				{
-					QSharedPointer<QAxObject>headText(sheetDonor.data()->querySubObject("Cells(int,int)", m_rows, firstColumnInFile));
-					QString headTextInFileString = headText.data()->property("Value").toString();
-					finalMessegeString += headTextInFileString + "\n";
-				}
-
-				QSharedPointer<QAxObject>headText(sheetDonor.data()->querySubObject("Cells(int,int)", m_rows, 2));
+				QSharedPointer<QAxObject>headText(sheetDonor.data()->querySubObject("Cells(int,int)", m_rowHead.toInt(), startingCol)); // нужно добавить выбор строки с шапкой
 				QString headTextInFileString = headText.data()->property("Value").toString();
 
-				for (auto& val : dateMassiveFromFile)
+				qDebug() << dateInFileString;
+
+				if (dateInFileString.length() > 10)
 				{
-					finalMessegeString += val + "\n";
+					dateInFileString = QDateTime::fromString(dateInFileString, Qt::ISODate).date().toString("dd.MM.yyyy");
 				}
 
-				if (m_checkSend && canMessegeSend && dateMassiveFromFile.length())
+				QDate testDate = QDate::fromString(dateInFileString, "dd.MM.yyyy");
+
+				qDebug() << m_name << " " << "CurrDate " << QDate::currentDate().toString("dd.MM.yyyy") << " " << "TestDate " << testDate.toString("dd.MM.yyyy");
+
+				if (testDate.toString("dd.MM.yyyy") == "")
+					continue;
+
+				if (QDate::currentDate().daysTo(testDate) < m_deadlineDays.toInt())
 				{
-					qDebug() << finalMessegeString;
+					minimalDate.push_back(QDate::currentDate().daysTo(testDate));
 
-					auto minDateInArray = std::min_element(minimalDate.begin(), minimalDate.end());
-					int indexMininmalDate = std::distance(minimalDate.begin(), minDateInArray);
+					QString messegeString = (QDate::currentDate().daysTo(testDate) > 0) ? (headTextInFileString + " действует " + QString::number(QDate::currentDate().daysTo(testDate)) + " дней") : (headTextInFileString + " просрочилось " + QString::number(qFabs(QDate::currentDate().daysTo(testDate))) + " дней");
 
-					emit messageReceived(m_tgIds + "@" + finalMessegeString, QString::number(minimalDate[indexMininmalDate]));
-					canMessegeSend = false;
+					qDebug() << messegeString << "\n";
 
-					QTimer::singleShot(240000, [this]() {canMessegeSend = true; });
+					dateMassiveFromFile.append(messegeString);
 				}
-
-				workbookDonor.data()->dynamicCall("Close()");
-				excelDonor.data()->dynamicCall("Quit()");
-
-				minimalDate.clear();
+				else
+					qDebug() << m_name << " more then " << m_deadlineDays.toInt() << "\n";
 			}
-			else
-				qDebug() << m_name << "more then 3 min\n";
+
+			QString finalMessegeString;
+
+			for (int firstColumnInFile = 1; firstColumnInFile < m_columns.toInt(); firstColumnInFile++)
+			{
+				QSharedPointer<QAxObject>headText(sheetDonor.data()->querySubObject("Cells(int,int)", m_rows, firstColumnInFile));
+				QString headTextInFileString = headText.data()->property("Value").toString();
+				finalMessegeString += headTextInFileString + "\n";
+			}
+
+			QSharedPointer<QAxObject>headText(sheetDonor.data()->querySubObject("Cells(int,int)", m_rows, 2));
+			QString headTextInFileString = headText.data()->property("Value").toString();
+
+			for (auto& val : dateMassiveFromFile)
+			{
+				finalMessegeString += val + "\n";
+			}
+
+			if (m_checkSend && canMessegeSend && dateMassiveFromFile.length())
+			{
+				qDebug() << finalMessegeString;
+
+				auto minDateInArray = std::min_element(minimalDate.begin(), minimalDate.end());
+				int indexMininmalDate = std::distance(minimalDate.begin(), minDateInArray);
+
+				emit messageReceived(m_tgIds + "@" + finalMessegeString, QString::number(minimalDate[indexMininmalDate]));
+				canMessegeSend = false;
+
+				QTimer::singleShot(240000, [this]() {canMessegeSend = true; });
+			}
+
+			workbookDonor.data()->dynamicCall("Close()");
+			excelDonor.data()->dynamicCall("Quit()");
+
+			minimalDate.clear();
 		}
+		else
+			qDebug() << m_name << "more then 3 min\n";
 	}
+}

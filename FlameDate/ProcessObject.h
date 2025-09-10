@@ -6,17 +6,13 @@
 #include <QDateTime>
 #include <windows.h>
 #include <tlhelp32.h>
-
 #include <QAxWidget>
 #include <QAxObject>
-
 #include <QSharedPointer.h>
-
 #include <QRegularExpression>
-
 #include <QFileInfo>
-
 #include <QtMath>
+#include <QtConcurrent>
 
 
 class ProcessObject : public QObject
@@ -51,8 +47,4 @@ private:
 	QString pattern = "[\u200E\u200F\u202A\u202B\u202C\u202D\u202E]";
 	bool canMessegeSend = true;
 	QList<int>minimalDate;
-
-	
-
-
 };

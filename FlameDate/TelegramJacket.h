@@ -20,7 +20,6 @@ class TelegramJacket : public QObject
 
 public:
 	TelegramJacket(QObject* parent = nullptr);
-	~TelegramJacket();
 
 	void getUpdates();
 	void setToken(QString val);
@@ -43,6 +42,7 @@ private:
 
 	QList<int>messegeWeekMask{ 0,0,0,0,0,0,0,0 };
 	bool startBool = false;
+	bool isBusy = false;
 };
 
 

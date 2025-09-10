@@ -43,8 +43,12 @@ FlameDate::FlameDate(QWidget* parent)
 
 	myGenParam->setWindowIcon(QIcon("iconParam.png"));
 
-	connect(timerUpdate, &QTimer::timeout, tgObject, &TelegramJacket::getUpdates);
-	timerUpdate->start(12000);
+	//connect(timerUpdate, &QTimer::timeout, tgObject, &TelegramJacket::getUpdates);
+	//timerUpdate->start(12000);
+
+	QTimer::singleShot(3000, [this]() { // предпочтительный рекурсивный метод проверки новых сообщений в TG
+		tgObject->getUpdates();
+		});
 
 	refreshSettingInFlameDate();
 	startingImportXml();
