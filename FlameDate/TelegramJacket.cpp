@@ -64,17 +64,23 @@ void TelegramJacket::getUpdates()
 					}
 				}
 			}
+
+			reply->deleteLater();
+			isBusy = false;
+			QTimer::singleShot(100, this, &TelegramJacket::getUpdates);
 		}
 		else
 		{
+			// Обработка ошибки сети
 			qDebug() << "Error (TelegramJacket::getUpdates(2)): " << reply->error() << reply->errorString();
+
+			reply->deleteLater();
+			isBusy = false;
+
+			// Пауза 10 секунд перед повторной попыткой при ошибке
+			QTimer::singleShot(10000, this, &TelegramJacket::getUpdates);
 		}
-
-		reply->deleteLater();
-
-		isBusy = false;
-		getUpdates();
-		});	
+		});
 }
 
 
