@@ -51,7 +51,7 @@ void ProcessObject::classTimerIsDone()
 
 void ProcessObject::check()
 {
-	HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED); // без инициализации COM-объектов для данного потока не откроется Excel.
+	HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED); // без инициализации COM-объектов для данного потока не откроется Excel. COM объекты требуют вызова CoInitialize (или CoInitializeEx) в каждом потоке, в котором будут использоваться COM функции.
 	if (FAILED(hr)) {
 		qDebug() << "Failed to initialize COM in this thread";
 		return;
