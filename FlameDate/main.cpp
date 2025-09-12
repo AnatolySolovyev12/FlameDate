@@ -1,5 +1,6 @@
 ﻿#include "FlameDate.h"
 #include <QtWidgets/QApplication>
+#include <Windows.h> // закоменитить при использовании в Linux
 
 int main(int argc, char *argv[])
 {
