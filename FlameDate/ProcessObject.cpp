@@ -149,7 +149,7 @@ void ProcessObject::check()
 				emit messageReceived(m_tgIds + "@" + finalMessegeString, QString::number(minimalDate[indexMininmalDate]));
 				canMessegeSend = false;
 				
-				QTimer::singleShot(200000, [this]() {canMessegeSend = true; });
+				QTimer::singleShot(240000, [this]() {canMessegeSend = true; });
 			}
 
 			minimalDate.clear();
