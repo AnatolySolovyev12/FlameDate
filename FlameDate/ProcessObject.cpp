@@ -92,9 +92,7 @@ void ProcessObject::check()
 
 			for (int startingCol = m_columns.toInt(); startingCol < countColsDonor; startingCol++)
 			{
-
 				QString dateInFileString = xlsxR.read(m_rows.toInt(), startingCol).toString();
-
 
 				if (dateInFileString == "")
 					continue;
@@ -152,7 +150,6 @@ void ProcessObject::check()
 				//QTimer::singleShot(240000, [this]() {canMessegeSend = true; });
 				refreshStartMessage();
 			}
-
 			minimalDate.clear();
 		}
 		else
