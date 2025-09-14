@@ -161,7 +161,8 @@ void ProcessObject::check()
 				emit messageReceived(m_tgIds + "@" + finalMessegeString, QString::number(minimalDate[indexMininmalDate]));
 				canMessegeSend = false;
 
-				QTimer::singleShot(240000, [this]() {canMessegeSend = true; });
+				//QTimer::singleShot(240000, [this]() {canMessegeSend = true; });
+				emit emitMessageRefresh();
 			}
 
 			workbookDonor.data()->dynamicCall("Close()");
@@ -174,4 +175,10 @@ void ProcessObject::check()
 	}
 
 	CoUninitialize(); // освобождаем COM из данного потока.
+}
+
+
+void ProcessObject::refreshStartMessage()
+{
+	QTimer::singleShot(240000, [this]() {canMessegeSend = true; });
 }
