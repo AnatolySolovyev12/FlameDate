@@ -35,7 +35,7 @@ public:
 
 	void setParam(QString name, QString URL, QString deadlineDays, bool checkParse, bool checkSend, QString timeForCheck, QString rows, QString columns, QString tgIds, QString list, QString rowHead);
 	void check();
-	//void startAsyncCheck();
+	void refreshStartMessage();
 
 signals:
 	void messageReceived(const QString&, const QString&);

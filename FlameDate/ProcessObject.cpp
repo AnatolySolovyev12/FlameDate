@@ -158,3 +158,9 @@ void ProcessObject::check()
 			qDebug() << m_name << "more then 3 min\n";
 	}
 }
+
+
+void ProcessObject::refreshStartMessage()
+{
+	QTimer::singleShot(240000, [this]() {canMessegeSend = true; });
+}
