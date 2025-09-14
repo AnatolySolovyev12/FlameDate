@@ -142,7 +142,7 @@ void ProcessObject::check()
 				canMessegeSend = false;
 				
 				//QTimer::singleShot(240000, [this]() {canMessegeSend = true; });
-				refreshStartMessage();
+				void emitMessageRefresh();
 			}
 			minimalDate.clear();
 		}

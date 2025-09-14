@@ -30,6 +30,8 @@ public:
 
 signals:
 	void messageReceived(const QString&, const QString&);
+signals:
+	void emitMessageRefresh();
 
 private:
 	void classTimerIsDone();
