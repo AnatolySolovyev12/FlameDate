@@ -86,6 +86,8 @@ void FlameDate::loopXmlReader(QXmlStreamReader& xmlReader)
 
 			poolParse.last().data()->setParam(name, URL, deadlineDays, checkParse, checkSend, timeForCheck, rows, columns, tgIds, list, rowHead);
 			connect(poolParse.last().data(), &ProcessObject::messageReceived, tgObject, &TelegramJacket::sendMessage);
+			connect(poolParse.last().data(), &ProcessObject::emitMessageRefresh, poolParse.last().data(), &ProcessObject::refreshStartMessage);
+
 		}
 	}
 }
