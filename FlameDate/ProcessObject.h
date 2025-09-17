@@ -4,27 +4,18 @@
 #include <QFile>
 #include <QTimer>
 #include <QDateTime>
-#include <windows.h>
-#include <tlhelp32.h>
-
 #include <QSharedPointer.h>
-
 #include <QRegularExpression>
-
 #include <QFileInfo>
-
 #include <QtMath>
-
 #include "xlsxdocument.h"
 #include "xlsxchartsheet.h"
 #include "xlsxcellrange.h"
 #include "xlsxchart.h"
 #include "xlsxrichstring.h"
 #include "xlsxworkbook.h"
-
 #include <QtConcurrent>
 #include <qfuture.h>
-
 
 class ProcessObject : public QObject
 {

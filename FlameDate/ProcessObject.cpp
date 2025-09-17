@@ -160,5 +160,5 @@ void ProcessObject::check()
 
 void ProcessObject::refreshStartMessage()
 {
-	QTimer::singleShot(240000, [this]() {canMessegeSend = true; });
+	QTimer::singleShot(340000, [this]() {canMessegeSend = true; });
 }
