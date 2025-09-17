@@ -47,7 +47,7 @@ FlameDate::FlameDate(QWidget* parent)
 	//timerUpdate->start(12000);
 
 	QTimer::singleShot(3000, [this]() { // предпочтительный рекурсивный метод проверки новых сообщений в TG
-		//tgObject->getUpdates();
+		tgObject->getUpdates();
 		});
 
 	refreshSettingInFlameDate();
