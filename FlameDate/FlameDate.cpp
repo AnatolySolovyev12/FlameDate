@@ -1,7 +1,6 @@
 ﻿#include "FlameDate.h"
 
 
-
 FlameDate::FlameDate(QWidget* parent)
 	: QMainWindow(parent), sBar(new QStatusBar()), tgObject(new TelegramJacket), timerUpdate(new QTimer), myGenParam(new GeneralParam)
 {

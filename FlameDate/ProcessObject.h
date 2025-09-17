@@ -16,6 +16,7 @@
 #include "xlsxworkbook.h"
 #include <QtConcurrent>
 #include <qfuture.h>
+#include <Windows.h> 
 
 class ProcessObject : public QObject
 {
