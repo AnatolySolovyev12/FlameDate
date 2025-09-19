@@ -10,5 +10,16 @@ What can:
 6) XML tree load and upload.
 7) QXlsx branch for Windows/Linux cross-platform build (used https://github.com/QtExcel/QXlsx). Linux requires a GUI to work (test in Astra). 
 8) There is also a branch for the terminal version of Linux.
-   
+
+Что может:
+
+1) Создает отдельные объекты для проверки дат в XLS-файлах.
+2) Отправляет уведомления в Telegram в случае критического приближения к целевой дате.
+3) Выбор дня недели для отправки. Может игнорировать выбор дня и принудительно отправить, если осталось менее 15 дней.
+4) Подключение и отключение CMD для просмотра журнала.
+5) Сворачивание в трей и обратно.
+6) Загрузка и выгрузка дерева XML.
+7) Ветка QXlsx для кросс-платформенной сборки Windows/Linux (используется https://github.com/QtExcel/QXlsx). Для работы Linux требуется GUI (тест в Astra).
+8) Также существует ветка для терминальной версии Linux.
+
 ![Анимация 3](https://github.com/user-attachments/assets/a5b37353-b6ac-4e2d-9522-3b7a9a05bc81)
