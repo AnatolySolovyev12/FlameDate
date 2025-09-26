@@ -116,6 +116,7 @@ void FlameDate::addItemInList()
 	);
 
 	connect(poolParse.last().data(), &ProcessObject::messageReceived, tgObject, &TelegramJacket::sendMessage);
+	connect(poolParse.last().data(), &ProcessObject::emitMessageRefresh, poolParse.last().data(), &ProcessObject::refreshStartMessage);
 
 	any = nullptr;
 }
@@ -695,6 +696,8 @@ void FlameDate::initializationPoolFunc()
 		);
 
 		connect(poolParse.last().data(), &ProcessObject::messageReceived, tgObject, &TelegramJacket::sendMessage);
+		connect(poolParse.last().data(), &ProcessObject::emitMessageRefresh, poolParse.last().data(), &ProcessObject::refreshStartMessage);
+
 	}
 }
 
