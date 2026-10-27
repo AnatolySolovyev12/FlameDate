@@ -28,7 +28,7 @@ public:
 
 signals:
 	void messageReceived(const QString&, const QString&);
-signals:
+	void messageReceivedSMTP(const QString& mails, const QString& subscribe, const QString& text, const QString& filesSend);
 	void emitMessageRefresh();
 
 private:

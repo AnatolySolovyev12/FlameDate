@@ -72,6 +72,7 @@ void ProcessObject::check()
 			if (!directoryFile.exists() || !directoryFile.isFile()) {
 
 				qDebug() << "Error: for " << m_name << " can't find file from Directory!";
+				CoUninitialize(); // освобождаем COM из данного потока.
 				return;
 			}
 
@@ -80,6 +81,7 @@ void ProcessObject::check()
 			if (excelDonor.data()->isNull())
 			{
 				qDebug() << "Error in check(): Excel object is NULL. Maybe Excel not instaled.";
+				CoUninitialize(); // освобождаем COM из данного потока.
 				return;
 			}
 
@@ -158,7 +160,11 @@ void ProcessObject::check()
 				auto minDateInArray = std::min_element(minimalDate.begin(), minimalDate.end());
 				int indexMininmalDate = std::distance(minimalDate.begin(), minDateInArray);
 
-				emit messageReceived(m_tgIds + "@" + finalMessegeString, QString::number(minimalDate[indexMininmalDate]));
+				if(m_tgIds.contains("@"))
+					emit messageReceivedSMTP(m_tgIds + "$" + finalMessegeString, "Warning", QString::number(minimalDate[indexMininmalDate]), " ");
+				else
+				    emit messageReceived(m_tgIds + "@" + finalMessegeString, QString::number(minimalDate[indexMininmalDate]));
+
 				canMessegeSend = false;
 
 				//QTimer::singleShot(240000, [this]() {canMessegeSend = true; });

@@ -2,23 +2,20 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_FlameDate.h"
-
 #include <ProcessObject.h>
-
 #include <QFileDialog>
 #include <QFile>
 #include <QXmlStreamWriter>
 #include <QXmlStreamAttribute>
 #include <QMouseEvent>
-
 #include <QSystemTrayIcon>
 #include <QMenu>
 #include <QAction>
-
 #include <windows.h>
 #include <TelegramJacket.h>
-
 #include "GeneralParam.h"
+
+#include "SMTP.h"
 
 class FlameDate : public QMainWindow
 {
@@ -68,6 +65,7 @@ private:
 
     QList<QSharedPointer<ProcessObject>>poolParse;
     TelegramJacket* tgObject = nullptr;
+    SMTP * smtpClient = nullptr;
 
     int countOfTopItems;
 

@@ -1,0 +1,434 @@
+﻿#include "SMTP.h"
+
+SMTP::SMTP()
+{
+    readDefaultConfig();
+
+    //Проверяем версию SSL
+
+    qDebug() << "SMPT Class: " << "support SSL - " << QSslSocket::supportsSsl() << QSslSocket::sslLibraryBuildVersionString() << QSslSocket::sslLibraryVersionString() << QSslSocket::sslLibraryVersionNumber();
+
+    socket = new QSslSocket(this);
+
+    //сигналы для них используются бибилиотечные
+    connect(socket, SIGNAL(readyRead()), this, SLOT(readyReadFromSocket()));
+    connect(socket, SIGNAL(connected()), this, SLOT(connectedInfo()));
+    connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(stateChangedInfo(QAbstractSocket::SocketState))); // параметры прописывать необязательно но можно.
+    connect(socket, SIGNAL(disconnected()), this, SLOT(disconnectedInfo()));
+    connect(socket, &QSslSocket::errorOccurred, this, &SMTP::errorReceivedInfo);; // параметры прописывать необязательно но можно.
+    connect(socket, &QSslSocket::sslErrors, this, &SMTP::sslErrorsReceived);
+
+    QTimer::singleShot(3000, [this]() {sendMail("bakalavr12@mail.ru", "TEST", "HELLOW", ""); });
+}
+
+
+
+void SMTP::readDefaultConfig()
+{
+    QFile file(QCoreApplication::applicationDirPath() + "\\configSMTP.txt");
+
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "Dont find configSMTP file. Add file with parameters.";
+        return;
+    }
+
+    QTextStream in(&file);
+
+    int countParam = 0;
+
+    // Считываем файл строка за строкой
+
+    while (!in.atEnd()) // метод atEnd() возвращает true, если в потоке больше нет данных для чтения
+    {
+        QString line = in.readLine(); // метод readLine() считывает одну строку из потока
+        ++countParam;
+        QString temporary;
+
+        for (auto& val : line)
+        {
+            temporary += val;
+        }
+
+        switch (countParam)
+        {
+            case(1):
+            {
+                this->user = temporary;
+                this->from = temporary;
+                break;
+            }
+            case(2):
+            {
+                this->pass = temporary;
+                break;
+            }
+            case(3):
+            {
+                this->host = temporary;
+                break;
+            }
+            case(4):
+            {
+                this->port = temporary.toInt();
+                break;
+            }
+            case(5):
+            {
+                this->timeout = temporary.toInt();
+                break;
+            }
+        }
+    }
+
+    file.close();
+}
+
+
+
+void SMTP::setWeekMask(QList<int> any)
+{
+    messegeWeekMask = any;
+}
+
+
+
+void SMTP::stepsForSendSomeMessege(const QString& mailsAndText, const QString& subscribe, const QString& minimalDate, const QString& filesSend)
+{
+    if (mailsAndText.isEmpty()) {
+        qWarning() << "Attempt to send empty message";
+        return;
+    }
+
+    if (!startBool)
+    {
+        if (!messegeWeekMask[QDate::currentDate().dayOfWeek()] && (minimalDate.toInt() > 15))
+        {
+            qDebug() << "\nNot send in this day";
+            return;
+        }
+
+        if (messegeWeekMask[0] && (minimalDate.toInt() > 15) && !messegeWeekMask[QDate::currentDate().dayOfWeek()])
+        {
+            qDebug() << "\nNot in critical zone";
+            return;
+        }
+    }
+
+    QString temporary;
+
+    for (auto& val : mailsAndText)
+    {
+
+        if (val.isSpace())
+        {
+            idMassive.push_back(temporary);
+            temporary.clear();
+            continue;
+        }
+
+        if (val == '$')
+        {
+            idMassive.push_back(temporary);
+            temporary = mailsAndText;
+            temporary = temporary.sliced(mailsAndText.indexOf('$') + 1);
+            break;
+        }
+
+        temporary += val;
+    }
+
+    int timeBuffer = 0;
+
+    for (auto& val : idMassive)
+    {
+        QTimer::singleShot(timeBuffer, [&]() {
+            sendMail(val, subscribe, temporary, filesSend);
+            });
+
+        timeBuffer += 3000;
+    }
+
+    idMassive.clear();
+    startBool = false;
+}
+
+
+
+void SMTP::sendMail(const QString& to, const QString& subject, const QString& textMessege, QString files)
+{
+    qDebug() << "TEST TEST TEST";
+    message = "To: " + to + "\n"; // наполняем сообщение
+    message.append("From: " + from + "\n");
+    message.append("Subject: " + subject + "\n");
+
+
+    //Далеее используем MIME протокол для отправки вложенных файлов.
+    message.append("MIME-Version: 1.0\n"); // необязательный начальный заголовок.
+    message.append("Content-Type: multipart/mixed; boundary=frontier\n\n"); // определяем отделяющее слово. В нашем случае frontier
+    message.append("--frontier\n");
+    //message.append( "Content-Type: text/html\n\n" );  //Uncomment this for HTML formating, coment the line below
+    message.append("Content-Type: text/plain\n\n"); //определяем формат тела письма. По сути это всегда "text/plain"
+
+    message.append(textMessege); // Тело письма
+
+    message.append("\n\n");
+
+    QFile file(files);
+
+    if (file.exists())
+    {
+        if (!file.open(QIODevice::ReadOnly))
+        {
+            qDebug("Couldn't open the file");
+            /// QMessageBox::warning(0, tr("Qt Simple SMTP client"), tr("Couldn't open the file\n\n"));
+            return;
+        }
+
+        QByteArray bytes = file.readAll(); // считываем весь файл и переводим его в байты
+
+        message.append("--frontier\n");
+        // Определяем формат файлов. Рабоим вариантом было предложено использовать "application/octet-stream". 
+        // "Content-Disposition: attachment" - сообщаем что файл следует загружать как вложение а не как текст в письмо.
+        // "Content-Transfer-Encoding" - указываем в какой кодировке отправлять. 
+        message.append("Content-Type: application/octet-stream\nContent-Disposition: attachment; filename=" + QFileInfo(file.fileName()).fileName() + ";\nContent-Transfer-Encoding: base64\n\n");
+        message.append(bytes.toBase64());
+        message.append("\n");
+    }
+
+
+    message.append("--frontier--\n"); // MIME - протокол требует завершать свои вложения двойным тире "--". 
+
+    message.replace(QString::fromLatin1("\n"), QString::fromLatin1("\r\n")); // зачем то производится замена символа \n на \r\n
+    message.replace(QString::fromLatin1("\r\n.\r\n"), QString::fromLatin1("\r\n..\r\n")); // аналогично. 
+
+    this->from = from; //почему то без укзаания класса не присваивается. Можно "Smtp::"
+    rcpt = to;
+    state = Init;
+    socket->connectToHostEncrypted(host, port); //"smtp.gmail.com" and 465 for gmail TLS
+
+    if (!socket->waitForConnected(timeout)) // ожидаем подключения сокета по таймауту.
+    {
+        qDebug() << socket->errorString();
+    }
+
+    t = new QTextStream(socket); // будем принимать поток данных с указанного сокета
+}
+
+
+SMTP::~SMTP()
+{
+    delete t;
+    delete socket;
+
+    qDebug() << "\nObject, socket and t was delete.";
+}
+
+
+void SMTP::stateChangedInfo(QAbstractSocket::SocketState socketState) // Это сигнал который генерируетсмя всякий раз когда меняется состояние сокета. Идёт в комплекте с библиотекой. socketState это новое состояние. 
+{
+    // qDebug() << "\nstateChanged " << socketState;
+}
+
+
+void SMTP::errorReceivedInfo(QAbstractSocket::SocketError socketError) // Сигнал который выдаётся после возгникновения ошибки. Идёт в комплекте с библиотекой. socketError описывает тип произошедшей ошибки.
+{
+    if (socketError == QAbstractSocket::RemoteHostClosedError)
+        return; // при нормальном закрытии игнорируем вылезающую ошибку 
+
+    qDebug() << "\nError from SMTP::errorReceivedInfo(): " << socketError;
+}
+
+
+
+void SMTP::sslErrorsReceived(const QList<QSslError>& errors)
+{
+    qDebug() << "\nError from SMTP::errorReceivedInfo(): " << errors;
+}
+
+
+void SMTP::disconnectedInfo()
+{
+      qDebug() << "\ndisconneted";
+      qDebug() << "\nError from SMTP::disconnectedInfo(): " << socket->errorString();
+}
+
+
+void SMTP::connectedInfo()
+{
+    qDebug() << "Connected to SMTP server"; // убрать комментарий если важно видеть что сокет подключился к серверу
+}
+
+
+//Важно. Для того чтобы пройти авторизацию в Gmail, необходимо создать 16-значный пароль приложения. Для этого необходимо ообязательно включить 2-х факторную авторизацию иначе не пустит.
+void SMTP::readyReadFromSocket()
+{
+    userByte = user.toUtf8();
+    passByte = pass.toUtf8();
+
+     qDebug() << "\nreadyReadFromSocket()\n";
+
+     // SMTP is line-oriented
+
+     //Будем принимать ответы от сокета в виде 3-х значных кодов с пояснением.
+
+    int count = 1;
+
+    QString responseLine;
+
+    do
+    {
+        responseLine = socket->readLine(); // к данным в конце всегда добавляется завершающий символ "\0"
+        response += responseLine;
+
+          qDebug() << count << " - " << responseLine;
+
+        count++;
+
+    } while (socket->canReadLine() && responseLine[3] != ' ');
+
+    responseLine.truncate(3); // отсекаем строку по индексу позиции. В частности отсекаем "\0"
+
+    //После подключения к порту сервера он должен ответить с кодом 220
+
+    if (state == Init && responseLine == "220")
+    {
+        // banner was okay, let's go on
+        *t << "EHLO localhost" << "\r\n"; // начинаем сессию с помощью команды EHLO по стандарту для ESMTP протокола. 
+        //Сервер ответит успешно (код 250), отказом (код 550) или ошибкой (код 500, 501, 502, 504 или 421), в зависимости от его конфигурации. 
+        // Сервер ESMTP возвращает код 250 OK в многострочном ответе со своим доменом и списком ключевых слов для обозначения поддерживаемых расширений. 
+
+        t->flush(); // сбрасываем все буфферизированные данные, ожидающие записи на устройство.
+
+        state = HandShake;
+    }
+
+    //После полслдания ему EHLO и домена он должен ответить с кодом 250
+
+    else if (state == HandShake && responseLine == "250")
+    {
+        if (!socket->isEncrypted()) // проверяем зашифровано ли подключение
+        {
+            socket->startClientEncryption(); // запускаем отложенное подтверждение SSL для клиентского подключения. Если уже шифруемся то ничего не произойдёт или выдаст некритичное уведомление об ошибке.
+            if (!socket->waitForEncrypted(timeout))
+            {
+                qDebug() << "IF NOT startClientEncryption()";
+                qDebug() << "Error from SMTP::readyReadFromSocket(): " << socket->errorString();
+                state = Close;
+            }
+        }
+
+        //Send EHLO once again but now encrypted // Так то в самом наче делали зашифрованное подключение
+
+        *t << "EHLO localhost" << "\r\n"; // непонятно зачем повторный запрос делается.
+        t->flush();
+        state = Auth;
+    }
+
+    else if (state == Auth && responseLine == "250")
+    {
+        // Trying AUTH
+        qDebug() << "\nAuth";
+        *t << "AUTH LOGIN" << "\r\n"; // посылаем команду на авторизацию
+        t->flush();
+        state = User;
+    }
+
+    // если команда корректная то сервер пришлёт 334
+
+    else if (state == User && responseLine == "334")
+    {
+        //Trying User        
+        qDebug() << "\nUsername";
+        //GMAIL is using XOAUTH2 protocol, which basically means that password and username has to be sent in base64 coding
+        //https://developers.google.com/gmail/xoauth2_protocol
+        *t << QByteArray().append(userByte).toBase64() << "\r\n";
+        t->flush();
+
+        state = Pass;
+    }
+
+    //После отправки логина должны получить 334
+
+    else if (state == Pass && responseLine == "334")
+    {
+        //Trying pass
+        qDebug() << "\nPass";
+        *t << QByteArray().append(passByte).toBase64() << "\r\n";
+        t->flush();
+
+        state = Mail;
+    }
+
+    //После отправки пароля должны получить 235 если все данные корректные или 535 если авторизация не пройдена
+
+    else if (state == Mail && responseLine == "235")
+    {
+        // HELO response was okay (well, it has to be)
+
+        //Apperantly for Google it is mandatory to have MAIL FROM and RCPT email formated the following way -> <email@gmail.com>
+       // qDebug() << "\nMAIL FROM:<" << from << ">";
+        *t << "MAIL FROM:<" << from << ">\r\n";
+        t->flush();
+        state = Rcpt;
+    }
+
+    //Если почта авторизовались и правильно выбрадли от кого то придёт 250 
+
+    else if (state == Rcpt && responseLine == "250")
+    {
+        //Apperantly for Google it is mandatory to have MAIL FROM and RCPT email formated the following way -> <email@gmail.com>
+        *t << "RCPT TO:<" << rcpt << ">\r\n"; // можно несколько раз отправить команду и получиться несколько адресатов
+        t->flush();
+        state = Data;
+    }
+
+    //Кому отправляем тоже должно быть корректно передано и получим код 250
+
+    else if (state == Data && responseLine == "250")
+    {
+
+        *t << "DATA\r\n";
+        t->flush();
+        state = Body;
+    }
+
+    //После послания DATA можно формировать тело письма если получен код 354
+
+    else if (state == Body && responseLine == "354")
+    {
+
+        *t << message << "\r\n.\r\n";
+        t->flush();
+        state = Quit;
+    }
+
+    // Если сообщение принято к доставке то придёт 250
+
+    else if (state == Quit && responseLine == "250")
+    {
+        //  QMessageBox::information(0, tr("Qt Simple SMTP client"), tr("Message was send.\n\n"));
+        qDebug() << "SMTP messege was send. Response:" << responseLine;
+        *t << "QUIT\r\n";
+        t->flush();
+        state = Close;
+        //emit status(tr("Message sent")); // emit - макрос сомнительной полезнлости
+    }
+
+
+    else if (state == Close)
+    {
+        // deleteLater(); // отложенное удаление объекта после возврата в цикл обработчика событий.
+        return;
+    }
+
+
+    else
+    {
+        // something broke.
+        //QMessageBox::warning(0, tr("Qt Simple SMTP client"), tr("Unexpected reply from SMTP server:\n\n") + response);
+        state = Close;
+        emit status(tr("Failed to send message"));
+    }
+    response = "";
+}
