@@ -118,11 +118,11 @@ void TelegramJacket::sendMessage(const QString message, const QString d_message)
 			continue;
 		}
 		
-		if (val == '@')
+		if (val == '$')
 		{
 			idMassive.push_back(temporary);
 			temporary = message;
-			temporary = temporary.sliced(message.indexOf('@') + 1);
+			temporary = temporary.sliced(message.indexOf('$') + 1);
 			break;
 		}
 		

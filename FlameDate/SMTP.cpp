@@ -119,7 +119,6 @@ void SMTP::stepsForSendSomeMessege(const QString& mailsAndText, const QString& s
 
     for (auto& val : mailsAndText)
     {
-
         if (val.isSpace())
         {
             idMassive.push_back(temporary);
@@ -212,6 +211,8 @@ void SMTP::sendMail(const QString& to, const QString& subject, const QString& te
     {
         qDebug() << socket->errorString();
     }
+
+    delete t;
 
     t = new QTextStream(socket); // будем принимать поток данных с указанного сокета
 }

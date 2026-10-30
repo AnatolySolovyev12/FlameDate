@@ -33,10 +33,10 @@ void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bo
 		if (classTimer->isActive())
 		{
 			classTimer->stop();
-			classTimer->start(10000); // каждую минуту 60000 ////////////////////////////////////////////////////////////////
+			classTimer->start(60000); // каждую минуту 60000
 		}
 		else
-			classTimer->start(10000); // каждую минуту 60000 ////////////////////////////////////////////////////////////////
+			classTimer->start(60000); // каждую минуту 60000
 	}
 	else
 		classTimer->stop();
@@ -160,10 +160,36 @@ void ProcessObject::check()
 				auto minDateInArray = std::min_element(minimalDate.begin(), minimalDate.end());
 				int indexMininmalDate = std::distance(minimalDate.begin(), minDateInArray);
 
-				if(m_tgIds.contains("@"))
+				QString smtpString;
+				QString chatIdString;
+				QString tempAdress;
+
+				for (auto& val : m_tgIds)
+				{
+					if (val.isSpace())
+					{
+						if (tempAdress.contains("@"))
+							smtpString += tempAdress + " ";
+						else
+							chatIdString += tempAdress + " ";
+
+						tempAdress.clear();
+						continue;
+					}
+
+					tempAdress += val;
+				}
+
+				if (smtpString != "")
+				{
+					smtpString.chop(1);
 					emit messageReceivedSMTP(m_tgIds + "$" + finalMessegeString, "Warning", QString::number(minimalDate[indexMininmalDate]), " ");
-				else
-				    emit messageReceived(m_tgIds + "@" + finalMessegeString, QString::number(minimalDate[indexMininmalDate]));
+				}
+				if (chatIdString != "")
+				{
+					chatIdString.chop(1);
+					emit messageReceived(m_tgIds + "$" + finalMessegeString, QString::number(minimalDate[indexMininmalDate]));
+				}
 
 				canMessegeSend = false;
 
