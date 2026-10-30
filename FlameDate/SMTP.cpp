@@ -18,7 +18,7 @@ SMTP::SMTP()
     connect(socket, &QSslSocket::errorOccurred, this, &SMTP::errorReceivedInfo);; // параметры прописывать необязательно но можно.
     connect(socket, &QSslSocket::sslErrors, this, &SMTP::sslErrorsReceived);
 
-    QTimer::singleShot(3000, [this]() {sendMail("bakalavr12@mail.ru", "TEST", "HELLOW", ""); });
+    //QTimer::singleShot(3000, [this]() {sendMail("bakalavr12@mail.ru", "TEST", "HELLOW", ""); });
 }
 
 
@@ -142,11 +142,11 @@ void SMTP::stepsForSendSomeMessege(const QString& mailsAndText, const QString& s
 
     for (auto& val : idMassive)
     {
-        QTimer::singleShot(timeBuffer, [&]() {
+        QTimer::singleShot(timeBuffer, [val, subscribe, temporary, filesSend, this]() {
             sendMail(val, subscribe, temporary, filesSend);
             });
 
-        timeBuffer += 3000;
+        timeBuffer += 5000;
     }
 
     idMassive.clear();
@@ -157,7 +157,8 @@ void SMTP::stepsForSendSomeMessege(const QString& mailsAndText, const QString& s
 
 void SMTP::sendMail(const QString& to, const QString& subject, const QString& textMessege, QString files)
 {
-    qDebug() << "TEST TEST TEST";
+    qDebug() << "TEST TEST TEST\n" << to << '\n' << subject << '\n' << textMessege << '\n' << files;
+
     message = "To: " + to + "\n"; // наполняем сообщение
     message.append("From: " + from + "\n");
     message.append("Subject: " + subject + "\n");
@@ -419,6 +420,7 @@ void SMTP::readyReadFromSocket()
     else if (state == Close)
     {
         // deleteLater(); // отложенное удаление объекта после возврата в цикл обработчика событий.
+        if(socket->isOpen())  socket->close();
         return;
     }
 
