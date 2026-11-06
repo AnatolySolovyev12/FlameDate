@@ -61,6 +61,6 @@ private:
 
     QList<QString>idMassive;
     QList<int>messegeWeekMask{ 0,0,0,0,0,0,0,0 };
-    bool startBool = false;
+    //bool startBool = false;
     bool isBusy = false;
 };

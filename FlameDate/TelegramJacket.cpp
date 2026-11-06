@@ -54,7 +54,7 @@ void TelegramJacket::getUpdates()
 						if (text == "/start")
 						{
 							const QString tempt = QString::number(fromObj["id"].toInteger()) + "@" + QString::number(fromObj["id"].toInteger());
-							startBool = true;
+							//startBool = true;
 							sendMessage(tempt, QString::number(15));
 						}
 					}
@@ -86,15 +86,13 @@ void TelegramJacket::getUpdates()
 
 void TelegramJacket::sendMessage(const QString message, const QString d_message)
 {
-	qDebug() << "\n\n\n" << "TEST LOG FOR CHECK SEND WITH TELEGRAM"<< "\n" << message << "\n" << d_message << "\n\n\n";
-
 	if (message.isEmpty()) {
 		qWarning() << "Attempt to send empty message";
 		return;
 	}
 
-	if (!startBool)
-	{
+	//if (!startBool)
+	//{
 		if (!messegeWeekMask[QDate::currentDate().dayOfWeek()] && (d_message.toInt() > 15))
 		{
 			qDebug() << "\nNot send in this day";
@@ -106,7 +104,7 @@ void TelegramJacket::sendMessage(const QString message, const QString d_message)
 			qDebug() << "\nNot in critical zone";
 			return;
 		}
-	}
+	//}
 
 	QString temporary;
 
@@ -133,6 +131,8 @@ void TelegramJacket::sendMessage(const QString message, const QString d_message)
 	
 	for (auto& val : idMassive)
 	{
+		qDebug() << "\n\n\n" << "TEST LOG FOR CHECK SEND WITH TELEGRAM" << val << '\n' << temporary << "\n\n\n";
+
 		const QString tempId = val;
 		// Формирование URL запроса
 		QString urlString = QString("https://api.telegram.org/bot%1/sendMessage").arg(token);
@@ -173,7 +173,7 @@ void TelegramJacket::sendMessage(const QString message, const QString d_message)
 	}
 
 	idMassive.clear();
-	startBool = false;
+	//startBool = false;
 }
 
 

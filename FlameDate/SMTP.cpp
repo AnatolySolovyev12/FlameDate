@@ -164,8 +164,8 @@ void SMTP::stepsForSendSomeMessege(const QString& mailsAndText, const QString& s
         return;
     }
 
-    if (!startBool)
-    {
+    //if (!startBool)
+   // {
         if (!messegeWeekMask[QDate::currentDate().dayOfWeek()] && (minimalDate.toInt() > 15))
         {
             qDebug() << "\nNot send in this day";
@@ -177,7 +177,7 @@ void SMTP::stepsForSendSomeMessege(const QString& mailsAndText, const QString& s
             qDebug() << "\nNot in critical zone";
             return;
         }
-    }
+   // }
 
     QString temporary;
 
@@ -209,11 +209,11 @@ void SMTP::stepsForSendSomeMessege(const QString& mailsAndText, const QString& s
             sendMail(val, subscribe, temporary, filesSend);
             });
 
-        timeBuffer += 8000;
+        timeBuffer += 5000;
     }
 
     idMassive.clear();
-    startBool = false;
+   // startBool = false;
 }
 
 
@@ -221,6 +221,12 @@ void SMTP::stepsForSendSomeMessege(const QString& mailsAndText, const QString& s
 void SMTP::sendMail(const QString& to, const QString& subject, const QString& textMessege, QString files)
 {
     qDebug() << "\n\n\n" << "TEST LOG FOR CHECK SEND WITH SMTP" << "\n" << to << "\n" << subject << "\n" << textMessege << "\n" << files << "\n\n\n";
+
+    if (to == "" || to.isEmpty())
+    {
+        qDebug() << "SMTP::sendMail: \"to\" is EMPTY. Func was return";
+        return;
+    }
 
     message = "To: " + to + "\n"; // наполняем сообщение
     message.append("From: " + from + "\n");
