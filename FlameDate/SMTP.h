@@ -33,6 +33,8 @@ private slots:
     //сигналы для них используются бибилиотечные
     void stateChangedInfo(QAbstractSocket::SocketState socketState);
     void errorReceivedInfo(QAbstractSocket::SocketError socketError);
+    void handShakeErrorInfo(const QSslError& socketError);
+    void verifyErrorInfo(const QSslError& socketError);
     void disconnectedInfo();
     void connectedInfo();
     void readyReadFromSocket();

@@ -33,10 +33,10 @@ void ProcessObject::setParam(QString name, QString URL, QString deadlineDays, bo
 		if (classTimer->isActive())
 		{
 			classTimer->stop();
-			classTimer->start(60000); // каждую минуту 60000
+			classTimer->start(15000); // каждую минуту 60000
 		}
 		else
-			classTimer->start(60000); // каждую минуту 60000
+			classTimer->start(15000); // каждую минуту 60000
 	}
 	else
 		classTimer->stop();
@@ -183,12 +183,12 @@ void ProcessObject::check()
 				if (smtpString != "")
 				{
 					smtpString.chop(1);
-					emit messageReceivedSMTP(m_tgIds + "$" + finalMessegeString, "Warning", QString::number(minimalDate[indexMininmalDate]), " ");
+					emit messageReceivedSMTP(smtpString + "$" + finalMessegeString, "Warning", QString::number(minimalDate[indexMininmalDate]), " ");
 				}
 				if (chatIdString != "")
 				{
 					chatIdString.chop(1);
-					emit messageReceived(m_tgIds + "$" + finalMessegeString, QString::number(minimalDate[indexMininmalDate]));
+					emit messageReceived(chatIdString + "$" + finalMessegeString, QString::number(minimalDate[indexMininmalDate]));
 				}
 
 				canMessegeSend = false;

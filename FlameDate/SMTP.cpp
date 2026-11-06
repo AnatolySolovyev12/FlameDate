@@ -17,8 +17,72 @@ SMTP::SMTP()
     connect(socket, SIGNAL(disconnected()), this, SLOT(disconnectedInfo()));
     connect(socket, &QSslSocket::errorOccurred, this, &SMTP::errorReceivedInfo);; // параметры прописывать необязательно но можно.
     connect(socket, &QSslSocket::sslErrors, this, &SMTP::sslErrorsReceived);
+    connect(socket, &QSslSocket::handshakeInterruptedOnError, this, &SMTP::handShakeErrorInfo);
+    connect(socket, &QSslSocket::peerVerifyError, this, &SMTP::verifyErrorInfo);
 
     //QTimer::singleShot(3000, [this]() {sendMail("bakalavr12@mail.ru", "TEST", "HELLOW", ""); });
+}
+
+
+
+SMTP::~SMTP()
+{
+    delete t;
+    delete socket;
+
+    qDebug() << "\nObject, socket and t was delete.";
+}
+
+
+
+void SMTP::stateChangedInfo(QAbstractSocket::SocketState socketState) // Это сигнал который генерируетсмя всякий раз когда меняется состояние сокета. Идёт в комплекте с библиотекой. socketState это новое состояние. 
+{
+    // qDebug() << "\nstateChanged " << socketState;
+}
+
+
+
+void SMTP::verifyErrorInfo(const QSslError& socketError)
+{
+    qDebug() << "\nError from SMTP::verifyErrorInfo(): " << socketError;
+}
+
+
+
+void SMTP::handShakeErrorInfo(const QSslError& socketError)
+{
+    qDebug() << "\nError from SMTP::handShakeErrorInfo(): " << socketError;
+}
+
+
+
+void SMTP::errorReceivedInfo(QAbstractSocket::SocketError socketError) // Сигнал который выдаётся после возгникновения ошибки. Идёт в комплекте с библиотекой. socketError описывает тип произошедшей ошибки.
+{
+    if (socketError == QAbstractSocket::RemoteHostClosedError)
+        return; // при нормальном закрытии игнорируем вылезающую ошибку 
+
+    qDebug() << "\nError from SMTP::errorReceivedInfo(): " << socketError;
+}
+
+
+
+void SMTP::sslErrorsReceived(const QList<QSslError>& errors)
+{
+    qDebug() << "\nError from SMTP::sslErrorsReceived(): " << errors;
+}
+
+
+
+void SMTP::disconnectedInfo()
+{
+    qDebug() << "\ndisconneted";
+}
+
+
+
+void SMTP::connectedInfo()
+{
+    qDebug() << "Connected to SMTP server"; // убрать комментарий если важно видеть что сокет подключился к серверу
 }
 
 
@@ -145,7 +209,7 @@ void SMTP::stepsForSendSomeMessege(const QString& mailsAndText, const QString& s
             sendMail(val, subscribe, temporary, filesSend);
             });
 
-        timeBuffer += 5000;
+        timeBuffer += 8000;
     }
 
     idMassive.clear();
@@ -156,7 +220,7 @@ void SMTP::stepsForSendSomeMessege(const QString& mailsAndText, const QString& s
 
 void SMTP::sendMail(const QString& to, const QString& subject, const QString& textMessege, QString files)
 {
-    qDebug() << "TEST TEST TEST\n" << to << '\n' << subject << '\n' << textMessege << '\n' << files;
+    qDebug() << "\n\n\n" << "TEST LOG FOR CHECK SEND WITH SMTP" << "\n" << to << "\n" << subject << "\n" << textMessege << "\n" << files << "\n\n\n";
 
     message = "To: " + to + "\n"; // наполняем сообщение
     message.append("From: " + from + "\n");
@@ -217,49 +281,6 @@ void SMTP::sendMail(const QString& to, const QString& subject, const QString& te
     t = new QTextStream(socket); // будем принимать поток данных с указанного сокета
 }
 
-
-SMTP::~SMTP()
-{
-    delete t;
-    delete socket;
-
-    qDebug() << "\nObject, socket and t was delete.";
-}
-
-
-void SMTP::stateChangedInfo(QAbstractSocket::SocketState socketState) // Это сигнал который генерируетсмя всякий раз когда меняется состояние сокета. Идёт в комплекте с библиотекой. socketState это новое состояние. 
-{
-    // qDebug() << "\nstateChanged " << socketState;
-}
-
-
-void SMTP::errorReceivedInfo(QAbstractSocket::SocketError socketError) // Сигнал который выдаётся после возгникновения ошибки. Идёт в комплекте с библиотекой. socketError описывает тип произошедшей ошибки.
-{
-    if (socketError == QAbstractSocket::RemoteHostClosedError)
-        return; // при нормальном закрытии игнорируем вылезающую ошибку 
-
-    qDebug() << "\nError from SMTP::errorReceivedInfo(): " << socketError;
-}
-
-
-
-void SMTP::sslErrorsReceived(const QList<QSslError>& errors)
-{
-    qDebug() << "\nError from SMTP::errorReceivedInfo(): " << errors;
-}
-
-
-void SMTP::disconnectedInfo()
-{
-      qDebug() << "\ndisconneted";
-      qDebug() << "\nError from SMTP::disconnectedInfo(): " << socket->errorString();
-}
-
-
-void SMTP::connectedInfo()
-{
-    qDebug() << "Connected to SMTP server"; // убрать комментарий если важно видеть что сокет подключился к серверу
-}
 
 
 //Важно. Для того чтобы пройти авторизацию в Gmail, необходимо создать 16-значный пароль приложения. Для этого необходимо ообязательно включить 2-х факторную авторизацию иначе не пустит.
@@ -410,7 +431,6 @@ void SMTP::readyReadFromSocket()
     else if (state == Quit && responseLine == "250")
     {
         //  QMessageBox::information(0, tr("Qt Simple SMTP client"), tr("Message was send.\n\n"));
-        qDebug() << "SMTP messege was send. Response:" << responseLine;
         *t << "QUIT\r\n";
         t->flush();
         state = Close;
@@ -421,7 +441,9 @@ void SMTP::readyReadFromSocket()
     else if (state == Close)
     {
         // deleteLater(); // отложенное удаление объекта после возврата в цикл обработчика событий.
-        if(socket->isOpen())  socket->close();
+        if(socket->isOpen())  
+            socket->close();
+
         return;
     }
 
@@ -432,6 +454,7 @@ void SMTP::readyReadFromSocket()
         //QMessageBox::warning(0, tr("Qt Simple SMTP client"), tr("Unexpected reply from SMTP server:\n\n") + response);
         state = Close;
         emit status(tr("Failed to send message"));
+        qDebug() << "Failed to send message" << "\n";
     }
     response = "";
 }
