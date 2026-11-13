@@ -39,7 +39,6 @@ void TelegramJacket::getUpdates()
 
 				for (const QJsonValue& value : updates)
 				{
-
 					QJsonObject messageObj = value["message"].toObject();
 					QJsonObject fromObj = messageObj["from"].toObject();
 
