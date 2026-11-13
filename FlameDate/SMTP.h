@@ -12,10 +12,21 @@
 #include <QTimer>
 #include <QCoreApplication>
 
+
+
+struct mailStruct
+{
+    QString toMail;
+    QString subjectMail;
+    QString textMail;
+    QString files;
+};
+
+
+
 class SMTP : public QObject
 {
     Q_OBJECT
-
 
 public:
     SMTP();
@@ -25,13 +36,14 @@ public:
     void stepsForSendSomeMessege(const QString& mailsAndText, const QString& subscribe, const QString& minimalDate, const QString& filesSend);
     void sendMail(const QString& to, const QString& subject, const QString& textMessege, QString files);
     void setWeekMask(QList<int> any);
+    void loopSending();
 
 signals:
     void status(const QString&); // самоделашный сигнал для вывод в объект основного класса. 
 
 private slots:
     //сигналы для них используются бибилиотечные
-    void stateChangedInfo(QAbstractSocket::SocketState socketState);
+   // void stateChangedInfo(QAbstractSocket::SocketState socketState);
     void errorReceivedInfo(QAbstractSocket::SocketError socketError);
     void handShakeErrorInfo(const QSslError& socketError);
     void verifyErrorInfo(const QSslError& socketError);
@@ -58,9 +70,7 @@ private:
     int port;
     enum states { Tls, HandShake, Auth, User, Pass, Rcpt, Mail, Data, Init, Body, Quit, Close };
     int state = 8;
-
-    QList<QString>idMassive;
     QList<int>messegeWeekMask{ 0,0,0,0,0,0,0,0 };
-    //bool startBool = false;
-    bool isBusy = false;
+    QList<mailStruct>mailsBuff;
+    QTimer* senderTimer = nullptr;
 };

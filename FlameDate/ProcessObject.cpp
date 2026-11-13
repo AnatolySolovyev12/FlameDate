@@ -183,20 +183,29 @@ void ProcessObject::check()
 				if (tempAdress.contains("@"))
 					smtpString += tempAdress;
 				else
-					chatIdString += tempAdress;
-
-				if (smtpString != "")
 				{
+					if (tempAdress != "" || !tempAdress.isEmpty() || tempAdress != " ")
+						chatIdString += tempAdress;
+				}
+
+				if (smtpString.startsWith(' ') || smtpString.endsWith(' ')) smtpString = smtpString.trimmed();
+
+				if (chatIdString.startsWith(' ') || chatIdString.endsWith(' ')) chatIdString = chatIdString.trimmed();
+
+				if (smtpString != "" || smtpString != " ")
+				{
+					qDebug() << smtpString;
 					emit messageReceivedSMTP(smtpString + "$" + finalMessegeString, "Warning", QString::number(minimalDate[indexMininmalDate]), " ");
 				}
-				if (chatIdString != "")
+
+				if (chatIdString != "" || chatIdString != " ")
 				{
+					qDebug() << chatIdString;
 					emit messageReceived(chatIdString + "$" + finalMessegeString, QString::number(minimalDate[indexMininmalDate]));
 				}
 
 				canMessegeSend = false;
 
-				//QTimer::singleShot(240000, [this]() {canMessegeSend = true; });
 				emit emitMessageRefresh();
 			}
 

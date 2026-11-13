@@ -84,6 +84,7 @@ void TelegramJacket::getUpdates()
 }
 
 
+
 void TelegramJacket::sendMessage(const QString message, const QString d_message)
 {
 	if (message.isEmpty()) {
@@ -91,49 +92,50 @@ void TelegramJacket::sendMessage(const QString message, const QString d_message)
 		return;
 	}
 
-	//if (!startBool)
-	//{
-		if (!messegeWeekMask[QDate::currentDate().dayOfWeek()] && (d_message.toInt() > 15))
-		{
-			qDebug() << "\nNot send in this day";
-			return;
-		}
-		
-		if (messegeWeekMask[0] && (d_message.toInt() > 15) && !messegeWeekMask[QDate::currentDate().dayOfWeek()])
-		{
-			qDebug() << "\nNot in critical zone";
-			return;
-		}
-	//}
+	if (!messegeWeekMask[QDate::currentDate().dayOfWeek()] && (d_message.toInt() > 15))
+	{
+		qDebug() << "\nNot send in this day";
+		return;
+	}
+
+	if (messegeWeekMask[0] && (d_message.toInt() > 15) && !messegeWeekMask[QDate::currentDate().dayOfWeek()])
+	{
+		qDebug() << "\nNot in critical zone";
+		return;
+	}
 
 	QString temporary;
 
 	for (auto& val : message)
 	{
-		
 		if (val.isSpace())
 		{
-			idMassive.push_back(temporary);
+			if (!temporary.isEmpty())
+				idMassive.push_back(temporary);
+
 			temporary.clear();
 			continue;
 		}
-		
+
 		if (val == '$')
 		{
-			idMassive.push_back(temporary);
+			if (!temporary.isEmpty())
+				idMassive.push_back(temporary);
+
 			temporary = message;
 			temporary = temporary.sliced(message.indexOf('$') + 1);
 			break;
 		}
-		
+
 		temporary += val;
 	}
-	
+
 	for (auto& val : idMassive)
 	{
 		qDebug() << "\n\n\n" << "TEST LOG FOR CHECK SEND WITH TELEGRAM" << val << '\n' << temporary << "\n\n\n";
 
 		const QString tempId = val;
+
 		// Формирование URL запроса
 		QString urlString = QString("https://api.telegram.org/bot%1/sendMessage").arg(token);
 
@@ -143,8 +145,6 @@ void TelegramJacket::sendMessage(const QString message, const QString d_message)
 		QUrlQuery query;
 		query.addQueryItem("chat_id", tempId);
 		query.addQueryItem("text", temporary);
-
-		//qDebug() << query.toString() << "\n";
 
 		// Создание запроса
 		QNetworkRequest request(url);
@@ -173,7 +173,6 @@ void TelegramJacket::sendMessage(const QString message, const QString d_message)
 	}
 
 	idMassive.clear();
-	//startBool = false;
 }
 
 
